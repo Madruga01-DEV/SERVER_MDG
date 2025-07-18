@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="author" content="">
+        <title>Inventory HUD</title>
+        <link rel="stylesheet" id="themonic-fonts-css" href="css/contextMenu.min.css" type="text/css" media="all" />
+        <link rel="stylesheet" id="themonic-fonts-css" href="css/jquery.dialog.min.css" type="text/css" media="all" />
+        <link rel="stylesheet" id="themonic-fonts-css" href="css/ui.min.css" type="text/css" media="all" />
+        <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    </head>
+    <body>
+        <div class="players"></div>
+        <div id="inventoryHud">
+            <div class="trade-btn">
+                <iconify-icon id="tradeicon" icon="game-icons:trade"></iconify-icon>
+                <span id="tradetitle">TRADE</span>
+            </div>
+            <div id="disabler"></div>
+            <div id="ammobox"></div>
+            <div id="hint"></div>
+            <div id="title">
+                <img id="serverlogo" src="https://cdn.discordapp.com/attachments/1117100666498859111/1354941687029305505/mdg_store.png?ex=6825be87&is=68246d07&hm=9361037194de61fe5b5e06fcfa6da8d95c2a6d1d84acec3ca04be3c192c3d078&" alt="" srcset="">
+                <!-- <iconify-icon id="title-icon" icon="game-icons:backpack"></iconify-icon> -->
+                <span class="title-text">Inventory</span>
+            </div>
+            <div class="progress">
+                <div class="progress-value" id="progressBar"></div>
+            </div>
+            <div class='tooltip' style='display: none; position: absolute; padding: 10px; background-color: black; color: white; border-radius: 5px;'>Tooltip content</div>
+            <div id="inventoryElement">
+            </div>
+            <p id="information"></p>
+            <p id="description"></p>
+            <div id="cash">
+                <iconify-icon icon="bi:cash-coin" id="cash-icon"></iconify-icon>
+                <a id="money-value"></a>
+                <a id="hint-money-value" class="dn"></a>
+            </div>
+    
+            <div id="gold">
+                <iconify-icon icon="game-icons:cash" id="gold-icon"></iconify-icon>
+                <a id="gold-value"></a>
+                <a id="hint-gold-value" class="dn"></a>
+            </div>
+            <div id="rol">
+                <iconify-icon icon="mdi:gold" id="gold-icon"></iconify-icon>
+                <a id="rol-value"></a>
+                <a id="hint-rol-value" class="dn"></a>
+            </div>
+            <div id="id">
+                <iconify-icon icon="mingcute:user-4-fill" id="cash-icon"></iconify-icon>
+                <a id="id-value"></a>
+            </div>
+            <div class="mainButtonContainer">
+                <button class="mainButton" type="button" data-target="mainButton1" onclick="toggleDropdown('mainButton1')">
+                <img src="img/itemtypes/satchel_nav_kit.png" alt="Main Button Image">
+                </button>
+                <button class="mainButton" type="button" data-target="mainButton2" onclick="toggleDropdown('mainButton2')">
+                <img src="img/itemtypes/clothing.png" alt="Main Button Image">
+                </button>
+            </div>
+            <div class="imageButtonContainer">
+                <div class="carouselWrapper">
+                    <div class="carouselContainer" id="carousel1Container">
+                        <button class="carousel-control left" onclick="scrollCarousel('carousel1', -1)">&#10094;</button>
+                        <div class="dropdownButtonContainer mainButton1" id="carousel1"></div>
+                        <button class="carousel-control right" onclick="scrollCarousel('carousel1', 1)">&#10095;</button>
+                    </div>
+                </div>
+                <div class="carouselWrapper">
+                    <div class="carouselContainer" id="carousel2Container">
+                        <button class="carousel-control left" onclick="scrollCarousel('carousel2', -1)">&#10094;</button>
+                        <div class="dropdownButtonContainer mainButton2" id="carousel2">
+                            <button class="dropdownButton" type="button" data-type="clothing" data-param="hat" onclick="action('clothing','hat','inventoryElement')">
+                            <img src="img/itemtypes/hat.png" alt="Image 2">
+                            </button>
+                            <button class="dropdownButton" type="button" data-type="clothing" data-param="boots" onclick="action('clothing','boots','inventoryElement')">
+                                <img src="img/itemtypes/boots.png" alt="Image 2">
+                            </button>
+                            <button class="dropdownButton" type="button" data-type="clothing" data-param="shirt"
+                                onclick="action('clothing','shirt','inventoryElement')">
+                            <img src="img/itemtypes/shirt.png" alt="Image 2">
+                            </button>
+                            <button class="dropdownButton" type="button" data-type="clothing" data-param="ccoat"
+                                onclick="action('clothing','ccoat','inventoryElement')">
+                            <img src="img/itemtypes/ccoat.png" alt="Image 2">
+                            </button>
+                            <button class="dropdownButton" type="button" data-type="clothing" data-param="coat" onclick="action('clothing','coat','inventoryElement')">
+                            <img src="img/itemtypes/coat.png" alt="Image 2">
+                            </button>
+                            <button class="dropdownButton" type="button" data-type="clothing" data-param="poncho"
+                                onclick="action('clothing','poncho','inventoryElement')">
+                            <img src="img/itemtypes/poncho.png" alt="Image 2">
+                            </button>
+                            <button class="dropdownButton" type="button" data-type="clothing" data-param="glove"
+                                onclick="action('clothing','glove','inventoryElement')">
+                            <img src="img/itemtypes/gloves.png" alt="Image 2">
+                            </button>
+                            <button class="dropdownButton" type="button" data-type="clothing" data-param="cloak"
+                                onclick="action('clothing','cloak','inventoryElement')">
+                            <img src="img/itemtypes/cloak.png" alt="Image 2">
+                            </button>
+                            <button class="dropdownButton" type="button" data-type="clothing" data-param="mask" onclick="action('clothing','mask','inventoryElement')">
+                            <img src="img/itemtypes/mask.png" alt="Image 2">
+                            </button>
+                            <button class="dropdownButton" type="button" data-type="clothing" data-param="vest" onclick="action('clothing','vest','inventoryElement')">
+                            <img src="img/itemtypes/vest.png" alt="Image 2">
+                            </button>
+                            <button class="dropdownButton" type="button" data-type="clothing" data-param="neckwear"
+                                onclick="action('clothing','neckwear','inventoryElement')">
+                            <img src="img/itemtypes/neckwear.png" alt="Image 2">
+                            </button>
+                            <button class="dropdownButton" type="button" data-type="clothing" data-param="sleeves"
+                                onclick="action('clothing','sleeves','inventoryElement')">
+                            <img src="img/itemtypes/sleeves.png" alt="Image 2">
+                            </button>
+                            <button class="dropdownButton" type="button" data-type="clothing" data-param="belt" onclick="action('clothing','belt','inventoryElement')">
+                            <img src="img/itemtypes/buck.png" alt="Image 2">
+                            </button>
+                        </div>
+                        <button class="carousel-control right" onclick="scrollCarousel('carousel2', 1)">&#10095;</button>
+                    </div>
+                </div>
+            </div>
+            <div id="transaction-loader">
+                <div class="wrap-model">
+                    <div class="revolver">
+                        <section class="revolver-part"></section>
+                        <section class="revolver-part"></section>
+                        <section class="revolver-part"></section>
+                        <section class="revolver-part"></section>
+                        <section class="revolver-part"></section>
+                        <section class="revolver-part"></section>
+                    </div>
+                    <div id="loading-text"></div>
+                </div>
+            </div>
+        </div>
+        <div id="secondInventoryHud">
+            <div id="titleHorse">
+                <iconify-icon id="title-icon2" icon="game-icons:backpack"></iconify-icon>
+                <span id="titlehorse-text"></span>
+            </div>
+            <div id="secondInventoryElement"></div>
+            <p id="information2"></p>
+            <p id="description2"></p>
+
+            <div class="capacity">
+                <a id="current-cap-value"></a>/<a id="capacity-value"></a>
+            </div>
+
+            <div class="imageButtonContainer1">
+                <div class="carouselWrapper1">
+                    <div class="carouselContainer1">
+                        <button class="carousel-control1 left" onclick="scrollCarousel('staticCarousel', -1)">&#10094;</button>
+                        <div class="dropdownButtonContainer1" id="staticCarousel"></div>
+                    <button class="carousel-control1 right" onclick="scrollCarousel('staticCarousel', 1)">&#10095;</button>
+                </div>
+                </div>
+            </div>
+        </div>
+                
+                
+            </div>
+        </div>
+        <div id="character-selection">
+            <button class="close-btn" type="button" onclick="closeCharacterSelection()">X</button>
+            <h1 id="character-select-title">Select</h1>
+            <ul id="character-list">
+            </ul>
+        </div>
+        
+        <script type="text/javascript" src="js/vendor/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="js/vendor/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/config.js"></script>
+        <script type="text/javascript" src="js/contextMenu.min.js"></script>
+        <script type="text/javascript" src="js/jquery.dialog.min.js"></script>
+        <script type="text/javascript" src="js/nui.js"></script>
+        <script type="text/javascript" src="js/data.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/script.js"></script>
+        <script type="text/javascript" src="js/invScript.js"></script>
+        <script type="text/javascript" src="js/secondaryInvScript.js"></script>
+    </body>
+</html>

@@ -1,0 +1,164 @@
+@import url('https://use.fontawesome.com/releases/v5.6.3/css/all.css');
+
+@font-face {
+  font-family: crock;
+  src: url(crock.ttf);
+}
+
+* {
+	font-family: 'crock', sans-serif;
+	margin: 0;
+	padding: 0;
+	font-size: 1rem;
+}
+
+#app {
+	font-family: 'crock', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	color: white;
+	background-color: transparent;
+}
+
+.chat-window {
+	position: absolute;
+	top: 8.5%;
+	left: 23px;
+	width: 38%;
+	height: 530px;
+	max-width: 400px;
+	background-color: rgba(255, 255, 255, 0);
+	-webkit-animation-duration: 2s;
+}
+
+.chat-messages {
+	max-height: 140%;
+	font-size: 1.4rem;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	display: block;
+}
+
+.chat-input {
+	font-size: 1.65vh;
+	position: absolute;
+	top: 39.4%;
+	left: 23px;
+	width: 38%;
+	max-width: 400px;
+	box-sizing: border-box;
+}
+
+.prefix {
+	position: absolute;
+	margin-top: 4.2%;
+	margin-left: 2%;
+	left: 0.208%;
+	color: rgba(255, 255, 255, 0.9);
+}
+
+input {
+	font-size: 1.7vh;
+	display: block;
+	box-sizing: border-box;
+	padding-top: 1.6%;
+	padding-left: 10%;
+	padding-bottom: 1.4%;
+	padding-right: 1.6%;
+	color: rgb(255, 255, 255);
+	background-color: rgba(27, 29, 32, 0.95);
+	width: 100%;
+	border: none;
+	height: 50px !important;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	resize: none;
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 1);
+}
+
+input:focus {
+	outline: none;
+}
+
+.msg {
+	margin-bottom: 5px;
+}
+
+.suggestions {
+	margin-top: 5px;
+	list-style-type: none;
+	padding: 5px;
+	padding-left: 27px;
+	font-size: 0.9rem;
+	box-sizing: border-box;
+	color: white;
+	background-color: rgba(0, 0, 0, 0.9);
+	width: 100%;
+	border-radius: 10px;
+	border: none;
+	box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 1);
+}
+
+.help {
+	margin-top: -10px;
+	color: #b0bbbd;
+}
+
+.suggestion {
+	margin-bottom: 0.5px;
+}
+
+.chat-message {
+	display: block !important;
+	padding: 0.6vw;
+	padding-top: 0.6vw;
+	padding-bottom: 0.7vw;
+	border-radius: 10px;
+	width: 100%;
+	overflow: hidden;
+	word-break: break-word;
+	box-sizing: border-box;
+	box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 1);
+}
+
+.system {
+	background: linear-gradient(90deg, rgba(42, 42, 42, 0.9) 0%, rgba(134, 84, 23, 0.9) 100%);
+}
+
+.fa-cog {
+	color: rgba(42, 42, 42, 0.9);
+	background-color: #df7b00;
+	padding: 5px;
+	border-radius: 5px;
+}
+
+.advertisement {
+	background: linear-gradient(90deg, rgba(42, 42, 42, 0.9) 0%, rgba(84, 150, 38, 0.9) 100%);
+}
+
+.fa-ad {
+	color: rgba(42, 42, 42, 0.9);
+	background-color: #81db44;
+	padding: 5px;
+	border-radius: 5px;
+}
+
+.ooc {
+	background: linear-gradient(90deg, rgba(42, 42, 42, 0.9) 0%, rgba(125, 125, 125, 0.9) 100%);
+}
+
+.me {
+	background: linear-gradient(90deg, rgba(45,138,65,0.8995973389355743) 50%, rgba(45,138,65,0.5858718487394958) 100%);
+}
+
+.do {
+	background: linear-gradient(90deg, rgba(77,102,241,0.8813900560224089) 0%, rgba(77,102,241,0.5648634453781513) 100%);
+}
+
+.fa-door-open {
+	color: rgba(42, 42, 42, 0.9);
+	background-color: #7d7d7d;
+	padding: 5px;
+	border-radius: 5px;
+}

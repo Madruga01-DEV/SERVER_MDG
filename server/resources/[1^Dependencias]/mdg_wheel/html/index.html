@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<head>
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+</head>
+
+<style>
+
+body {
+	background-color: transparent;
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 21px;
+	color: #fff;
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  	overflow-y: hidden;
+ 	overflow-x: hidden;
+    cursor: none;
+}
+
+@keyframes MoveIn {
+  	from {top: -2500px;}
+  	to {top: 50%; left: 50%;}
+}
+
+@keyframes MoveOut {
+  	from {top: 50%; left: 50%;}
+ 	to {top: -1000px;}
+}
+
+@keyframes FadeIn {
+  	from {opacity: 0.0}
+  	to {opacity: 1.0}
+}
+
+@keyframes FadeOut {
+  	from {opacity: 1.0}
+  	to {opacity: 0.0}
+}
+
+@keyframes hammering {
+	0% {transform: rotate(0deg);}
+	50% {transform: rotate(-60deg);}
+	100% {transform: rotate(0deg);}
+}
+
+#containerMain {
+	display: none;
+ 	animation-name: FadeOut;
+  	animation-duration: 1.0s;
+  	animation-fill-mode: forwards;
+    animation-play-state: paused;
+}
+
+#container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+ 	animation-name: MoveIn;
+  	animation-duration: 1.0s;
+  	animation-fill-mode: forwards;
+    animation-play-state: running;
+    cursor: none;
+}
+
+#tool {
+  	padding-left: -125px;
+  	position: absolute;
+  	text-align: center;
+  	animation-fill-mode: forwards;
+  	animation-duration: 0.15s;
+  	animation-play-state: paused;
+  	animation-direction: normal;
+  	animation-timing-function: cubic-bezier(0.25,0.1,0.25,1);
+    z-index: 2;
+    pointer-events: none;
+    cursor: none;
+}
+
+img {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+	user-drag: none;
+	-webkit-touch-callout: none;
+}
+
+.wheel {
+	height: 512px;
+    z-index: -25;
+    cursor: none;
+}
+
+.nail1 {
+	display: none;
+	position: absolute;
+  	bottom: 254px; /*254 329px*/
+  	right: 313px;
+	height: 69px;
+    z-index: 1;
+    cursor: crosshair;
+}
+
+.nail2 {
+	display: none;
+	position: absolute;
+  	bottom: 175px;
+  	right: 281px;
+	height: 69px;
+    z-index: 1;
+    cursor: crosshair;
+}
+
+.nail3 {
+	display: none;
+	position: absolute;
+  	bottom: 143px;
+  	right: 205px;
+	height: 69px;
+    z-index: 1;
+    cursor: crosshair;
+}
+
+.nail4 {
+	display: none;
+	position: absolute;
+  	bottom: 175px;
+  	right: 125px;
+	height: 69px;
+    z-index: 1;
+    cursor: crosshair;
+}
+
+.nail5 {
+	display: none;
+	position: absolute;
+  	bottom: 254px;
+  	right: 96px;
+	height: 69px;
+    z-index: 1;
+    cursor: crosshair;
+}
+
+.nail6 {
+	display: none;
+	position: absolute;
+  	bottom: 330px;
+  	right: 125px;
+	height: 69px;
+    z-index: 1;
+    cursor: crosshair;
+}
+
+.nail7 {
+	display: none;
+	position: absolute;
+  	bottom: 368px;
+  	right: 204px;
+	height: 69px;
+    z-index: 1;
+    cursor: crosshair;
+}
+
+.nail8 {
+	display: none;
+	position: absolute;
+  	bottom: 330px;
+  	right: 281px;
+	height: 69px;
+    z-index: 1;
+    cursor: crosshair;
+}
+
+.square {
+	padding: 12px;
+	position: absolute;
+  	background-color: #912727;
+}
+
+#status {
+    color: #fff;
+	position: absolute;
+  	bottom: 0px;
+    z-index: 1;
+}
+
+.squareBG {
+	position: absolute;
+	width: 110%;
+	height: 110%;
+	margin: -25px;
+  	background-color: #252525;
+    z-index: -3;
+	opacity: 0.75;
+}
+
+</style>
+
+<html>
+<body>
+
+<div id="containerMain">
+<div class="squareBG"></div>
+<div class="square" id="status">Nailed: 0</div>
+<img id="tool" src="https://i.ibb.co/GcK7vrs/kladivo.png"/>
+<div id="container">
+<div id="container-kovar">
+<div id="id">
+
+<img class="wheel" src="cartWheel.png"></div>
+
+<img class="nail1" id="stateNail1" src="Nail-State01.png">
+<img class="nail2" id="stateNail1" src="Nail-State01.png">
+<img class="nail3" id="stateNail1" src="Nail-State01.png">
+<img class="nail4" id="stateNail1" src="Nail-State01.png">
+<img class="nail5" id="stateNail1" src="Nail-State01.png">
+<img class="nail6" id="stateNail1" src="Nail-State01.png">
+<img class="nail7" id="stateNail1" src="Nail-State01.png">
+<img class="nail8" id="stateNail1" src="Nail-State01.png">
+</div>
+</div>
+
+<script src="./index.js" type="text/javascript"></script>
+</body>
+</html>

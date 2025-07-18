@@ -1,0 +1,13 @@
+RegisterNetEvent("vorpInventory:giveItemsTable", InventoryService.processItems)
+RegisterNetEvent("vorpInventory:giveInventory", InventoryService.getInventory)
+RegisterNetEvent("vorpCoreClient:SetItemMetadata", InventoryApiService.SetItemMetadata)
+RegisterNetEvent("vorpInventory:giveLoadout", InventoryService.getLoadout)
+RegisterNetEvent("vorpInventory:receiveItem", InventoryService.receiveItem)
+RegisterNetEvent("vorpInventory:removeItem", InventoryService.removeItem)
+RegisterNetEvent("vorpInventory:receiveWeapon", InventoryService.receiveWeapon)
+RegisterNetEvent("vorpInventory:setWeaponSerialNumber", InventoryService.setWeaponSerialNumber)
+RegisterNetEvent("vorpInventory:setWeaponCustomLabel", InventoryService.setWeaponCustomLabel)
+RegisterNetEvent("vorpInventory:setWeaponCustomDesc", InventoryService.setWeaponCustomDesc)
+--shared
+RegisterNetEvent("vorp:SelectedCharacter")
+AddEventHandler("vorp:SelectedCharacter", InventoryService.onSelectedCharacter)

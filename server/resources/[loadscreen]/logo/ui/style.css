@@ -1,0 +1,24 @@
+/*-------------- mdg -------------- */
+
+#logo .contenair{
+	position:relative;
+	display: block-inline;
+    z-index: 2;
+    width: 96px;
+    height:96px;
+    margin:0 auto;
+    opacity: 0.90;
+    background: url('img/logo.png');
+	padding: none;
+	background-size: cover;
+}
+	
+#logo .spacer{
+	z-index: 2;
+	width: 150px;
+	height:115px;
+	margin: 0;  
+	text-align: right;
+	background-size: cover;
+    background: transparent;	
+}
