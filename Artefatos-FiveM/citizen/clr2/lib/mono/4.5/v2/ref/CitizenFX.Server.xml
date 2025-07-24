@@ -1422,6 +1422,77 @@
             The last ped in the specified seat of the passed vehicle. Returns 0 if the specified seat was never occupied or the last ped does not exist anymore.
             </returns>
         </member>
+        <member name="M:CitizenFX.Server.Native.Natives.GetNetTypeFromEntity(System.Int32)">
+            <summary>
+            Gets the specific entity type (as an integer), which can be one of the following defined down below:
+            
+            #### FiveM:
+            
+            ```cpp
+            enum eNetObjEntityType
+            {
+                Automobile = 0,
+                Bike = 1,
+                Boat = 2,
+                Door = 3,
+                Heli = 4,
+                Object = 5,
+                Ped = 6,
+                Pickup = 7,
+                PickupPlacement = 8,
+                Plane = 9,
+                Submarine = 10,
+                Player = 11,
+                Trailer = 12,
+                Train = 13
+            };
+            ```
+            
+            #### RedM:
+            
+            ```cpp
+            enum eNetObjEntityType
+            {
+                Animal = 0,
+                Automobile = 1,
+                Bike = 2,
+                Boat = 3,
+                Door = 4,
+                Heli = 5,
+                Object = 6,
+                Ped = 7,
+                Pickup = 8,
+                PickupPlacement = 9,
+                Plane = 10,
+                Submarine = 11,
+                Player = 12,
+                Trailer = 13,
+                Train = 14,
+                DraftVeh = 15,
+                StatsTracker = 16,
+                PropSet = 17,
+                AnimScene = 18,
+                GroupScenario = 19,
+                Herd = 20,
+                Horse = 21,
+                WorldState = 22,
+                WorldProjectile = 23,
+                Incident = 24,
+                Guardzone = 25,
+                PedGroup = 26,
+                CombatDirector = 27,
+                PedSharedTargeting = 28,
+                Persistent = 29
+            };
+            ```
+            </summary>
+            <param name="entity">
+            The entity to get the specific type of.
+            </param>
+            <returns>
+            The specific entity type returned as an integer value or -1 if the entity is invalid.
+            </returns>
+        </member>
         <member name="M:CitizenFX.Server.Native.Natives.GetNumPlayerIdentifiers(CitizenFX.Core.CString)">
             <summary>
             GET_NUM_PLAYER_IDENTIFIERS
@@ -5703,6 +5774,71 @@
         <member name="F:CitizenFX.Server.Native.Hash.GET_LAST_PED_IN_VEHICLE_SEAT">
             <summary>
             GET_LAST_PED_IN_VEHICLE_SEAT
+            </summary>
+        </member>
+        <member name="F:CitizenFX.Server.Native.Hash.GET_NET_TYPE_FROM_ENTITY">
+            <summary>
+            Gets the specific entity type (as an integer), which can be one of the following defined down below:
+            
+            #### FiveM:
+            
+            ```cpp
+            enum eNetObjEntityType
+            {
+                Automobile = 0,
+                Bike = 1,
+                Boat = 2,
+                Door = 3,
+                Heli = 4,
+                Object = 5,
+                Ped = 6,
+                Pickup = 7,
+                PickupPlacement = 8,
+                Plane = 9,
+                Submarine = 10,
+                Player = 11,
+                Trailer = 12,
+                Train = 13
+            };
+            ```
+            
+            #### RedM:
+            
+            ```cpp
+            enum eNetObjEntityType
+            {
+                Animal = 0,
+                Automobile = 1,
+                Bike = 2,
+                Boat = 3,
+                Door = 4,
+                Heli = 5,
+                Object = 6,
+                Ped = 7,
+                Pickup = 8,
+                PickupPlacement = 9,
+                Plane = 10,
+                Submarine = 11,
+                Player = 12,
+                Trailer = 13,
+                Train = 14,
+                DraftVeh = 15,
+                StatsTracker = 16,
+                PropSet = 17,
+                AnimScene = 18,
+                GroupScenario = 19,
+                Herd = 20,
+                Horse = 21,
+                WorldState = 22,
+                WorldProjectile = 23,
+                Incident = 24,
+                Guardzone = 25,
+                PedGroup = 26,
+                CombatDirector = 27,
+                PedSharedTargeting = 28,
+                Persistent = 29
+            };
+            ```
             </summary>
         </member>
         <member name="F:CitizenFX.Server.Native.Hash.GET_NUM_PLAYER_IDENTIFIERS">
