@@ -1,5 +1,47 @@
-INSERT INTO `items`(`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `weight`) VALUES
-('absinthe', 'Absinto', 100, 1, 'item_standard', 1, 1600, 1, '{}', '', 0.25),
+-- --------------------------------------------------------
+-- Servidor:                     127.0.0.1
+-- Versão do servidor:           10.4.28-MariaDB - mariadb.org binary distribution
+-- OS do Servidor:               Win64
+-- HeidiSQL Versão:              12.5.0.6677
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+-- Copiando estrutura do banco de dados para mdg_ultimate
+CREATE DATABASE IF NOT EXISTS `mdg_ultimate` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci */;
+USE `mdg_ultimate`;
+
+-- Copiando estrutura para tabela mdg_ultimate.items
+CREATE TABLE IF NOT EXISTS `items` (
+  `item` varchar(50) NOT NULL,
+  `label` varchar(50) NOT NULL,
+  `limit` int(11) NOT NULL DEFAULT 1,
+  `can_remove` tinyint(1) NOT NULL DEFAULT 1,
+  `type` varchar(50) DEFAULT NULL,
+  `usable` tinyint(1) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `groupId` int(10) unsigned NOT NULL DEFAULT 1 COMMENT 'Item Group ID for Filtering',
+  `metadata` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '{}',
+  `desc` varchar(5550) NOT NULL DEFAULT 'nice item',
+  `weight` decimal(20,2) NOT NULL DEFAULT 0.25,
+  PRIMARY KEY (`item`) USING BTREE,
+  UNIQUE KEY `id` (`id`) USING BTREE,
+  KEY `FK_items_item_group` (`groupId`) USING BTREE,
+  CONSTRAINT `FK_items_item_group` FOREIGN KEY (`groupId`) REFERENCES `item_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `metadata` CHECK (json_valid(`metadata`))
+) ENGINE=InnoDB AUTO_INCREMENT=216645 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+-- Copiando dados para a tabela mdg_ultimate.items: ~2.082 rows (aproximadamente)
+INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `id`, `groupId`, `metadata`, `desc`, `weight`) VALUES
+	('absinthe', 'Absinto', 100, 1, 'item_standard', 1, 1600, 1, '{}', '', 0.25),
 	('accessories', 'Accessories', 20, 1, 'item_standard', 1, 17605, 1, '{}', 'nice item', 0.25),
 	('acid', 'Ácido', 100, 1, 'item_standard', 1, 1, 1, '{}', '', 0.25),
 	('Agarita', 'Agarita ', 100, 1, 'item_standard', 1, 2, 1, '{}', '', 0.25),
@@ -2080,14 +2122,10 @@ INSERT INTO `items`(`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `w
 	('xmastree', 'Christmas Tree', 100, 1, 'item_standard', 1, 216025, 1, '{}', 'nice item', 1.00),
 	('Yarrow', 'Yarrow', 30, 1, 'item_standard', 1, 336, 1, '{}', 'A flowering plant known as Yarrow.', 0.25),
 	('Yarrow_Seed', 'semente de milefólio', 100, 1, 'item_standard', 1, 337, 1, '{}', 'Seeds to grow Yarrow plants.', 0.25),
-	('yuccaleaf', 'Yucca Leaf', 50, 1, 'item_standard', 1, 17689, 1, '{}', 'an item', 0.25)
+	('yuccaleaf', 'Yucca Leaf', 50, 1, 'item_standard', 1, 17689, 1, '{}', 'an item', 0.25);
 
-
-    ON DUPLICATE KEY UPDATE 
-    `label`=VALUES(`label`), 
-    `limit`=VALUES(`limit`), 
-    `can_remove`=VALUES(`can_remove`), 
-    `type`=VALUES(`type`), 
-    `usable`=VALUES(`usable`), 
-    `weight`=VALUES(`weight`);
-
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
