@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               10.4.28-MariaDB - mariadb.org binary distribution
+-- Server version:               10.4.32-MariaDB - mariadb.org binary distribution
 -- Server OS:                    Win64
--- HeidiSQL Version:             12.5.0.6677
+-- HeidiSQL Version:             12.11.0.7065
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -15,11 +15,11 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- Dumping database structure for mdg_one_no_two
+-- Dumping database structure for mdg_ultimate
 CREATE DATABASE IF NOT EXISTS `mdg_ultimate` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci */;
 USE `mdg_ultimate`;
 
--- Dumping structure for procedure mdg_one_no_two.AlterTableMail
+-- Dumping structure for procedure mdg_ultimate.AlterTableMail
 DELIMITER //
 CREATE PROCEDURE `AlterTableMail`()
 BEGIN
@@ -72,7 +72,27 @@ BEGIN
 END//
 DELIMITER ;
 
--- Dumping structure for table mdg_one_no_two.bills
+-- Dumping structure for table mdg_ultimate.animations
+CREATE TABLE IF NOT EXISTS `animations` (
+  `charid` int(11) NOT NULL,
+  `steam` varchar(255) DEFAULT NULL,
+  `animations` longtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Dumping data for table mdg_ultimate.animations: ~0 rows (approximately)
+
+-- Dumping structure for table mdg_ultimate.animationsfavorite
+CREATE TABLE IF NOT EXISTS `animationsfavorite` (
+  `charid` int(11) NOT NULL DEFAULT 0,
+  `steam` varchar(255) DEFAULT NULL,
+  `favorite` longtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Dumping data for table mdg_ultimate.animationsfavorite: ~1 rows (approximately)
+INSERT INTO `animationsfavorite` (`charid`, `steam`, `favorite`) VALUES
+	(1, 'steam:11000013527d62e', '{"favorite1":"","favorite8":"","favorite3":"","favorite11":"","favorite7":"","favorite5":"","favorite10":"","favorite9":"","favorite2":"","favorite6":"","favorite12":"","favorite4":""}');
+
+-- Dumping structure for table mdg_ultimate.bills
 CREATE TABLE IF NOT EXISTS `bills` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `job` longtext DEFAULT NULL,
@@ -85,9 +105,9 @@ CREATE TABLE IF NOT EXISTS `bills` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.bills: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.bills: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.birds
+-- Dumping structure for table mdg_ultimate.birds
 CREATE TABLE IF NOT EXISTS `birds` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(60) NOT NULL,
@@ -100,9 +120,9 @@ CREATE TABLE IF NOT EXISTS `birds` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.birds: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.birds: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.characters
+-- Dumping structure for table mdg_ultimate.characters
 CREATE TABLE IF NOT EXISTS `characters` (
   `identifier` varchar(50) NOT NULL DEFAULT '',
   `steamname` varchar(50) NOT NULL DEFAULT '',
@@ -161,11 +181,11 @@ CREATE TABLE IF NOT EXISTS `characters` (
   CONSTRAINT `FK_characters_users` FOREIGN KEY (`identifier`) REFERENCES `users` (`identifier`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table mdg_one_no_two.characters: ~1 rows (approximately)
+-- Dumping data for table mdg_ultimate.characters: ~1 rows (approximately)
 INSERT INTO `characters` (`identifier`, `steamname`, `charidentifier`, `group`, `money`, `gold`, `rol`, `xp`, `healthouter`, `healthinner`, `staminaouter`, `staminainner`, `hours`, `LastLogin`, `inventory`, `slots`, `job`, `joblabel`, `meta`, `firstname`, `lastname`, `character_desc`, `gender`, `age`, `nickname`, `skinPlayer`, `compPlayer`, `compTints`, `jobgrade`, `coords`, `status`, `isdead`, `skills`, `walk`, `gunsmith`, `ammo`, `discordid`, `lastjoined`, `motel`, `moonshineenty`, `clan`, `info`, `mdg_faxina`, `trust`) VALUES
-	('steam:11000013527d62e', 'Pato Blanco', 1, 'admin', 188.00, 0.00, 0.00, 0, 500, 100, 500, 100, 0, '2025-05-13', '{}', 60.0, 'Desempregado', 'forasteiros', '{}', 'Madruga', 'Dev', 'none', 'Male', 30, 'none', '{"EyeLidL":0.0,"foundation_opacity":0,"MouthCRH":0.0,"eyebrows_color":1064202495,"ageing_visibility":0,"freckles_tx_id":0,"paintedmasks_palette_color_secondary":0,"Scale":0.0,"BodyType":1180660122,"ChinH":0.0,"MouthCLW":0.0,"EarsH":0.0,"disc_visibility":0,"paintedmasks_tx_id":0,"WaistW":0.0,"ShouldersS":0.0,"spots_tx_id":0,"lipsticks_palette_color_tertiary":0,"foundation_palette_color_secondary":0,"LLiphD":0.0,"EarsA":0.0,"ShouldersM":0.0,"EyeLidH":0.0,"Torso":1180660122,"moles_opacity":0,"blush_opacity":0,"ChestS":0.0,"eyeliner_palette_id":0,"ShouldersT":0.0,"LLiphH":0.0,"spots_opacity":0,"shadows_opacity":0,"scars_opacity":0,"HipsS":0.0,"ArmsS":0.0,"lipsticks_palette_id":0,"NoseS":0.0,"MouthY":0.0,"MouthCLH":0.0,"beardstabble_opacity":0,"paintedmasks_opacity":0,"foundation_palette_color_tertiary":0,"lipsticks_palette_color_primary":0,"JawW":0.0,"MouthD":0.0,"foundation_visibility":0,"Body":2362013313,"MouthW":0.0,"EyeLidW":0.0,"lipsticks_opacity":0,"LLiphW":0.0,"FaceW":0.0,"NoseC":0.0,"ULiphW":0.0,"foundation_tx_id":0,"Hair":3536417625,"paintedmasks_palette_id":0,"shadows_palette_color_primary":0,"NoseDis":0.0,"sex":"mp_male","paintedmasks_palette_color_tertiary":0,"shadows_palette_color_tertiary":0,"NeckD":0.0,"shadows_tx_id":0,"beardstabble_color_primary":0,"scars_tx_id":0,"EyeDis":0.0,"foundation_palette_color_primary":0,"eyebrows_visibility":1,"EyeAng":0.0,"CheekBonesD":0.0,"blush_palette_color_primary":0,"hair_color_primary":0,"freckles_visibility":0,"acne_visibility":0,"EyeBrowH":0.0,"eyeliner_color_primary":0,"paintedmasks_palette_color_primary":0,"eyeliner_tx_id":0,"LegsType":1207869376,"spots_visibility":0,"grime_tx_id":0,"CheekBonesW":0.0,"NoseW":0.0,"disc_tx_id":0,"EyeLidR":0.0,"hair_opacity":0,"shadows_palette_id":0,"MouthCRD":0.0,"freckles_opacity":0,"disc_opacity":0,"Eyes":612262189,"ULiphH":0.0,"beardstabble_tx_id":0,"ageing_opacity":0,"ChinW":0.0,"moles_tx_id":0,"EyeD":0.0,"grime_visibility":0,"LegsS":0.0,"foundation_palette_id":0,"NeckW":0.0,"eyeliner_visibility":0,"blush_palette_id":0,"HeadSize":0.0,"FaceS":0.0,"shadows_palette_color_secondary":0,"MouthCRLD":0.0,"eyebrows_opacity":1.0,"albedo":1590586643,"JawD":0.0,"paintedmasks_visibility":0,"CheekBonesH":0.0,"HeadType":2063814808,"lipsticks_visibility":0,"eyeliner_opacity":0,"NoseH":0.0,"Beard":0,"complex_tx_id":0,"scars_visibility":0,"Waist":0,"NoseAng":0.0,"acne_tx_id":0,"EyeBrowW":0.0,"ageing_tx_id":0,"MouthCLD":0.0,"complex_opacity":0,"MouthCLLD":0.0,"MouthCRW":0.0,"blush_tx_id":0,"ChinD":0.0,"MouthX":0.0,"lipsticks_palette_color_secondary":0,"complex_visibility":0,"beardstabble_visibility":0,"EyeBrowD":0.0,"EyeH":0.0,"ULiphD":0.0,"acne_opacity":0,"JawH":0.0,"shadows_visibility":0,"moles_visibility":0,"EarsW":0.0,"CalvesS":0.0,"lipsticks_tx_id":0,"blush_visibility":0,"FaceD":0.0,"EarsD":0.0,"hair_visibility":0,"grime_opacity":0,"hair_tx_id":0,"eyebrows_tx_id":1}', '{"NeckWear":0,"Loadouts":0,"Boots":-218859683,"Dress":0,"Armor":-1,"dresses":0,"NeckTies":0,"Buckle":0,"Skirt":0,"RingLh":0,"Glove":0,"Spats":0,"Bracelet":0,"EyeWear":0,"Gunbelt":795591403,"CoatClosed":0,"Chap":0,"Mask":0,"GunbeltAccs":0,"Suspender":0,"RingRh":0,"Spurs":0,"Accessories":869906529,"Badge":0,"Vest":0,"Coat":0,"Holster":0,"Poncho":0,"Satchels":0,"bow":0,"Gauntlets":0,"Pant":1939930032,"Belt":0,"Hat":0,"armor":0,"Shirt":-1665588256,"Teeth":712446626,"Cloak":0}', '{"Gunbelt":{"795591403":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":795591403}},"Shirt":{"-1665588256":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-1665588256}},"Boots":{"-218859683":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-218859683}},"Pant":{"1939930032":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":1939930032}}}', 0, '{"z":111.6754150390625,"heading":14.17322826385498,"x":-402.6065979003906,"y":623.063720703125}', '{}', 0, '{"Hunting":{"Exp":0,"Label":"Beginner","NextLevel":100,"MaxLevel":5,"Level":1},"Fishing":{"Exp":0,"Label":"Beginner","NextLevel":100,"MaxLevel":5,"Level":1},"Crafting":{"Exp":0,"Label":"Beginner","NextLevel":100,"MaxLevel":5,"Level":1},"Mining":{"Exp":0,"Label":"Beginner","NextLevel":100,"MaxLevel":5,"Level":1}}', 'noanim', 0.00, '{}', '986785126866378762', '[]', '0', '{}', 0, '{"complex":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":0,"palette_color_tertiary":0,"opacity":0},"máscaras pintadas":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"sardas":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"sobrancelhas":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"face":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"acne":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":0,"palette_color_tertiary":0,"opacity":0},"cabelo":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"cicatrizes":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"pontos":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"blush":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":0,"visibility":0,"tx_id":0,"palette_color_tertiary":0,"opacity":0},"envelhecimento":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"barba":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"delineadores":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"sombras":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"batons":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"toupeiras":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"sujeira":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"disc":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":0,"palette_color_tertiary":0,"opacity":0}}', 0, 0);
+	('steam:11000013527d62e', 'Marreco', 1, 'admin', 187.80, 0.00, 0.00, 0, 500, 100, 500, 100, 0, '2025-08-16', '{}', 60.0, 'admin', '0 ', '{"Metabolism":4978.5,"Stress":0.8,"Thirst":91.68,"Hunger":91.76}', 'Madruga', 'Dev', 'none', 'Male', 30, 'none', '{"blush_palette_id":0,"shadows_palette_color_tertiary":0,"ChinH":0.0,"NoseAng":0.0,"NeckW":0.0,"foundation_palette_color_secondary":0,"NoseW":0.0,"shadows_palette_color_primary":0,"scars_tx_id":0,"MouthX":0.0,"ageing_opacity":0,"complex_tx_id":0,"Eyes":612262189,"EyeD":0.0,"CheekBonesD":0.0,"spots_opacity":0,"hair_color_primary":0,"paintedmasks_palette_color_tertiary":0,"shadows_tx_id":0,"shadows_opacity":0,"MouthCRLD":0.0,"NeckD":0.0,"foundation_opacity":0,"albedo":1590586643,"ArmsS":0.0,"lipsticks_opacity":0,"beardstabble_opacity":0,"ShouldersM":0.0,"MouthD":0.0,"acne_opacity":0,"NoseDis":0.0,"NoseS":0.0,"FaceS":0.0,"ULiphW":0.0,"FaceW":0.0,"paintedmasks_palette_id":0,"foundation_visibility":0,"lipsticks_palette_color_secondary":0,"LegsType":1207869376,"shadows_visibility":0,"paintedmasks_palette_color_secondary":0,"MouthY":0.0,"Waist":-644349862,"eyebrows_opacity":1.0,"EyeLidW":0.0,"LegsS":0.0,"eyeliner_tx_id":0,"HeadType":2063814808,"HipsS":0.0,"EyeAng":0.0,"EyeDis":0.0,"eyeliner_color_primary":0,"eyebrows_tx_id":1,"beardstabble_tx_id":0,"spots_visibility":0,"ageing_tx_id":0,"MouthCRW":0.0,"Body":2362013313,"Torso":1180660122,"foundation_palette_id":0,"hair_opacity":0,"LLiphH":0.0,"eyeliner_palette_id":0,"WaistW":0.0,"ChestS":0.0,"sex":"mp_male","foundation_tx_id":0,"JawD":0.0,"ShouldersS":0.0,"MouthW":0.0,"ULiphH":0.0,"beardstabble_visibility":0,"LLiphD":0.0,"EyeLidL":0.0,"HeadSize":0.0,"MouthCLW":0.0,"disc_opacity":0,"scars_opacity":0,"ChinD":0.0,"freckles_visibility":0,"spots_tx_id":0,"CheekBonesH":0.0,"blush_palette_color_primary":0,"hair_tx_id":0,"acne_visibility":0,"LLiphW":0.0,"grime_opacity":0,"hair_visibility":0,"paintedmasks_visibility":0,"eyeliner_visibility":0,"MouthCLLD":0.0,"EarsD":0.0,"FaceD":0.0,"Scale":0.0,"blush_visibility":0,"EyeBrowW":0.0,"grime_visibility":0,"acne_tx_id":0,"lipsticks_tx_id":0,"shadows_palette_id":0,"CalvesS":0.0,"EyeBrowH":0.0,"EarsW":0.0,"moles_visibility":0,"EyeLidR":0.0,"JawH":0.0,"ULiphD":0.0,"EyeH":0.0,"grime_tx_id":0,"paintedmasks_tx_id":0,"EyeBrowD":0.0,"complex_visibility":0,"scars_visibility":0,"foundation_palette_color_tertiary":0,"disc_visibility":0,"complex_opacity":0,"MouthCLD":0.0,"lipsticks_palette_id":0,"EarsH":0.0,"NoseH":0.0,"ageing_visibility":0,"EyeLidH":0.0,"MouthCLH":0.0,"moles_tx_id":0,"ChinW":0.0,"CheekBonesW":0.0,"freckles_tx_id":0,"beardstabble_color_primary":0,"eyebrows_color":1064202495,"blush_tx_id":0,"lipsticks_visibility":0,"MouthCRH":0.0,"MouthCRD":0.0,"Hair":3536417625,"foundation_palette_color_primary":0,"paintedmasks_opacity":0,"eyebrows_visibility":1,"blush_opacity":0,"paintedmasks_palette_color_primary":0,"lipsticks_palette_color_primary":0,"moles_opacity":0,"Beard":0,"EarsA":0.0,"disc_tx_id":0,"shadows_palette_color_secondary":0,"BodyType":-369348190,"eyeliner_opacity":0,"freckles_opacity":0,"lipsticks_palette_color_tertiary":0,"NoseC":0.0,"ShouldersT":0.0,"JawW":0.0}', '{"NeckWear":0,"Loadouts":0,"Boots":-218859683,"Dress":0,"Armor":-1,"dresses":0,"NeckTies":0,"Buckle":0,"Skirt":0,"RingLh":0,"Glove":0,"Spats":0,"Bracelet":0,"EyeWear":0,"Gunbelt":795591403,"CoatClosed":0,"Chap":0,"Mask":0,"GunbeltAccs":0,"Suspender":0,"RingRh":0,"Spurs":0,"Accessories":869906529,"Badge":0,"Vest":0,"Coat":0,"Holster":0,"Poncho":0,"Satchels":0,"bow":0,"Gauntlets":0,"Pant":1939930032,"Belt":0,"Hat":0,"armor":0,"Shirt":-1665588256,"Teeth":712446626,"Cloak":0}', '{"Gunbelt":{"795591403":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":795591403}},"Shirt":{"-1665588256":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-1665588256}},"Boots":{"-218859683":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-218859683}},"Pant":{"1939930032":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":1939930032}}}', 1, '{"y":793.2659301757813,"z":117.6065673828125,"heading":48.18897247314453,"x":-353.1296691894531}', '{}', 0, '{"Hunting":{"Exp":0,"Label":"Beginner","MaxLevel":5,"Level":1,"NextLevel":100},"Crafting":{"Exp":0,"Label":"Beginner","MaxLevel":5,"Level":1,"NextLevel":100},"Mining":{"Exp":0,"Label":"Beginner","MaxLevel":5,"Level":1,"NextLevel":100},"Fishing":{"Exp":0,"Label":"Beginner","MaxLevel":5,"Level":1,"NextLevel":100}}', 'noanim', 0.00, '{}', '986785126866378762', '[]', '0', '{}', 0, '{"complex":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":0,"palette_color_tertiary":0,"opacity":0},"máscaras pintadas":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"sardas":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"sobrancelhas":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"face":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"acne":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":0,"palette_color_tertiary":0,"opacity":0},"cabelo":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"cicatrizes":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"pontos":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"blush":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":0,"visibility":0,"tx_id":0,"palette_color_tertiary":0,"opacity":0},"envelhecimento":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"barba":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"delineadores":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"sombras":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"batons":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"toupeiras":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"sujeira":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"disc":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":0,"palette_color_tertiary":0,"opacity":0}}', 0, 0);
 
--- Dumping structure for table mdg_one_no_two.character_inventories
+-- Dumping structure for table mdg_ultimate.character_inventories
 CREATE TABLE IF NOT EXISTS `character_inventories` (
   `character_id` int(11) DEFAULT NULL,
   `inventory_type` varchar(100) NOT NULL DEFAULT 'default',
@@ -178,16 +198,17 @@ CREATE TABLE IF NOT EXISTS `character_inventories` (
   KEY `character_inventory_idx` (`character_id`,`inventory_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.character_inventories: ~6 rows (approximately)
+-- Dumping data for table mdg_ultimate.character_inventories: ~7 rows (approximately)
 INSERT INTO `character_inventories` (`character_id`, `inventory_type`, `item_crafted_id`, `item_name`, `amount`, `created_at`, `degradation`, `percentage`) VALUES
 	(1, 'default', 2, 'consumable_chickenpie', 2, '2025-05-13 19:05:52', NULL, NULL),
 	(1, 'default', 3, 'consumable_asian_soda_lime', 4, '2025-05-13 19:05:52', NULL, NULL),
 	(1, 'default', 1, 'consumable_coffee', 2, '2025-05-13 19:05:52', NULL, NULL),
 	(1, 'default', 4, 'consumable_steakpie', 2, '2025-05-13 19:05:52', NULL, NULL),
 	(1, 'default', 5, 'outfit', 1, '2025-05-13 19:19:42', NULL, NULL),
-	(1, 'default', 6, 'consumable_canned_corn', 1, '2025-05-13 19:21:58', NULL, NULL);
+	(1, 'default', 6, 'consumable_canned_corn', 1, '2025-05-13 19:21:58', NULL, NULL),
+	(1, 'default', 7, 'water_clean', 1, '2025-08-16 19:48:57', NULL, NULL);
 
--- Dumping structure for table mdg_one_no_two.clan
+-- Dumping structure for table mdg_ultimate.clan
 CREATE TABLE IF NOT EXISTS `clan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `info` longtext NOT NULL DEFAULT '[]',
@@ -201,9 +222,9 @@ CREATE TABLE IF NOT EXISTS `clan` (
   KEY `container` (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.clan: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.clan: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.clothes_bought
+-- Dumping structure for table mdg_ultimate.clothes_bought
 CREATE TABLE IF NOT EXISTS `clothes_bought` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(100) NOT NULL,
@@ -221,11 +242,11 @@ CREATE TABLE IF NOT EXISTS `clothes_bought` (
   KEY `identifier` (`identifier`,`charid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.clothes_bought: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.clothes_bought: ~0 rows (approximately)
 INSERT INTO `clothes_bought` (`id`, `identifier`, `charid`, `hash`, `drawable`, `albedo`, `normal`, `material`, `palette`, `tint0`, `tint1`, `tint2`) VALUES
 	(1, 'steam:11000013527d62e', 1, 869906529, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
--- Dumping structure for table mdg_one_no_two.communityservice
+-- Dumping structure for table mdg_ultimate.communityservice
 CREATE TABLE IF NOT EXISTS `communityservice` (
   `identifier` varchar(100) NOT NULL DEFAULT '0',
   `name` varchar(100) NOT NULL DEFAULT '0',
@@ -234,9 +255,9 @@ CREATE TABLE IF NOT EXISTS `communityservice` (
   `servicecount` varchar(100) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table mdg_one_no_two.communityservice: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.communityservice: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.container
+-- Dumping structure for table mdg_ultimate.container
 CREATE TABLE IF NOT EXISTS `container` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` longtext DEFAULT NULL,
@@ -246,7 +267,7 @@ CREATE TABLE IF NOT EXISTS `container` (
   UNIQUE KEY `ID` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.container: ~84 rows (approximately)
+-- Dumping data for table mdg_ultimate.container: ~84 rows (approximately)
 INSERT INTO `container` (`id`, `name`, `items`, `invslots`) VALUES
 	(1, 'police', '[]', 0),
 	(2, 'miner', '[]', 0),
@@ -333,7 +354,19 @@ INSERT INTO `container` (`id`, `name`, `items`, `invslots`) VALUES
 	(83, 'ArmariaBW', '[]', 5000),
 	(84, 'TabacariaBW', '[]', 5000);
 
--- Dumping structure for table mdg_one_no_two.herbalists
+-- Dumping structure for table mdg_ultimate.doors
+CREATE TABLE IF NOT EXISTS `doors` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `doorinfo` longtext NOT NULL DEFAULT '[]',
+  `job` longtext NOT NULL DEFAULT '[]',
+  `item` longtext NOT NULL,
+  `breakin` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Dumping data for table mdg_ultimate.doors: ~0 rows (approximately)
+
+-- Dumping structure for table mdg_ultimate.herbalists
 CREATE TABLE IF NOT EXISTS `herbalists` (
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `charidentifier` int(11) NOT NULL,
@@ -342,9 +375,9 @@ CREATE TABLE IF NOT EXISTS `herbalists` (
   UNIQUE KEY `identifier_charidentifier` (`identifier`,`charidentifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table mdg_one_no_two.herbalists: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.herbalists: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.horses
+-- Dumping structure for table mdg_ultimate.horses
 CREATE TABLE IF NOT EXISTS `horses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(600) NOT NULL,
@@ -373,9 +406,9 @@ CREATE TABLE IF NOT EXISTS `horses` (
   KEY `model` (`model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.horses: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.horses: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.horsesstore
+-- Dumping structure for table mdg_ultimate.horsesstore
 CREATE TABLE IF NOT EXISTS `horsesstore` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `model` varchar(50) NOT NULL,
@@ -397,9 +430,9 @@ CREATE TABLE IF NOT EXISTS `horsesstore` (
   KEY `model` (`model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.horsesstore: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.horsesstore: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.horsestrainers
+-- Dumping structure for table mdg_ultimate.horsestrainers
 CREATE TABLE IF NOT EXISTS `horsestrainers` (
   `steam` varchar(600) DEFAULT NULL,
   `charidentifier` varchar(255) DEFAULT NULL,
@@ -407,9 +440,9 @@ CREATE TABLE IF NOT EXISTS `horsestrainers` (
   `name` varchar(600) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.horsestrainers: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.horsestrainers: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.horses_breeding
+-- Dumping structure for table mdg_ultimate.horses_breeding
 CREATE TABLE IF NOT EXISTS `horses_breeding` (
   `identifier` varchar(600) NOT NULL,
   `charid` varchar(255) NOT NULL,
@@ -427,9 +460,9 @@ CREATE TABLE IF NOT EXISTS `horses_breeding` (
   `breeding_comp_horse_2` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.horses_breeding: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.horses_breeding: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.horse_complements
+-- Dumping structure for table mdg_ultimate.horse_complements
 CREATE TABLE IF NOT EXISTS `horse_complements` (
   `identifier` varchar(50) DEFAULT NULL,
   `charidentifier` int(11) NOT NULL,
@@ -437,9 +470,9 @@ CREATE TABLE IF NOT EXISTS `horse_complements` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table mdg_one_no_two.horse_complements: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.horse_complements: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.housing
+-- Dumping structure for table mdg_ultimate.housing
 CREATE TABLE IF NOT EXISTS `housing` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
@@ -449,9 +482,9 @@ CREATE TABLE IF NOT EXISTS `housing` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table mdg_one_no_two.housing: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.housing: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.items
+-- Dumping structure for table mdg_ultimate.items
 CREATE TABLE IF NOT EXISTS `items` (
   `item` varchar(50) NOT NULL,
   `label` varchar(50) NOT NULL,
@@ -469,9 +502,9 @@ CREATE TABLE IF NOT EXISTS `items` (
   KEY `FK_items_item_group` (`groupId`) USING BTREE,
   CONSTRAINT `FK_items_item_group` FOREIGN KEY (`groupId`) REFERENCES `item_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `metadata` CHECK (json_valid(`metadata`))
-) ENGINE=InnoDB AUTO_INCREMENT=216620 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=216625 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table mdg_one_no_two.items: ~2,057 rows (approximately)
+-- Dumping data for table mdg_ultimate.items: ~2,057 rows (approximately)
 INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `id`, `groupId`, `metadata`, `desc`, `weight`) VALUES
 	('absinthe', 'Absinto', 100, 1, 'item_standard', 1, 1600, 1, '{}', '', 0.25),
 	('accessories', 'Accessories', 20, 1, 'item_standard', 1, 17605, 1, '{}', 'nice item', 0.25),
@@ -705,6 +738,7 @@ INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `
 	('bell_pepper_green', 'Pimentão Verde', 100, 1, 'item_standard', 1, 216353, 1, '{}', 'nice item', 0.30),
 	('belts', 'Belt', 20, 1, 'item_standard', 1, 17608, 1, '{}', 'nice item', 0.25),
 	('belt_buckles', 'Buckle', 20, 1, 'item_standard', 1, 17606, 1, '{}', 'nice item', 0.25),
+	('beth_salts', 'beth_salts', 100, 1, 'item_standard', 1, 216623, 1, '{}', 'nice item', 0.50),
 	('Bicabornato', 'Bicabornato de Sodio', 100, 1, 'item_standard', 1, 215625, 1, '{}', 'nice item', 0.25),
 	('bifedeveado', 'Bife de Veado', 100, 1, 'item_standard', 1, 170473, 1, '{}', 'nice item', 0.25),
 	('bigchest', 'baú grande', 100, 1, 'item_standard', 1, 658, 1, '{}', '', 0.25),
@@ -881,6 +915,7 @@ INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `
 	('chickenheart', 'Coração de galinha', 100, 1, 'item_standard', 1, 526, 1, '{}', '', 0.25),
 	('chipmunk_c', 'Esquilo', 100, 1, 'item_standard', 1, 419, 1, '{}', '', 0.25),
 	('chococake', 'fatia de chocolate', 20, 1, 'item_standard', 1, 1607, 1, '{}', '', 0.25),
+	('chocolate', 'chocolate', 100, 1, 'item_standard', 1, 216620, 1, '{}', 'nice item', 0.50),
 	('Choc_Daisy', 'Shock Daisy', 100, 1, 'item_standard', 1, 106, 1, '{}', '', 0.25),
 	('Choc_Daisy_Seed', 'Choc Daisy Seed', 100, 1, 'item_standard', 1, 107, 1, '{}', '', 0.25),
 	('cigar', 'Charuto', 20, 1, 'item_standard', 1, 108, 1, '{}', '', 0.25),
@@ -916,6 +951,7 @@ INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `
 	('clay', 'Argila', 100, 1, 'item_standard', 1, 111, 1, '{}', '', 0.25),
 	('cleanser', 'Limpador', 100, 1, 'item_standard', 1, 340, 1, '{}', '', 0.25),
 	('cleanshort', 'Pano', 100, 1, 'item_standard', 1, 1608, 1, '{}', '', 0.25),
+	('clean_water', 'clean_water', 100, 1, 'item_standard', 1, 216621, 1, '{}', 'nice item', 0.50),
 	('cloaks', 'Cloak', 20, 1, 'item_standard', 1, 17625, 1, '{}', 'nice item', 0.25),
 	('cloth', 'paninho', 100, 1, 'item_standard', 1, 215694, 1, '{}', 'nice item', 0.25),
 	('clothbench', 'banco de pano', 100, 1, 'item_standard', 1, 776, 1, '{}', '', 0.25),
@@ -1768,6 +1804,7 @@ INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `
 	('oxs', 'pele de touro angus', 100, 1, 'item_standard', 1, 546, 1, '{}', '', 0.25),
 	('pac_eau', 'pac_eau', 100, 1, 'item_standard', 1, 215771, 1, '{}', 'nice item', 0.25),
 	('panela', 'panela', 1, 1, 'item_standard', 1, 17256, 1, '{}', 'nice item', 0.25),
+	('panfleto', 'panfleto', 100, 1, 'item_standard', 1, 216624, 1, '{}', 'nice item', 0.50),
 	('panquecas', 'panquecas', 100, 1, 'item_standard', 1, 216418, 1, '{}', 'nice item', 0.10),
 	('panther', 'Pantera', 100, 1, 'item_standard', 1, 215961, 1, '{}', 'nice item', 0.25),
 	('panthere', 'Pantera', 100, 1, 'item_standard', 1, 564, 1, '{}', '', 5.00),
@@ -2367,6 +2404,7 @@ INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `
 	('tool_barrel', 'Cano de ferramentas', 100, 1, 'item_standard', 1, 639, 1, '{}', 'A barrel used for storing tools.', 0.25),
 	('tortadebanana', 'Torta de Banana', 100, 1, 'item_standard', 1, 215777, 1, '{}', 'nice item', 0.25),
 	('tortadecarne', 'Torta de Carne', 100, 1, 'item_standard', 1, 215776, 1, '{}', 'nice item', 0.25),
+	('towel', 'towel', 100, 1, 'item_standard', 1, 216622, 1, '{}', 'nice item', 0.50),
 	('trainkey', 'Chave do Trem', 100, 1, 'item_standard', 1, 301, 1, '{}', 'A key to unlock a train.', 0.25),
 	('trainoil', 'óleo de trem', 100, 1, 'item_standard', 1, 16931, 1, '{}', 'nice item', 0.25),
 	('trayoffood', 'Mesa de Servir', 100, 1, 'item_standard', 1, 614, 1, '{}', 'A table used for serving food.', 0.25),
@@ -2531,7 +2569,7 @@ INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `
 	('Yarrow_Seed', 'semente de milefólio', 100, 1, 'item_standard', 1, 337, 1, '{}', 'Seeds to grow Yarrow plants.', 0.25),
 	('yuccaleaf', 'Yucca Leaf', 50, 1, 'item_standard', 1, 17689, 1, '{}', 'an item', 0.25);
 
--- Dumping structure for table mdg_one_no_two.items_crafted
+-- Dumping structure for table mdg_ultimate.items_crafted
 CREATE TABLE IF NOT EXISTS `items_crafted` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `character_id` int(11) NOT NULL,
@@ -2542,25 +2580,26 @@ CREATE TABLE IF NOT EXISTS `items_crafted` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `ID` (`id`),
   KEY `crafted_item_idx` (`character_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.items_crafted: ~6 rows (approximately)
+-- Dumping data for table mdg_ultimate.items_crafted: ~7 rows (approximately)
 INSERT INTO `items_crafted` (`id`, `character_id`, `item_id`, `item_name`, `updated_at`, `metadata`) VALUES
 	(1, 1, 118, 'consumable_coffee', '2025-05-13 19:05:52', '[]'),
 	(2, 1, 1632, 'consumable_chickenpie', '2025-05-13 19:05:52', '[]'),
 	(3, 1, 216044, 'consumable_asian_soda_lime', '2025-05-13 19:05:52', '[]'),
 	(4, 1, 1650, 'consumable_steakpie', '2025-05-13 19:05:52', '[]'),
 	(5, 1, 216033, 'outfit', '2025-05-13 19:19:42', '{"description":"Sexo: Masculino - Nome: roupa","sexe":"male","outfit":{"spats":0,"hair_accessories":0,"aprons":0,"accessories":{"hash":869906529},"loadouts":0,"belt_buckles":0,"vests":0,"boot_accessories":0,"coats":0,"cloaks":0,"chaps":0,"coats_closed":0,"suspenders":0,"gunbelts":{"hash":795591403,"palette":0,"tint2":0,"tint1":0,"tint0":0},"hats":0,"jewelry_bracelets":0,"armor":0,"pants":{"hash":1939930032,"palette":0,"tint2":0,"tint1":0,"tint0":0},"gauntlets":0,"boots":{"hash":-218859683,"palette":0,"tint2":0,"tint1":0,"tint0":0},"badges":0,"jewelry_rings_right":0,"masks":0,"belts":0,"masks_large":0,"skirts":0,"satchels":0,"gunbelt_accs":0,"holsters_left":0,"neckties":0,"jewelry_rings_left":0,"dresses":0,"ponchos":0,"eyewear":0,"shirts_full":{"hash":-1665588256,"palette":0,"tint2":0,"tint1":0,"tint0":0},"gloves":0,"neckwear":0},"name":"roupa"}'),
-	(6, 1, 216420, 'consumable_canned_corn', '2025-05-13 19:21:58', '[]');
+	(6, 1, 216420, 'consumable_canned_corn', '2025-05-13 19:21:58', '[]'),
+	(7, 1, 215862, 'water_clean', '2025-08-16 19:48:57', '[]');
 
--- Dumping structure for table mdg_one_no_two.item_group
+-- Dumping structure for table mdg_ultimate.item_group
 CREATE TABLE IF NOT EXISTS `item_group` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL COMMENT 'Description of Item Group',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.item_group: ~11 rows (approximately)
+-- Dumping data for table mdg_ultimate.item_group: ~11 rows (approximately)
 INSERT INTO `item_group` (`id`, `description`) VALUES
 	(1, 'default'),
 	(2, 'medical'),
@@ -2574,7 +2613,7 @@ INSERT INTO `item_group` (`id`, `description`) VALUES
 	(10, 'horse'),
 	(11, 'herbs');
 
--- Dumping structure for table mdg_one_no_two.jail
+-- Dumping structure for table mdg_ultimate.jail
 CREATE TABLE IF NOT EXISTS `jail` (
   `identifier` varchar(100) NOT NULL DEFAULT '0',
   `name` varchar(100) NOT NULL DEFAULT '0',
@@ -2584,9 +2623,9 @@ CREATE TABLE IF NOT EXISTS `jail` (
   `jaillocation` varchar(100) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table mdg_one_no_two.jail: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.jail: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.loadout
+-- Dumping structure for table mdg_ultimate.loadout
 CREATE TABLE IF NOT EXISTS `loadout` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
@@ -2611,22 +2650,22 @@ CREATE TABLE IF NOT EXISTS `loadout` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.loadout: ~1 rows (approximately)
+-- Dumping data for table mdg_ultimate.loadout: ~1 rows (approximately)
 INSERT INTO `loadout` (`id`, `identifier`, `charidentifier`, `name`, `ammo`, `components`, `dirtlevel`, `mudlevel`, `conditionlevel`, `rustlevel`, `used`, `used2`, `dropped`, `comps`, `label`, `curr_inv`, `serial_number`, `custom_label`, `custom_desc`) VALUES
 	(1, 'steam:11000013527d62e', 1, 'WEAPON_MELEE_KNIFE', '[]', '[]', 0, 0, 0, 0, 0, 0, 0, '[]', 'Knife', 'default', '', 'Knife', NULL);
 
--- Dumping structure for table mdg_one_no_two.mail
+-- Dumping structure for table mdg_ultimate.mail
 CREATE TABLE IF NOT EXISTS `mail` (
   `address` int(11) NOT NULL AUTO_INCREMENT,
   `charidentifier` int(11) DEFAULT NULL,
   PRIMARY KEY (`address`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mail: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mail: ~1 rows (approximately)
 INSERT INTO `mail` (`address`, `charidentifier`) VALUES
 	(5, 13);
 
--- Dumping structure for table mdg_one_no_two.mailbox_mails
+-- Dumping structure for table mdg_ultimate.mailbox_mails
 CREATE TABLE IF NOT EXISTS `mailbox_mails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sender_id` varchar(50) DEFAULT NULL,
@@ -2641,9 +2680,9 @@ CREATE TABLE IF NOT EXISTS `mailbox_mails` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.mailbox_mails: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mailbox_mails: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mails
+-- Dumping structure for table mdg_ultimate.mails
 CREATE TABLE IF NOT EXISTS `mails` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `anon` tinyint(1) DEFAULT NULL,
@@ -2661,9 +2700,9 @@ CREATE TABLE IF NOT EXISTS `mails` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mails: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mails: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mail_addressbook
+-- Dumping structure for table mdg_ultimate.mail_addressbook
 CREATE TABLE IF NOT EXISTS `mail_addressbook` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `address` int(11) DEFAULT NULL,
@@ -2675,9 +2714,9 @@ CREATE TABLE IF NOT EXISTS `mail_addressbook` (
   CONSTRAINT `mail_addressbook_ibfk_1` FOREIGN KEY (`address`) REFERENCES `mail` (`address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mail_addressbook: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mail_addressbook: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mail_editablefolders
+-- Dumping structure for table mdg_ultimate.mail_editablefolders
 CREATE TABLE IF NOT EXISTS `mail_editablefolders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `address` int(11) DEFAULT NULL,
@@ -2687,18 +2726,18 @@ CREATE TABLE IF NOT EXISTS `mail_editablefolders` (
   CONSTRAINT `mail_editablefolders_ibfk_1` FOREIGN KEY (`address`) REFERENCES `mail` (`address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mail_editablefolders: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mail_editablefolders: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdgfarmsdex
+-- Dumping structure for table mdg_ultimate.mdgfarmsdex
 CREATE TABLE IF NOT EXISTS `mdgfarmsdex` (
   `dex` longtext DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdgfarmsdex: ~1 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdgfarmsdex: ~1 rows (approximately)
 INSERT INTO `mdgfarmsdex` (`dex`) VALUES
 	('3');
 
--- Dumping structure for table mdg_one_no_two.mdg_bank
+-- Dumping structure for table mdg_ultimate.mdg_bank
 CREATE TABLE IF NOT EXISTS `mdg_bank` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
@@ -2712,9 +2751,9 @@ CREATE TABLE IF NOT EXISTS `mdg_bank` (
   KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_bank: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_bank: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_barber
+-- Dumping structure for table mdg_ultimate.mdg_barber
 CREATE TABLE IF NOT EXISTS `mdg_barber` (
   `id` int(3) NOT NULL,
   `identifier` varchar(60) NOT NULL,
@@ -2728,13 +2767,13 @@ CREATE TABLE IF NOT EXISTS `mdg_barber` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_barber: ~3 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_barber: ~3 rows (approximately)
 INSERT INTO `mdg_barber` (`id`, `identifier`, `charid`, `ownername`, `money`, `name`, `price`, `blipsprite`, `blipmodif`) VALUES
 	(1, '0', 0, '', 4, 'Blackwater Barber', 2500, -2090472724, 0),
 	(2, '0', 0, '', 3, 'Valentine Barber', 2000, -2090472724, 0),
 	(3, '0', 0, '', 4, 'Saint Denis Barber', 3000, -2090472724, 0);
 
--- Dumping structure for table mdg_one_no_two.mdg_clothes_state
+-- Dumping structure for table mdg_ultimate.mdg_clothes_state
 CREATE TABLE IF NOT EXISTS `mdg_clothes_state` (
   `identifier` varchar(50) NOT NULL,
   `charid` int(11) NOT NULL,
@@ -2743,9 +2782,9 @@ CREATE TABLE IF NOT EXISTS `mdg_clothes_state` (
   PRIMARY KEY (`identifier`,`charid`,`category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_clothes_state: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_clothes_state: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_coaches_system
+-- Dumping structure for table mdg_ultimate.mdg_coaches_system
 CREATE TABLE IF NOT EXISTS `mdg_coaches_system` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(60) NOT NULL,
@@ -2758,9 +2797,9 @@ CREATE TABLE IF NOT EXISTS `mdg_coaches_system` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_coaches_system: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_coaches_system: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_collect_quests
+-- Dumping structure for table mdg_ultimate.mdg_collect_quests
 CREATE TABLE IF NOT EXISTS `mdg_collect_quests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2770,18 +2809,18 @@ CREATE TABLE IF NOT EXISTS `mdg_collect_quests` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_collect_quests: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_collect_quests: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_farms
+-- Dumping structure for table mdg_ultimate.mdg_farms
 CREATE TABLE IF NOT EXISTS `mdg_farms` (
   `charid` int(11) NOT NULL,
   `farm` longtext NOT NULL DEFAULT '[]',
   PRIMARY KEY (`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_farms: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_farms: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_gang_members
+-- Dumping structure for table mdg_ultimate.mdg_gang_members
 CREATE TABLE IF NOT EXISTS `mdg_gang_members` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(255) NOT NULL,
@@ -2791,9 +2830,9 @@ CREATE TABLE IF NOT EXISTS `mdg_gang_members` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_gang_members: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_gang_members: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_gang_props
+-- Dumping structure for table mdg_ultimate.mdg_gang_props
 CREATE TABLE IF NOT EXISTS `mdg_gang_props` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `area_name` varchar(50) DEFAULT NULL,
@@ -2806,18 +2845,18 @@ CREATE TABLE IF NOT EXISTS `mdg_gang_props` (
   UNIQUE KEY `area_name` (`area_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_gang_props: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_gang_props: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_gang_territories
+-- Dumping structure for table mdg_ultimate.mdg_gang_territories
 CREATE TABLE IF NOT EXISTS `mdg_gang_territories` (
   `area_name` varchar(50) NOT NULL,
   `gang_name` varchar(50) NOT NULL,
   PRIMARY KEY (`area_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_gang_territories: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_gang_territories: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_horses
+-- Dumping structure for table mdg_ultimate.mdg_horses
 CREATE TABLE IF NOT EXISTS `mdg_horses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2826,6 +2865,8 @@ CREATE TABLE IF NOT EXISTS `mdg_horses` (
   `model` varchar(100) NOT NULL,
   `isFemale` tinyint(1) NOT NULL DEFAULT 0,
   `name` varchar(50) NOT NULL,
+  `birth` timestamp NULL DEFAULT current_timestamp(),
+  `deathAge` float DEFAULT 30,
   `speed` tinyint(4) NOT NULL,
   `acceleration` tinyint(4) NOT NULL,
   `handling` tinyint(4) NOT NULL,
@@ -2835,9 +2876,9 @@ CREATE TABLE IF NOT EXISTS `mdg_horses` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_horses: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_horses: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_horses_stats
+-- Dumping structure for table mdg_ultimate.mdg_horses_stats
 CREATE TABLE IF NOT EXISTS `mdg_horses_stats` (
   `horseid` int(11) NOT NULL,
   `distance` int(11) NOT NULL DEFAULT 0,
@@ -2851,9 +2892,9 @@ CREATE TABLE IF NOT EXISTS `mdg_horses_stats` (
   PRIMARY KEY (`horseid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_horses_stats: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_horses_stats: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_identidade_advanced
+-- Dumping structure for table mdg_ultimate.mdg_identidade_advanced
 CREATE TABLE IF NOT EXISTS `mdg_identidade_advanced` (
   `identifier` varchar(60) NOT NULL,
   `firstname` varchar(50) DEFAULT NULL,
@@ -2864,27 +2905,27 @@ CREATE TABLE IF NOT EXISTS `mdg_identidade_advanced` (
   PRIMARY KEY (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_identidade_advanced: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_identidade_advanced: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_jornalista
+-- Dumping structure for table mdg_ultimate.mdg_jornalista
 CREATE TABLE IF NOT EXISTS `mdg_jornalista` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `news` longtext DEFAULT '[]',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_jornalista: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_jornalista: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_madame_nazar
+-- Dumping structure for table mdg_ultimate.mdg_madame_nazar
 CREATE TABLE IF NOT EXISTS `mdg_madame_nazar` (
   `charid` int(11) DEFAULT NULL,
   `identifier` varchar(100) DEFAULT NULL,
   `mdg_madame_nazar` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_madame_nazar: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_madame_nazar: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_matabolism_v2
+-- Dumping structure for table mdg_ultimate.mdg_matabolism_v2
 CREATE TABLE IF NOT EXISTS `mdg_matabolism_v2` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `personaId` int(11) DEFAULT NULL,
@@ -2897,11 +2938,13 @@ CREATE TABLE IF NOT EXISTS `mdg_matabolism_v2` (
   `statStress` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `personaId` (`personaId`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_matabolism_v2: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_matabolism_v2: ~1 rows (approximately)
+INSERT INTO `mdg_matabolism_v2` (`id`, `personaId`, `statHunger`, `statThirst`, `statHealth`, `statHealthCore`, `statStamina`, `statStaminaCore`, `statStress`) VALUES
+	(1, 1, 10, 10, 500, 100, 1, 100, 0);
 
--- Dumping structure for table mdg_one_no_two.mdg_outfits
+-- Dumping structure for table mdg_ultimate.mdg_outfits
 CREATE TABLE IF NOT EXISTS `mdg_outfits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(100) NOT NULL,
@@ -2912,12 +2955,12 @@ CREATE TABLE IF NOT EXISTS `mdg_outfits` (
   KEY `identifier` (`identifier`,`charid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_outfits: ~2 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_outfits: ~2 rows (approximately)
 INSERT INTO `mdg_outfits` (`id`, `identifier`, `charid`, `name`, `outfit`) VALUES
 	(1, 'steam:11000013527d62e', 1, 'roupa', '{"accessories":{"hash":869906529},"gloves":0,"neckwear":0,"spats":0,"chaps":0,"hats":0,"gunbelt_accs":0,"gauntlets":0,"coats_closed":0,"jewelry_rings_right":0,"belt_buckles":0,"belts":0,"neckties":0,"dresses":0,"holsters_left":0,"masks_large":0,"masks":0,"armor":0,"eyewear":0,"aprons":0,"ponchos":0,"shirts_full":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-1665588256},"coats":0,"pants":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":1939930032},"suspenders":0,"loadouts":0,"jewelry_bracelets":0,"jewelry_rings_left":0,"hair_accessories":0,"gunbelts":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":795591403},"boot_accessories":0,"cloaks":0,"vests":0,"boots":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-218859683},"skirts":0,"satchels":0,"badges":0}'),
 	(2, 'steam:11000013527d62e', 1, 'roupa', '{"accessories":869906529,"gloves":0,"neckwear":0,"spats":0,"chaps":0,"hats":0,"gunbelt_accs":0,"gauntlets":0,"coats_closed":0,"jewelry_rings_right":0,"belt_buckles":0,"belts":0,"neckties":0,"dresses":0,"holsters_left":0,"masks_large":0,"masks":0,"armor":0,"eyewear":0,"aprons":0,"ponchos":0,"shirts_full":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-1665588256},"coats":0,"pants":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":1939930032},"suspenders":0,"loadouts":0,"jewelry_bracelets":0,"jewelry_rings_left":0,"hair_accessories":0,"gunbelts":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":795591403},"boot_accessories":0,"cloaks":0,"vests":0,"boots":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-218859683},"skirts":0,"satchels":0,"badges":0}');
 
--- Dumping structure for table mdg_one_no_two.mdg_ped_system
+-- Dumping structure for table mdg_ultimate.mdg_ped_system
 CREATE TABLE IF NOT EXISTS `mdg_ped_system` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -2931,9 +2974,9 @@ CREATE TABLE IF NOT EXISTS `mdg_ped_system` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_ped_system: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_ped_system: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_quests
+-- Dumping structure for table mdg_ultimate.mdg_quests
 CREATE TABLE IF NOT EXISTS `mdg_quests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2943,9 +2986,9 @@ CREATE TABLE IF NOT EXISTS `mdg_quests` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_quests: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_quests: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_stable_bought
+-- Dumping structure for table mdg_ultimate.mdg_stable_bought
 CREATE TABLE IF NOT EXISTS `mdg_stable_bought` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2957,9 +3000,9 @@ CREATE TABLE IF NOT EXISTS `mdg_stable_bought` (
   KEY `identifier` (`identifier`,`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_stable_bought: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_stable_bought: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_stable_color
+-- Dumping structure for table mdg_ultimate.mdg_stable_color
 CREATE TABLE IF NOT EXISTS `mdg_stable_color` (
   `id` int(11) NOT NULL,
   `drawable` int(11) DEFAULT NULL,
@@ -2973,9 +3016,9 @@ CREATE TABLE IF NOT EXISTS `mdg_stable_color` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_stable_color: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_stable_color: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_traficante_drogas
+-- Dumping structure for table mdg_ultimate.mdg_traficante_drogas
 CREATE TABLE IF NOT EXISTS `mdg_traficante_drogas` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL DEFAULT '0',
@@ -2984,9 +3027,9 @@ CREATE TABLE IF NOT EXISTS `mdg_traficante_drogas` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_traficante_drogas: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_traficante_drogas: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_vip
+-- Dumping structure for table mdg_ultimate.mdg_vip
 CREATE TABLE IF NOT EXISTS `mdg_vip` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` text DEFAULT NULL,
@@ -2997,9 +3040,9 @@ CREATE TABLE IF NOT EXISTS `mdg_vip` (
   UNIQUE KEY `charid` (`charid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_vip: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_vip: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.mdg_wagons
+-- Dumping structure for table mdg_ultimate.mdg_wagons
 CREATE TABLE IF NOT EXISTS `mdg_wagons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -3016,9 +3059,9 @@ CREATE TABLE IF NOT EXISTS `mdg_wagons` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.mdg_wagons: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.mdg_wagons: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.outfits
+-- Dumping structure for table mdg_ultimate.outfits
 CREATE TABLE IF NOT EXISTS `outfits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(45) NOT NULL,
@@ -3029,9 +3072,9 @@ CREATE TABLE IF NOT EXISTS `outfits` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table mdg_one_no_two.outfits: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.outfits: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.pets
+-- Dumping structure for table mdg_ultimate.pets
 CREATE TABLE IF NOT EXISTS `pets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(500) DEFAULT NULL,
@@ -3044,9 +3087,9 @@ CREATE TABLE IF NOT EXISTS `pets` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Dumping data for table mdg_one_no_two.pets: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.pets: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.playerhousing
+-- Dumping structure for table mdg_ultimate.playerhousing
 CREATE TABLE IF NOT EXISTS `playerhousing` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` int(11) NOT NULL DEFAULT 0,
@@ -3076,9 +3119,9 @@ CREATE TABLE IF NOT EXISTS `playerhousing` (
   KEY `primarydoor` (`primarydoor`(768))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.playerhousing: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.playerhousing: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.playerhousing_sold_home_ledger
+-- Dumping structure for table mdg_ultimate.playerhousing_sold_home_ledger
 CREATE TABLE IF NOT EXISTS `playerhousing_sold_home_ledger` (
   `id` int(11) NOT NULL DEFAULT 0,
   `identifier` varchar(50) DEFAULT NULL,
@@ -3086,9 +3129,9 @@ CREATE TABLE IF NOT EXISTS `playerhousing_sold_home_ledger` (
   `amount` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.playerhousing_sold_home_ledger: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.playerhousing_sold_home_ledger: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.playershops
+-- Dumping structure for table mdg_ultimate.playershops
 CREATE TABLE IF NOT EXISTS `playershops` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL DEFAULT '0',
@@ -3112,9 +3155,9 @@ CREATE TABLE IF NOT EXISTS `playershops` (
   KEY `weapons` (`weapons`(768))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.playershops: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.playershops: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.playershops2
+-- Dumping structure for table mdg_ultimate.playershops2
 CREATE TABLE IF NOT EXISTS `playershops2` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `society` varchar(50) NOT NULL DEFAULT '0',
@@ -3132,9 +3175,9 @@ CREATE TABLE IF NOT EXISTS `playershops2` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.playershops2: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.playershops2: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.player_trains
+-- Dumping structure for table mdg_ultimate.player_trains
 CREATE TABLE IF NOT EXISTS `player_trains` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '0',
@@ -3152,9 +3195,9 @@ CREATE TABLE IF NOT EXISTS `player_trains` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.player_trains: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.player_trains: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.player_transformations
+-- Dumping structure for table mdg_ultimate.player_transformations
 CREATE TABLE IF NOT EXISTS `player_transformations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(255) NOT NULL,
@@ -3170,9 +3213,9 @@ CREATE TABLE IF NOT EXISTS `player_transformations` (
   KEY `idx_transform_end` (`transform_end`)
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.player_transformations: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.player_transformations: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.posters
+-- Dumping structure for table mdg_ultimate.posters
 CREATE TABLE IF NOT EXISTS `posters` (
   `poster_link` varchar(255) DEFAULT NULL,
   `city` varchar(255) DEFAULT '',
@@ -3181,9 +3224,9 @@ CREATE TABLE IF NOT EXISTS `posters` (
   KEY `poster_link` (`poster_link`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.posters: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.posters: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.ranch
+-- Dumping structure for table mdg_ultimate.ranch
 CREATE TABLE IF NOT EXISTS `ranch` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `steam` varchar(100) DEFAULT NULL,
@@ -3205,36 +3248,36 @@ CREATE TABLE IF NOT EXISTS `ranch` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table mdg_one_no_two.ranch: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.ranch: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.real_logic_horses
+-- Dumping structure for table mdg_ultimate.real_logic_horses
 CREATE TABLE IF NOT EXISTS `real_logic_horses` (
   `update_time` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.real_logic_horses: ~1 rows (approximately)
+-- Dumping data for table mdg_ultimate.real_logic_horses: ~1 rows (approximately)
 INSERT INTO `real_logic_horses` (`update_time`) VALUES
 	(8);
 
--- Dumping structure for table mdg_one_no_two.real_logic_pets
+-- Dumping structure for table mdg_ultimate.real_logic_pets
 CREATE TABLE IF NOT EXISTS `real_logic_pets` (
   `update_time` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.real_logic_pets: ~1 rows (approximately)
+-- Dumping data for table mdg_ultimate.real_logic_pets: ~1 rows (approximately)
 INSERT INTO `real_logic_pets` (`update_time`) VALUES
 	(0);
 
--- Dumping structure for table mdg_one_no_two.real_logic_ranch
+-- Dumping structure for table mdg_ultimate.real_logic_ranch
 CREATE TABLE IF NOT EXISTS `real_logic_ranch` (
   `update_time` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.real_logic_ranch: ~1 rows (approximately)
+-- Dumping data for table mdg_ultimate.real_logic_ranch: ~1 rows (approximately)
 INSERT INTO `real_logic_ranch` (`update_time`) VALUES
 	(0);
 
--- Dumping structure for table mdg_one_no_two.rooms
+-- Dumping structure for table mdg_ultimate.rooms
 CREATE TABLE IF NOT EXISTS `rooms` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
@@ -3244,16 +3287,16 @@ CREATE TABLE IF NOT EXISTS `rooms` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table mdg_one_no_two.rooms: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.rooms: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.society
+-- Dumping structure for table mdg_ultimate.society
 CREATE TABLE IF NOT EXISTS `society` (
   `job` longtext DEFAULT NULL,
   `jobgrade` int(11) DEFAULT NULL,
   `salary` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.society: ~42 rows (approximately)
+-- Dumping data for table mdg_ultimate.society: ~42 rows (approximately)
 INSERT INTO `society` (`job`, `jobgrade`, `salary`) VALUES
 	('police', 0, 0),
 	('police', 1, 0),
@@ -3298,13 +3341,13 @@ INSERT INTO `society` (`job`, `jobgrade`, `salary`) VALUES
 	('horsetrainer', 3, 0),
 	('horsetrainer', 4, 0);
 
--- Dumping structure for table mdg_one_no_two.society_ledger
+-- Dumping structure for table mdg_ultimate.society_ledger
 CREATE TABLE IF NOT EXISTS `society_ledger` (
   `job` longtext DEFAULT NULL,
   `ledger` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.society_ledger: ~91 rows (approximately)
+-- Dumping data for table mdg_ultimate.society_ledger: ~91 rows (approximately)
 INSERT INTO `society_ledger` (`job`, `ledger`) VALUES
 	('police', 150),
 	('miner', 0),
@@ -3398,7 +3441,7 @@ INSERT INTO `society_ledger` (`job`, `ledger`) VALUES
 	('police', 0),
 	('police', 0);
 
--- Dumping structure for table mdg_one_no_two.society_shops
+-- Dumping structure for table mdg_ultimate.society_shops
 CREATE TABLE IF NOT EXISTS `society_shops` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `society` varchar(50) NOT NULL DEFAULT '0',
@@ -3410,9 +3453,9 @@ CREATE TABLE IF NOT EXISTS `society_shops` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.society_shops: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.society_shops: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.stables
+-- Dumping structure for table mdg_ultimate.stables
 CREATE TABLE IF NOT EXISTS `stables` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -3429,9 +3472,9 @@ CREATE TABLE IF NOT EXISTS `stables` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table mdg_one_no_two.stables: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.stables: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.stagecoaches
+-- Dumping structure for table mdg_ultimate.stagecoaches
 CREATE TABLE IF NOT EXISTS `stagecoaches` (
   `identifier` varchar(40) NOT NULL,
   `charid` int(11) NOT NULL,
@@ -3439,9 +3482,9 @@ CREATE TABLE IF NOT EXISTS `stagecoaches` (
   `stagecoach` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.stagecoaches: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.stagecoaches: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.underground
+-- Dumping structure for table mdg_ultimate.underground
 CREATE TABLE IF NOT EXISTS `underground` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -3470,9 +3513,9 @@ CREATE TABLE IF NOT EXISTS `underground` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.underground: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.underground: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.users
+-- Dumping structure for table mdg_ultimate.users
 CREATE TABLE IF NOT EXISTS `users` (
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `group` varchar(50) DEFAULT 'user',
@@ -3484,20 +3527,40 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `identifier` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.users: ~1 rows (approximately)
+-- Dumping data for table mdg_ultimate.users: ~1 rows (approximately)
 INSERT INTO `users` (`identifier`, `group`, `warnings`, `banned`, `banneduntil`, `char`) VALUES
 	('steam:11000013527d62e', 'admin', 0, 0, 0, 1);
 
--- Dumping structure for table mdg_one_no_two.vltfarmsdex
+-- Dumping structure for table mdg_ultimate.vltfarmsdex
 CREATE TABLE IF NOT EXISTS `vltfarmsdex` (
   `dex` longtext DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.vltfarmsdex: ~1 rows (approximately)
+-- Dumping data for table mdg_ultimate.vltfarmsdex: ~1 rows (approximately)
 INSERT INTO `vltfarmsdex` (`dex`) VALUES
 	('0');
 
--- Dumping structure for table mdg_one_no_two.vlt_bank
+-- Dumping structure for table mdg_ultimate.vlt_admin_adv
+CREATE TABLE IF NOT EXISTS `vlt_admin_adv` (
+  `identifier` varchar(50) NOT NULL DEFAULT '',
+  `discord` varchar(50) DEFAULT NULL,
+  `license` varchar(50) DEFAULT NULL,
+  `warnings` int(11) DEFAULT 0,
+  `banned` int(11) NOT NULL DEFAULT 0,
+  `playTime` int(11) DEFAULT 0,
+  `lastJoin` int(11) DEFAULT 0,
+  `lastLeave` int(11) DEFAULT NULL,
+  `banTime` int(50) DEFAULT NULL,
+  `banReason` varchar(200) DEFAULT NULL,
+  `banId` varchar(50) DEFAULT NULL,
+  `ajail` int(11) DEFAULT 0,
+  PRIMARY KEY (`identifier`),
+  UNIQUE KEY `identifier` (`identifier`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Dumping data for table mdg_ultimate.vlt_admin_adv: ~0 rows (approximately)
+
+-- Dumping structure for table mdg_ultimate.vlt_bank
 CREATE TABLE IF NOT EXISTS `vlt_bank` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
@@ -3513,11 +3576,11 @@ CREATE TABLE IF NOT EXISTS `vlt_bank` (
   CONSTRAINT `bankusers` FOREIGN KEY (`identifier`) REFERENCES `users` (`identifier`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_bank: ~1 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_bank: ~1 rows (approximately)
 INSERT INTO `vlt_bank` (`id`, `name`, `identifier`, `charidentifier`, `money`, `gold`, `items`, `invspace`) VALUES
 	(2, 'Valentine', 'steam:11000013527d62e', 1, 0.00, 0.00, '[]', 10);
 
--- Dumping structure for table mdg_one_no_two.vlt_barber_system
+-- Dumping structure for table mdg_ultimate.vlt_barber_system
 CREATE TABLE IF NOT EXISTS `vlt_barber_system` (
   `id` int(3) NOT NULL,
   `identifier` varchar(60) NOT NULL,
@@ -3531,13 +3594,13 @@ CREATE TABLE IF NOT EXISTS `vlt_barber_system` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_barber_system: ~3 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_barber_system: ~3 rows (approximately)
 INSERT INTO `vlt_barber_system` (`id`, `identifier`, `charid`, `ownername`, `money`, `name`, `price`, `blipsprite`, `blipmodif`) VALUES
 	(1, '0', 0, '', 0, 'Blackwater Barber', 2500, -2090472724, 0),
 	(2, '0', 0, '', 81, 'Valentine Barber', 2000, -2090472724, 0),
 	(3, '0', 0, '', 0, 'Saint Denis Barber', 3000, -2090472724, 0);
 
--- Dumping structure for table mdg_one_no_two.vlt_boats_system
+-- Dumping structure for table mdg_ultimate.vlt_boats_system
 CREATE TABLE IF NOT EXISTS `vlt_boats_system` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(60) NOT NULL,
@@ -3549,9 +3612,9 @@ CREATE TABLE IF NOT EXISTS `vlt_boats_system` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_boats_system: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_boats_system: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.vlt_domination_members
+-- Dumping structure for table mdg_ultimate.vlt_domination_members
 CREATE TABLE IF NOT EXISTS `vlt_domination_members` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(255) NOT NULL,
@@ -3561,9 +3624,9 @@ CREATE TABLE IF NOT EXISTS `vlt_domination_members` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_domination_members: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_domination_members: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.vlt_domination_props
+-- Dumping structure for table mdg_ultimate.vlt_domination_props
 CREATE TABLE IF NOT EXISTS `vlt_domination_props` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `area_name` varchar(50) DEFAULT NULL,
@@ -3576,18 +3639,18 @@ CREATE TABLE IF NOT EXISTS `vlt_domination_props` (
   UNIQUE KEY `area_name` (`area_name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=508 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_domination_props: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_domination_props: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.vlt_domination_territories
+-- Dumping structure for table mdg_ultimate.vlt_domination_territories
 CREATE TABLE IF NOT EXISTS `vlt_domination_territories` (
   `area_name` varchar(50) NOT NULL,
   `gang_name` varchar(50) NOT NULL,
   PRIMARY KEY (`area_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_domination_territories: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_domination_territories: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.vlt_horses
+-- Dumping structure for table mdg_ultimate.vlt_horses
 CREATE TABLE IF NOT EXISTS `vlt_horses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -3605,9 +3668,9 @@ CREATE TABLE IF NOT EXISTS `vlt_horses` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_horses: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_horses: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.vlt_horses_stats
+-- Dumping structure for table mdg_ultimate.vlt_horses_stats
 CREATE TABLE IF NOT EXISTS `vlt_horses_stats` (
   `horseid` int(11) NOT NULL,
   `distance` int(11) NOT NULL DEFAULT 0,
@@ -3621,9 +3684,9 @@ CREATE TABLE IF NOT EXISTS `vlt_horses_stats` (
   PRIMARY KEY (`horseid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_horses_stats: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_horses_stats: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.vlt_identity
+-- Dumping structure for table mdg_ultimate.vlt_identity
 CREATE TABLE IF NOT EXISTS `vlt_identity` (
   `identifier` varchar(60) NOT NULL,
   `firstname` varchar(50) DEFAULT NULL,
@@ -3634,31 +3697,31 @@ CREATE TABLE IF NOT EXISTS `vlt_identity` (
   PRIMARY KEY (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_identity: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_identity: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.vlt_journalist
+-- Dumping structure for table mdg_ultimate.vlt_journalist
 CREATE TABLE IF NOT EXISTS `vlt_journalist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `news` longtext DEFAULT '[]',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_journalist: ~1 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_journalist: ~1 rows (approximately)
 INSERT INTO `vlt_journalist` (`id`, `news`) VALUES
 	(1, '[]');
 
--- Dumping structure for table mdg_one_no_two.vlt_madame_nazar
+-- Dumping structure for table mdg_ultimate.vlt_madame_nazar
 CREATE TABLE IF NOT EXISTS `vlt_madame_nazar` (
   `charid` int(11) DEFAULT NULL,
   `identifier` varchar(100) DEFAULT NULL,
   `VLT_madame_nazar` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_madame_nazar: ~1 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_madame_nazar: ~1 rows (approximately)
 INSERT INTO `vlt_madame_nazar` (`charid`, `identifier`, `VLT_madame_nazar`) VALUES
 	(1, 'steam:11000013527d62e', 0);
 
--- Dumping structure for table mdg_one_no_two.vlt_matabolism
+-- Dumping structure for table mdg_ultimate.vlt_matabolism
 CREATE TABLE IF NOT EXISTS `vlt_matabolism` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `personaId` int(11) DEFAULT NULL,
@@ -3673,11 +3736,11 @@ CREATE TABLE IF NOT EXISTS `vlt_matabolism` (
   UNIQUE KEY `personaId` (`personaId`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_matabolism: ~1 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_matabolism: ~1 rows (approximately)
 INSERT INTO `vlt_matabolism` (`id`, `personaId`, `statHunger`, `statThirst`, `statHealth`, `statHealthCore`, `statStamina`, `statStaminaCore`, `statStress`) VALUES
 	(1, 1, 44, 65, 500, 100, 1, 100, 0);
 
--- Dumping structure for table mdg_one_no_two.vlt_ped_menu
+-- Dumping structure for table mdg_ultimate.vlt_ped_menu
 CREATE TABLE IF NOT EXISTS `vlt_ped_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -3691,18 +3754,32 @@ CREATE TABLE IF NOT EXISTS `vlt_ped_menu` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_ped_menu: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_ped_menu: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.vlt_plantation
+-- Dumping structure for table mdg_ultimate.vlt_plantation
 CREATE TABLE IF NOT EXISTS `vlt_plantation` (
   `charid` int(11) NOT NULL,
   `farm` longtext NOT NULL DEFAULT '[]',
   PRIMARY KEY (`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_plantation: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_plantation: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.vlt_stable_bought
+-- Dumping structure for table mdg_ultimate.vlt_posters
+CREATE TABLE IF NOT EXISTS `vlt_posters` (
+  `id` varchar(50) NOT NULL DEFAULT '0',
+  `identifier` varchar(50) DEFAULT NULL,
+  `charid` varchar(50) DEFAULT NULL,
+  `time` int(11) DEFAULT NULL,
+  `link` varchar(500) DEFAULT NULL,
+  `pos` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- Dumping data for table mdg_ultimate.vlt_posters: ~0 rows (approximately)
+
+-- Dumping structure for table mdg_ultimate.vlt_stable_bought
 CREATE TABLE IF NOT EXISTS `vlt_stable_bought` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -3714,9 +3791,9 @@ CREATE TABLE IF NOT EXISTS `vlt_stable_bought` (
   KEY `identifier` (`identifier`,`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_stable_bought: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_stable_bought: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.vlt_stable_color
+-- Dumping structure for table mdg_ultimate.vlt_stable_color
 CREATE TABLE IF NOT EXISTS `vlt_stable_color` (
   `id` int(11) NOT NULL,
   `drawable` int(11) DEFAULT NULL,
@@ -3730,9 +3807,9 @@ CREATE TABLE IF NOT EXISTS `vlt_stable_color` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_stable_color: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_stable_color: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.vlt_wagons
+-- Dumping structure for table mdg_ultimate.vlt_wagons
 CREATE TABLE IF NOT EXISTS `vlt_wagons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -3749,9 +3826,9 @@ CREATE TABLE IF NOT EXISTS `vlt_wagons` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.vlt_wagons: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.vlt_wagons: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.wagons
+-- Dumping structure for table mdg_ultimate.wagons
 CREATE TABLE IF NOT EXISTS `wagons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(600) NOT NULL,
@@ -3780,9 +3857,9 @@ CREATE TABLE IF NOT EXISTS `wagons` (
   KEY `model` (`model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Dumping data for table mdg_one_no_two.wagons: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.wagons: ~0 rows (approximately)
 
--- Dumping structure for table mdg_one_no_two.whitelist
+-- Dumping structure for table mdg_ultimate.whitelist
 CREATE TABLE IF NOT EXISTS `whitelist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
@@ -3793,58 +3870,58 @@ CREATE TABLE IF NOT EXISTS `whitelist` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table mdg_one_no_two.whitelist: ~0 rows (approximately)
+-- Dumping data for table mdg_ultimate.whitelist: ~0 rows (approximately)
 
--- Dumping structure for trigger mdg_one_no_two.add_mdg_horses_stats
+-- Dumping structure for trigger mdg_ultimate.add_mdg_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `add_mdg_horses_stats` AFTER INSERT ON `mdg_horses` FOR EACH ROW INSERT INTO mdg_horses_stats (horseid) VALUES (NEW.id)//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Dumping structure for trigger mdg_one_no_two.add_VLT_horses_stats
+-- Dumping structure for trigger mdg_ultimate.add_VLT_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `add_VLT_horses_stats` AFTER INSERT ON `VLT_horses` FOR EACH ROW INSERT INTO VLT_horses_stats (horseid) VALUES (NEW.id)//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Dumping structure for trigger mdg_one_no_two.delete_mdg_horses_stats
+-- Dumping structure for trigger mdg_ultimate.delete_mdg_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_mdg_horses_stats` AFTER DELETE ON `mdg_horses` FOR EACH ROW DELETE FROM mdg_horses_stats WHERE horseid = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Dumping structure for trigger mdg_one_no_two.delete_mdg_stable_color
+-- Dumping structure for trigger mdg_ultimate.delete_mdg_stable_color
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_mdg_stable_color` AFTER DELETE ON `mdg_stable_bought` FOR EACH ROW DELETE FROM `mdg_stable_color` WHERE id = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Dumping structure for trigger mdg_one_no_two.delete_VLT_horses_stats
+-- Dumping structure for trigger mdg_ultimate.delete_VLT_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_VLT_horses_stats` AFTER DELETE ON `VLT_horses` FOR EACH ROW DELETE FROM VLT_horses_stats WHERE horseid = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Dumping structure for trigger mdg_one_no_two.delete_VLT_stable_color
+-- Dumping structure for trigger mdg_ultimate.delete_VLT_stable_color
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_VLT_stable_color` AFTER DELETE ON `VLT_stable_bought` FOR EACH ROW DELETE FROM `VLT_stable_color` WHERE id = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Dumping structure for trigger mdg_one_no_two.update_mdg_stable_equiped_component
+-- Dumping structure for trigger mdg_ultimate.update_mdg_stable_equiped_component
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `update_mdg_stable_equiped_component` AFTER DELETE ON `mdg_horses` FOR EACH ROW UPDATE `mdg_stable_bought` SET equiped_on = 0 WHERE equiped_on = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Dumping structure for trigger mdg_one_no_two.update_VLT_stable_equiped_component
+-- Dumping structure for trigger mdg_ultimate.update_VLT_stable_equiped_component
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `update_VLT_stable_equiped_component` AFTER DELETE ON `VLT_horses` FOR EACH ROW UPDATE `VLT_stable_bought` SET equiped_on = 0 WHERE equiped_on = OLD.id//
