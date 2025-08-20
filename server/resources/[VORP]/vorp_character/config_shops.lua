@@ -15,6 +15,15 @@ ConfigShops.SecondChanceCurrency = 0     -- 0 is cash 1 is gold 2 is tokens curr
 -- lifestyle --scars acne complex
 -- Blip Colors: https://github.com/femga/rdr3_discoveries/tree/master/useful_info_from_rpfs/blip_modifiers
 
+local SHOP_TYPES = {
+    MAKEUP = "makeup",
+    HAIR = "hair",                 -- eyebrows hair beard bow beardstabble hair
+    FACE = "face",
+    LIFESTYLE = "lifestyle",       -- scars acne complex
+    CLOTHING = "clothing",
+    SECONDCHANCE = "secondchance", -- this enables all
+}
+
 ConfigShops.Locations = {
     {                                                   -- valentine
         Prompt = {
@@ -38,13 +47,22 @@ ConfigShops.Locations = {
         SpawnBack = { -- where the player will be teleported to after editing character
             Position = vector4(-323.12, 774.47, 121.63, 186.42),
         },
-        CameraPosition = { -- camera position for the character editor
+        CameraPosition = {   -- camera position for the character editor
             Position = vector3(-327.38, 775.48, 122.00),
-            Heading = 97.6,
-            MaxUp = 122.75,
+            Heading = 102.0, -- heading of the camera
+            MaxUp = 122.75,  -- adjust the camera MaxUp and MaxDown to fit the shop
             MaxDown = 120.91,
+            ZoomInRange = 1.0,
+            ZoomOutRange = 1.5,
+
         },
-        TypeOfShop = "clothing",                          -- means all will be avaialble with a price to be paid to enter
+        -- CAN BE MULTIPLE
+        TypeOfShop = {
+            { type = SHOP_TYPES.CLOTHING, label = "Clothing Store", input = 0xC7B5340A }, -- enter key
+            { type = SHOP_TYPES.HAIR,     label = "Hair Store",     input = 0xD9D0E1C0 },
+            { type = SHOP_TYPES.MAKEUP,   label = "Makeup Store",   input = 0x9959A6F0 }, -- C key -- space key
+
+        },
         DrawLight = false,                                -- if you need a light in the store put true
     },
     {                                                     -- blackwater
@@ -75,44 +93,18 @@ ConfigShops.Locations = {
             Heading = 92.42,
             MaxUp = 44.85,
             MaxDown = 42.95,
+            ZoomInRange = 1.1,
+            ZoomOutRange = 0.1,
         },
-        TypeOfShop = "clothing",                          -- means all will be avaialble with a price to be paid to enter
+        -- CAN BE MULTIPLE
+        TypeOfShop = {
+            { type = SHOP_TYPES.CLOTHING, label = "Clothing Store", input = 0xC7B5340A },       -- enter key
+            { type = SHOP_TYPES.HAIR,     label = "Hair Store",     input = 0xD9D0E1C0 },       -- space key
+            { type = SHOP_TYPES.MAKEUP,   label = "Makeup Store",   input = 0x9959A6F0 },       -- C key
+
+        },
         DrawLight = false,                                -- if you need a light in the store put true
     },
-        {                                                     -- blackwater Makeup
-        Prompt = {
-            Position = vector3(-810.25, -1372.55, 44.02), -- prompt location
-            Label = "Lifesyle Store",                     -- prompt label
-        },
-        Npc = {
-            Enable = true,
-            Model = "CS_FRANCIS_SINCLAIR",
-            Position = vector4(-810.44, -1372.31, 44.02, 180.34),
-            Scenario = 'WORLD_HUMAN_STAND_WAITING',
-        },
-        Blip = {
-            Enable = true,
-            Sprite = 1195729388,
-            Name = "Lifesyle Store",
-            -- Color = 'BLIP_MODIFIER_MP_COLOR_23',
-        },
-        EditCharacter = { -- where the player will be teleported to edit character
-            Position = vector4(-815.03, -1374.82, 44.23, 264.34),
-        },
-        SpawnBack = { -- where the player will be teleported to after editing character
-            Position = vector4(-810.69, -1375.92, 44.02, 323.48),
-        },
-        CameraPosition = { -- camera position for the character editor
-         
-            Position = vector3(-813.40, -1374.79, 44.86),
-            Heading = 91.22,
-            MaxUp = 45.86,
-            MaxDown = 43.22,
-        },
-        TypeOfShop = "lifestyle",                          -- means all will be avaialble with a price to be paid to enter
-        DrawLight = false,                                -- if you need a light in the store put true
-    },
-    
     {                                                     -- Rhodes
         Prompt = {
             Position = vector3(1324.66, -1291.59, 77.08), -- prompt location
@@ -141,8 +133,16 @@ ConfigShops.Locations = {
             Heading = -26.27,
             MaxUp = 78.13,
             MaxDown = 76.95,
+            ZoomInRange = 1.0,
+            ZoomOutRange = 0.5,
         },
-        TypeOfShop = "clothing",                         -- means all will be avaialble with a price to be paid to enter
+        -- CAN BE MULTIPLE
+        TypeOfShop = {
+            { type = SHOP_TYPES.CLOTHING, label = "Clothing Store", input = 0xC7B5340A },       -- enter key
+            { type = SHOP_TYPES.HAIR,     label = "Hair Store",     input = 0xD9D0E1C0 },       -- space key
+            { type = SHOP_TYPES.MAKEUP,   label = "Makeup Store",   input = 0x9959A6F0 },       -- C key
+
+        },
         DrawLight = false,                               -- if you need a light in the store put true
     },
     {                                                    -- Saint Denis
@@ -153,7 +153,7 @@ ConfigShops.Locations = {
         Npc = {
             Enable = true,
             Model = "CS_FRANCIS_SINCLAIR",
-            Position = vector4(2552.89, -1163.73, 53.73, 144.93),
+            Position = vector4(2552.89, -1163.73, 53.73, 143.93),
             Scenario = 'WORLD_HUMAN_STAND_WAITING',
         },
         Blip = {
@@ -173,8 +173,16 @@ ConfigShops.Locations = {
             Heading = 0.32,
             MaxUp = 54.82,
             MaxDown = 53.00,
+            ZoomInRange = 1.0,
+            ZoomOutRange = 0.5,
         },
-        TypeOfShop = "clothing",                           -- means all will be avaialble with a price to be paid to enter
+        -- CAN BE MULTIPLE
+        TypeOfShop = {
+            { type = SHOP_TYPES.CLOTHING, label = "Clothing Store", input = 0xC7B5340A },       -- enter key
+            { type = SHOP_TYPES.HAIR,     label = "Hair Store",     input = 0xD9D0E1C0 },       -- space key
+            { type = SHOP_TYPES.MAKEUP,   label = "Makeup Store",   input = 0x9959A6F0 },       -- C key     
+
+        },
         DrawLight = false,                                 -- if you need a light in the store put true
     },
     {                                                      -- Strawberry
@@ -205,8 +213,16 @@ ConfigShops.Locations = {
             Heading = 145.25,
             MaxUp = 161.45,
             MaxDown = 145.31,
+            ZoomInRange = 1.5,
+            ZoomOutRange = 0.5,
         },
-        TypeOfShop = "clothing",                           -- means all will be avaialble with a price to be paid to enter
+        -- CAN BE MULTIPLE
+        TypeOfShop = {
+            { type = SHOP_TYPES.CLOTHING, label = "Clothing Store", input = 0xC7B5340A },   -- enter key
+            { type = SHOP_TYPES.HAIR,     label = "Hair Store",     input = 0xD9D0E1C0 },   -- space key
+            { type = SHOP_TYPES.MAKEUP,   label = "Makeup Store",   input = 0x9959A6F0 },   -- C key        
+
+        },
         DrawLight = false,                                 -- if you need a light in the store put true
     },
     {                                                      -- Tumblweed
@@ -237,8 +253,16 @@ ConfigShops.Locations = {
             Heading = 40.58,
             MaxUp = 0.78,
             MaxDown = -1.20,
+            ZoomInRange = 1.0,
+            ZoomOutRange = 0.1,
         },
-        TypeOfShop = "clothing",                           -- means all will be avaialble with a price to be paid to enter
+        -- CAN BE MULTIPLE
+        TypeOfShop = {
+            { type = SHOP_TYPES.CLOTHING, label = "Clothing Store", input = 0xC7B5340A }, -- enter key
+            { type = SHOP_TYPES.HAIR,     label = "Hair Store",     input = 0xD9D0E1C0 }, -- space key
+            { type = SHOP_TYPES.MAKEUP,   label = "Makeup Store",   input = 0x9959A6F0 }, -- C key
+
+        },
         DrawLight = false,                                 -- if you need a light in the store put true
     },
     {                                                      -- Armadillo
@@ -269,9 +293,18 @@ ConfigShops.Locations = {
             Heading = 179.85,
             MaxUp = -12.48,
             MaxDown = -13.89,
+            ZoomInRange = 1.0,
+            ZoomOutRange = 1.5,
         },
-        TypeOfShop = "clothing", -- means all will be avaialble with a price to be paid to enter
-        DrawLight = false,       -- if you need a light in the store put true
+
+        -- CAN BE MULTIPLE
+        TypeOfShop = {
+            { type = SHOP_TYPES.CLOTHING, label = "Clothing Store", input = 0xC7B5340A }, -- enter key
+            { type = SHOP_TYPES.HAIR,     label = "Hair Store",     input = 0xD9D0E1C0 }, -- space key
+            { type = SHOP_TYPES.MAKEUP,   label = "Makeup Store",   input = 0x9959A6F0 }, -- C key
+
+        },
+        DrawLight = false, -- if you need a light in the store put true
     },
     -- add more here
 }
@@ -314,7 +347,7 @@ ConfigShops.Prices = {
         Belt = { price = 10 },
         Holster = { price = 10 },
         Suspender = { price = 10 },
-        armor = { price = 10 },
+        Armor = { price = 10 },
         Gunbelt = { price = 10 },
         RingLh = { price = 10 },
         RingRh = { price = 10 },
@@ -329,7 +362,7 @@ ConfigShops.Prices = {
         Beard = {
             price = 10,
         },
-        bow = { -- females only
+        Bow = { -- females only
             price = 10,
         },
         beardstabble = { -- shaved beard
@@ -397,31 +430,31 @@ ConfigShops.Prices = {
             price = 10,
         },
     },
-    lifestyle ={
-        spots ={
+    lifestyle = {
+        spots = {
             price = 10,
         },
-        moles ={
+        moles = {
             price = 10,
         },
-        grime ={
+        grime = {
             price = 10,
         },
-        freckles ={
+        freckles = {
             price = 10,
         },
-        disc ={
+        disc = {
             price = 10,
         },
-        complex ={
+        complex = {
             price = 10,
         },
-        acne ={
+        acne = {
             price = 10,
         },
-        scars ={
+        scars = {
             price = 10,
         },
     }
-  
+
 }

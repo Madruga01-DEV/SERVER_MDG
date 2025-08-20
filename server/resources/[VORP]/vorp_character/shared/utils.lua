@@ -162,7 +162,7 @@ PlayerClothing = {
     Spats       = { comp = -1 },
     GunbeltAccs = { comp = -1 },
     NeckTies    = { comp = -1 },
-    bow         = { comp = -1 },
+    Bow         = { comp = -1 },
     RingLh      = { comp = -1 },
     Loadouts    = { comp = -1 },
     Boots       = { comp = -1 },

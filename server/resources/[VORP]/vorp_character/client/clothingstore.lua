@@ -1,24 +1,33 @@
 IsInClothingStore = false
-local PromptGroup <const> = GetRandomIntInRange(0, 0xffffff)
-local SelectPrompt
-ShopType = ""
+local group       = GetRandomIntInRange(0, 0xffffff)
+ShopType          = ""
 
-CreateThread(function()
-    local str = VarString(10, 'LITERAL_STRING', T.Inputs.press)
-    SelectPrompt = UiPromptRegisterBegin()
-    UiPromptSetControlAction(SelectPrompt, 0xC7B5340A)
-    UiPromptSetText(SelectPrompt, str)
-    UiPromptSetEnabled(SelectPrompt, true)
-    UiPromptSetVisible(SelectPrompt, true)
-    UiPromptSetStandardMode(SelectPrompt, true)
-    UiPromptSetGroup(SelectPrompt, PromptGroup, 0)
-    UiPromptRegisterEnd(SelectPrompt)
-end)
 
-function CreateBlips()
+local GetEntityCoords                  = GetEntityCoords
+local DeleteEntity                     = DeleteEntity
+local Wait                             = Wait
+local UiPromptSetActiveGroupThisFrame  = UiPromptSetActiveGroupThisFrame
+local UiPromptHasStandardModeCompleted = UiPromptHasStandardModeCompleted
+local VarString                        = VarString
+
+local function CreatePrompt(shopType)
+    local str <const> = VarString(10, 'LITERAL_STRING', shopType.label)
+    local prompt <const> = UiPromptRegisterBegin()
+    UiPromptSetControlAction(prompt, shopType.input)
+    UiPromptSetText(prompt, str)
+    UiPromptSetEnabled(prompt, true)
+    UiPromptSetVisible(prompt, true)
+    UiPromptSetStandardMode(prompt, true)
+    UiPromptSetGroup(prompt, group, 0)
+    UiPromptRegisterEnd(prompt)
+    return prompt
+end
+
+
+local function createBlips()
     for _, value in ipairs(ConfigShops.Locations) do
         if value.Blip.Enable then
-            local blip = BlipAddForCoords(1664425300, value.Prompt.Position.x, value.Prompt.Position.y, value.Prompt.Position.z)
+            local blip <const> = BlipAddForCoords(1664425300, value.Prompt.Position.x, value.Prompt.Position.y, value.Prompt.Position.z)
             if value.Blip.Color then
                 BlipAddModifier(blip, joaat(value.Blip.Color))
             end
@@ -29,9 +38,9 @@ function CreateBlips()
     end
 end
 
-function CreateModel(model, position, index)
+local function createModel(model, position, index)
     LoadPlayer(model)
-    local npc = CreatePed(model, position.x, position.y, position.z, position.w, false, false, false, false)
+    local npc <const> = CreatePed(model, position.x, position.y, position.z, position.w, false, false, false, false)
     repeat Wait(0) until DoesEntityExist(npc)
     SetRandomOutfitVariation(npc, true)
     SetBlockingOfNonTemporaryEvents(npc, true)
@@ -51,21 +60,20 @@ CreateThread(function()
         return
     end
 
-    repeat Wait(2000) until LocalPlayer.state.IsInSession
-
-    CreateBlips()
+    repeat Wait(5000) until LocalPlayer.state.IsInSession
+    createBlips()
 
     while true do
         local sleep = 1000
 
         if not IsInCharCreation and not IsInClothingStore then
             for index, value in ipairs(ConfigShops.Locations) do
-                local coords = GetEntityCoords(PlayerPedId())
-                local dist = #(coords - value.Prompt.Position)
+                local coords <const> = GetEntityCoords(PlayerPedId())
+                local distance <const> = #(coords - value.Prompt.Position)
 
-                if dist < 100 then
+                if distance < 100 then
                     if value.Npc.Enable and not value.Npc.Entity then
-                        CreateModel(value.Npc.Model, value.Npc.Position, index)
+                        createModel(value.Npc.Model, value.Npc.Position, index)
                     end
                 else
                     if value.Npc.Enable and value.Npc.Entity then
@@ -74,18 +82,37 @@ CreateThread(function()
                     end
                 end
 
-                if dist < 1.5 then
+                if distance < 5.0 then
+                    for _, prompt in ipairs(value.TypeOfShop) do
+                        if not prompt.promptHandle then
+                            prompt.promptHandle = CreatePrompt(prompt)
+                        end
+                    end
+                else
+                    for _, prompt in ipairs(value.TypeOfShop) do
+                        if prompt.promptHandle then
+                            UiPromptDelete(prompt.promptHandle)
+                            prompt.promptHandle = nil
+                        end
+                    end
+                end
+
+                if distance < 1.5 then
                     sleep = 0
-                    local label = VarString(10, 'LITERAL_STRING', value.Prompt.Label)
-                    UiPromptSetActiveGroupThisFrame(PromptGroup, label, 0, 0, 0, 0)
-                    if UiPromptHasStandardModeCompleted(SelectPrompt, 0) then
-                        if value.TypeOfShop == "secondchance" then
-                            local result = Core.Callback.TriggerAwait("vorp_character:callback:CanPayForSecondChance")
-                            if result then
-                                PrepareClothingStore(value)
+
+                    local label <const> = VarString(10, 'LITERAL_STRING', value.Prompt.Label)
+                    UiPromptSetActiveGroupThisFrame(group, label, 0, 0, 0, 0)
+                    for _, prompt in ipairs(value.TypeOfShop) do
+                        if UiPromptHasStandardModeCompleted(prompt.promptHandle, 0) then
+                            local shopType <const> = prompt.type
+                            if shopType == "secondchance" then
+                                local result = Core.Callback.TriggerAwait("vorp_character:callback:CanPayForSecondChance")
+                                if result then
+                                    PrepareClothingStore(value, shopType)
+                                end
+                            else
+                                PrepareClothingStore(value, shopType)
                             end
-                        else
-                            PrepareClothingStore(value)
                         end
                     end
                 end
@@ -100,21 +127,21 @@ AddEventHandler('onResourceStop', function(resourceName)
     if (GetCurrentResourceName() ~= resourceName) then
         return
     end
-    for index, value in ipairs(ConfigShops.Locations) do
-        if value.Blip.Entity then
+    for _, value in ipairs(ConfigShops.Locations) do
+        if value.Blip.Entity and DoesBlipExist(value.Blip.Entity) then
             RemoveBlip(value.Blip.Entity)
         end
-        if value.Npc.Entity then
+        if value.Npc.Entity and DoesEntityExist(value.Npc.Entity) then
             DeleteEntity(value.Npc.Entity)
         end
     end
 end)
 
 
-function PrepareClothingStore(value)
-    DoScreenFadeOut(0)
+function PrepareClothingStore(value, shopType)
+    ShopType = shopType
+    DoScreenFadeOut(1000)
     repeat Wait(0) until IsScreenFadedOut()
-    ShopType = value.TypeOfShop
     Core.instancePlayers(GetPlayerServerId(PlayerId()) + 4440)
     DisplayRadar(false)
     IsInClothingStore = true
@@ -147,18 +174,19 @@ function PrepareClothingStore(value)
     SetTimeout(1000, function()
         FreezeEntityPosition(PlayerPedId(), false)
     end)
-    if value.TypeOfShop == "secondchance" then
+
+    if shopType == "secondchance" then
         OpenCharCreationMenu(Clothing, value)
-    elseif value.TypeOfShop == "clothing" then
+    elseif shopType == "clothing" then
         local result = Core.Callback.TriggerAwait("vorp_character:callback:GetOutfits")
         if result then
             OpenClothingMenu(Clothing, value, result)
         end
-    elseif value.TypeOfShop == "hair" then
+    elseif shopType == "hair" then
         OpenHairMenu(Clothing, value)
-    elseif value.TypeOfShop == "makeup" then
+    elseif shopType == "makeup" then
         OpenMakeupMenu(Clothing, value)
-    elseif value.TypeOfShop == "face" then
+    elseif shopType == "face" then
         OpenFaceMenu(Clothing, value)
     elseif ShopType == "lifestyle" then
         OpenLifeStyleMenu(Clothing, value)

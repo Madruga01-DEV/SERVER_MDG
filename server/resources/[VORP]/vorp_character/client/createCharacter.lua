@@ -44,17 +44,25 @@ local function Setup()
 	repeat Wait(0) until HasCollisionLoadedAroundEntity(PlayerPedId())
 
 	local cam = SetupCameraCharacterCreationSelect()
-	local animscene, peds = SetupAnimscene()
+	local animscene = -1
+	local peds = {}
 
-	LoadAnimScene(animscene)
-	repeat Wait(0) until Citizen.InvokeNative(0x477122B8D05E7968, animscene)
+	if Config.UseInitialAnimScene then
+		animscene, peds = SetupAnimscene()
+		LoadAnimScene(animscene)
+		repeat Wait(0) until Citizen.InvokeNative(0x477122B8D05E7968, animscene)
 
-	StartAnimScene(animscene)
+		StartAnimScene(animscene)
+	else
+		peds = SelectionPeds()
+	end
 
 	DoScreenFadeIn(3000)
 	repeat Wait(0) until IsScreenFadedIn()
 
-	repeat Wait(0) until Citizen.InvokeNative(0xCBFC7725DE6CE2E0, animscene)
+	if Config.UseInitialAnimScene then
+		repeat Wait(0) until Citizen.InvokeNative(0xCBFC7725DE6CE2E0, animscene)
+	end
 
 	SetCamParams(cam, vec3(-562.15, -3776.22, 239.11), vec3(-4.71, 0.0, -93.14), 45.0, 0, 1, 1, 2, 1, 1)
 
@@ -72,17 +80,21 @@ local function Setup()
 				SetCamFocusDistance(cam, 4.0)
 
 				local transEnd = false
-				Citizen.SetTimeout(1200, function()
+				SetTimeout(1200, function()
 					transEnd = true
 				end)
 
 				while not transEnd do
-					Citizen.Wait(0)
+					Wait(0)
 				end
 			end
+
+			local sound = char == 1 and "gender_right" or "gender_left"
+			PlaySoundFrontend(sound, "RDRO_Character_Creator_Sounds", true, 0);
 		end
 
 		if IsControlJustPressed(0, `INPUT_CREATOR_ACCEPT`) then
+			PlaySoundFrontend("SELECT", "RDRO_Character_Creator_Sounds", true, 0);
 			break
 		end
 
@@ -92,26 +104,77 @@ local function Setup()
 	UiFeedClearChannel(3, true, false)
 	local ped = peds[char + 1]
 	local gender = IsPedMale(ped) and "Male" or "Female"
-	Citizen.InvokeNative(0xAB5E7CAB074D6B84, animscene, ("Pl_Start_to_Edit_%s"):format(gender))
-	while not (Citizen.InvokeNative(0x3FBC3F51BF12DFBF, animscene, Citizen.ResultAsFloat()) > 0.2) do
-		Citizen.Wait(0)
+
+
+
+	if Config.UseInitialAnimScene then
+		Citizen.InvokeNative(0xAB5E7CAB074D6B84, animscene, ("Pl_Start_to_Edit_%s"):format(gender))
+		while not (Citizen.InvokeNative(0x3FBC3F51BF12DFBF, animscene, Citizen.ResultAsFloat()) > 0.2) do
+			Citizen.Wait(0)
+		end
+	else
+		ClearPedTasksImmediately(ped)
+		TaskGoStraightToCoord(ped, -558.79, -3780.17, 238.59, 1.0, -1, 183.2, 0)
+		-- set camera to follow the ped for 1 second with a loop that will break after 1 second
+		while true do
+			PointCamAtEntity(cam, ped, 0.0, 0.0, 0.0, true)
+			Wait(0)
+			if GetScriptTaskStatus(ped, 0x7D8F4411, true) == 8 then
+				break
+			end
+		end
 	end
 
 	SetCamParams(cam, vec3(-561.82, -3780.97, 239.08), vec3(-4.21, 0.0, -87.88), 30.0, 0, 1, 1, 2, 1, 1)
 	N_0x11f32bb61b756732(cam, 1.0)
 
-	while not (N_0xd8254cb2c586412b(animscene) == 1) do
-		Citizen.Wait(0)
-	end
-	Citizen.InvokeNative(0x84EEDB2C6E650000, animscene) -- delete animscene
-	RegisterGenderPrompt()
 
-	if gender ~= "Male" then
-		CreatePlayerModel("mp_female", peds)
-	else
-		CreatePlayerModel("mp_male", peds)
+	if Config.UseInitialAnimScene then
+		while not (N_0xd8254cb2c586412b(animscene) == 1) do
+			Citizen.Wait(0)
+		end
+		Citizen.InvokeNative(0x84EEDB2C6E650000, animscene) -- delete animscene
+	end
+	local model = gender == "Male" and "mp_male" or "mp_female"
+	CreatePlayerModel(model, peds)
+	RegisterGenderPrompt()
+end
+
+
+local function setInteriors(male)
+	local interiorAtCoords = GetInteriorAtCoords(-561.8157, -3780.966, 239.0805)
+
+	if IsValidInterior(interiorAtCoords) == 1 then
+		if IsInteriorReady(interiorAtCoords) == 1 then
+			if male then
+				if IsInteriorEntitySetValid(interiorAtCoords, "mp_char_female_mirror") == 1 then
+					if IsInteriorEntitySetActive(interiorAtCoords, "mp_char_female_mirror") then
+						DeactivateInteriorEntitySet(interiorAtCoords, "mp_char_female_mirror", true);
+					end
+				end
+
+				if IsInteriorEntitySetValid(interiorAtCoords, "mp_char_male_mirror") == 1 then
+					if not IsInteriorEntitySetActive(interiorAtCoords, "mp_char_male_mirror") then
+						ActivateInteriorEntitySet(interiorAtCoords, "mp_char_male_mirror", 0);
+					end
+				end
+			else
+				if IsInteriorEntitySetValid(interiorAtCoords, "mp_char_male_mirror") == 1 then
+					if IsInteriorEntitySetActive(interiorAtCoords, "mp_char_male_mirror") then
+						DeactivateInteriorEntitySet(interiorAtCoords, "mp_char_male_mirror", true);
+					end
+				end
+
+				if IsInteriorEntitySetValid(interiorAtCoords, "mp_char_female_mirror") == 1 then
+					if not IsInteriorEntitySetActive(interiorAtCoords, "mp_char_female_mirror") then
+						ActivateInteriorEntitySet(interiorAtCoords, "mp_char_female_mirror", 0);
+					end
+				end
+			end
+		end
 	end
 end
+
 
 RegisterNetEvent("vorpcharacter:startCharacterCreator")
 AddEventHandler("vorpcharacter:startCharacterCreator", function()
@@ -165,126 +228,147 @@ function RegisterGenderPrompt()
 	UiPromptRegisterEnd(zoomout)
 end
 
-local function SetUpCameraCharacterMovement(x, y, z, heading, zoom)
+local function SetUpCameraCharacterMovement(x, y, z, heading, fov)
 	DestroyAllCams(true)
-	local cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", x, y, z, -11.32719, 0.0, heading, zoom, true, 0)
+	local cam <const> = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", x, y, z, -4.2146, -0.0007, heading, fov, true, 0)
 	SetCamActive(cam, true)
-	RenderScriptCams(true, true, 500, true, true, 0)
+	RenderScriptCams(true, false, 3000, true, false, 0)
+	ShakeCam(cam, "HAND_SHAKE", 0.04)
 	return cam
 end
 
-local function AdjustCharcaterHeading(heading, amount)
-	heading = heading + amount
-	SetPedDesiredHeading(PlayerPedId(), heading)
-	return heading
+
+local function RotationToDirection(rot)
+	local pitch <const> = math.rad(rot.x)
+	local yaw <const>   = math.rad(rot.z)
+	local cp <const>    = math.cos(pitch)
+	return vector3(-math.sin(yaw) * cp, math.cos(yaw) * cp, math.sin(pitch))
 end
 
 function StartPrompts(value)
-	local zoom = 55.00
-	local locationx = value and value.Position.x or -560.1333
-	local locationy = value and value.Position.y or -3780.923
-	local heading = value and value.Heading or -90.96693
-	local position = value and value.Position.z or 238.98
-	local zoommin = 15.00
-	local zoommax = 65.00
-	local maxUp = value and value.MaxUp or 239.60
-	local maxDown = value and value.MaxDown or 238.30
-	local cam = SetUpCameraCharacterMovement(locationx, locationy, position, heading, zoom)
-	local TotalToPay = ""
-	local pocketMoney = value and LocalPlayer.state.Character.Money or 0
+	local baseX <const>        = value and value.Position.x or -561.8157
+	local baseY <const>        = value and value.Position.y or -3780.966
+	local baseZ <const>        = value and value.Position.z or 239.0805
+	local heading              = value and value.Heading or -87.8802
+	local maxUp <const>        = value and value.MaxUp or 239.55
+	local maxDown <const>      = value and value.MaxDown or 238.0
+	local zoomInRange <const>  = value and value.ZoomInRange or 2.5
+	local zoomOutRange <const> = value and value.ZoomOutRange or 1.5
+	local zoomStep <const>     = 0.05
+	local vertStep <const>     = 0.01
+	local cam <const>          = SetUpCameraCharacterMovement(baseX, baseY, baseZ, heading, 30.0)
+	local rot <const>          = GetCamRot(cam, 2)
+	local dir <const>          = RotationToDirection(rot)
+	local base <const>         = vector3(baseX, baseY, baseZ)
+	local forwardOffset        = 0
+	local verticalOffset       = 0
+	local minForward <const>   = -zoomOutRange
+	local maxForward <const>   = zoomInRange
+	local minVertical <const>  = maxDown - baseZ
+	local maxVertical <const>  = maxUp - baseZ
 
-	while IsInCharCreation or IsInClothingStore do
+	local TotalToPay           = ""
+
+	while true do
 		Wait(0)
 
+
 		if IsInClothingStore and ShopType ~= "secondchance" then
-			TotalToPay = T.Other.total .. GetCurrentAmmountToPay() .. T.Other.pocketmoney .. pocketMoney .. "~q~ "
+			TotalToPay = T.Other.total .. GetCurrentAmmountToPay() .. "~q~ "
 		end
 
-		local label = VarString(10, "LITERAL_STRING", TotalToPay .. T.PromptLabels.CamAdjustments)
+		local label <const> = VarString(10, "LITERAL_STRING", TotalToPay .. T.PromptLabels.CamAdjustments)
 		UiPromptSetActiveGroupThisFrame(PromptGroup2, label, 0, 0, 0, 0)
 
-		if IsControlPressed(2, Config.keys.prompt_camera_rotate.key) then --right
-			heading = AdjustCharcaterHeading(heading, -1.5)
+		if IsControlPressed(2, Config.keys.prompt_camera_rotate.key) then
+			heading = heading - 1.5
+			SetPedDesiredHeading(PlayerPedId(), heading)
 		end
 
-		if IsControlPressed(2, Config.keys.prompt_camera_rotate.key2) then -- left
-			heading = AdjustCharcaterHeading(heading, 1.5)
+		if IsControlPressed(2, Config.keys.prompt_camera_rotate.key2) then
+			heading = heading + 1.5
+			SetPedDesiredHeading(PlayerPedId(), heading)
 		end
 
-		if IsControlPressed(2, Config.keys.prompt_camera_ws.key) then -- up
-			position = math.min(position + 0.01, maxUp)
-			SetCamCoord(cam, locationx, locationy, position)
+		if IsControlPressed(2, Config.keys.prompt_camera_ws.key) then
+			verticalOffset = math.min(verticalOffset + vertStep, maxVertical)
+		end
+		if IsControlPressed(2, Config.keys.prompt_camera_ws.key2) then
+			verticalOffset = math.max(verticalOffset - vertStep, minVertical)
 		end
 
-		if IsControlPressed(2, Config.keys.prompt_camera_ws.key2) then -- down
-			position = math.max(position - 0.01, maxDown)
-			SetCamCoord(cam, locationx, locationy, position)
+		if IsControlPressed(2, `INPUT_INSPECT_ZOOM`) then
+			forwardOffset = math.min(forwardOffset + zoomStep, maxForward)
+		end
+		if IsControlPressed(2, `INPUT_CONTEXT_ACTION`) then
+			forwardOffset = math.max(forwardOffset - zoomStep, minForward)
 		end
 
-		if IsControlPressed(2, `INPUT_CONTEXT_ACTION`) then -- zoom out
-			zoom = math.min(zoom + 0.5, zoommax)
-			SetCamFov(cam, zoom)
-		end
+		local newPos = base + dir * forwardOffset + vector3(0, 0, verticalOffset)
+		SetCamCoord(cam, newPos.x, newPos.y, newPos.z)
+		SetCamRot(cam, rot.x, rot.y, rot.z, 2)
 
-		if IsControlPressed(2, `INPUT_INSPECT_ZOOM`) then --zoom in
-			zoom = math.max(zoom - 0.5, zoommin)
-			SetCamFov(cam, zoom)
+	
+		if not IsInCharCreation then
+			if not IsInClothingStore then
+				break
+			end
+		else
+			if IsCharCreationFinished then
+				break
+			end
 		end
 	end
+
+	DeleteAllPrompts()
+	repeat Wait(0) until not IsInCharCreation and not IsInClothingStore
 	DestroyCam(cam, false)
 	RenderScriptCams(false, true, 500, true, true, 0)
 end
 
--- set up a default ped with default values
+
 function DefaultPedSetup(ped, male)
-	local compEyes   = male and 612262189 or 928002221
-	local compBody   = male and tonumber("0x" .. Config.DefaultChar.Male[3].Body[1]) or tonumber("0x" .. Config.DefaultChar.Female[3].Body[1])
-	local compHead   = male and tonumber("0x" .. Config.DefaultChar.Male[3].Heads[9]) or tonumber("0x" .. Config.DefaultChar.Female[3].Heads[4])
-	local compLegs   = male and tonumber("0x" .. Config.DefaultChar.Male[3].Legs[1]) or tonumber("0x" .. Config.DefaultChar.Female[3].Legs[1])
-	local albedo     = male and joaat("mp_head_mr1_sc03_c0_000_ab") or joaat("mp_head_fr1_sc08_c0_000_ab")
-	local body       = male and 2362013313 or 0x3F1F01E5
-	local model      = male and "mp_male" or "mp_female"
-	local teeth      = male and 712446626 or 959712255
-	local gunbelt    = male and 795591403 or 1511461630
-	local hair       = male and 2112480140 or 3887861344
-	HeadIndexTracker = male and 9 or 4
-	SkinColorTracker = male and 3 or 3
+	local gender                = male and "M" or "F"
+	HeadIndexTracker            = male and 8 or 1
+	PlayerSkin.Eyes             = joaat(("CLOTHING_ITEM_%s_EYES_001_TINT_014"):format(gender))
+	PlayerSkin.BodyType         = joaat(("CLOTHING_ITEM_%s_BODIES_UPPER_001_V_001"):format(gender))
+	PlayerSkin.Body             = PlayerSkin.BodyType
+	PlayerSkin.HeadType         = joaat(("CLOTHING_ITEM_%s_HEAD_00%d_V_001"):format(gender, HeadIndexTracker))
+	PlayerSkin.LegsType         = joaat(("CLOTHING_ITEM_%s_BODIES_LOWER_001_V_001"):format(gender))
+	PlayerSkin.albedo           = joaat(("MP_HEAD_%sR1_SC08_C0_000_AB"):format(gender))
+	PlayerClothing.Teeth.comp   = joaat(("CLOTHING_ITEM_%s_TEETH_000"):format(gender))
+	PlayerClothing.Gunbelt.comp = joaat(("CLOTHING_ITEM_%s_GUNBELT_000_TINT_001"):format(gender))
+	PlayerSkin.Hair             = joaat(("CLOTHING_ITEM_%s_HAIR_001_BLONDE"):format(gender))
+
+	SkinColorTracker            = 1
 
 	if not male then
+		IsPedReadyToRender()
 		EquipMetaPedOutfitPreset(ped, 7)
+		UpdatePedVariation()
 	end
-
-	IsPedReadyToRender()
-	EquipMetaPedOutfitPreset(ped, 3)
-	UpdatePedVariation()
 
 	if male then
 		-- work around to fix skin on char creator
 		IsPedReadyToRender()
-		UpdateShopItemWearableState(-457866027, -425834297)
-		UpdatePedVariation()
-		IsPedReadyToRender()
-		ApplyShopItemToPed(-218859683)
-		ApplyShopItemToPed(gunbelt)
-		UpdateShopItemWearableState(-218859683, -2081918609)
+		UpdateShopItemWearableState(-457866027, -425834297) -- fixes skin
+		ApplyShopItemToPed(-218859683)                 -- might be boots cant remember
+		ApplyShopItemToPed(PlayerClothing.Gunbelt.comp)
+		UpdateShopItemWearableState(-218859683, -2081918609) -- fixes skin
 		UpdatePedVariation()
 	end
-	PlayerClothing.Gunbelt.comp    = gunbelt
-	PlayerClothing.Teeth.comp      = teeth
-	PlayerSkin.HeadType            = compHead
-	PlayerSkin.BodyType            = compBody
-	PlayerSkin.LegsType            = compLegs
-	PlayerSkin.Body                = body
-	PlayerSkin.Eyes                = compEyes
-	PlayerSkin.sex                 = model
-	PlayerSkin.albedo              = albedo
-	PlayerSkin.Hair                = hair
+
+	PlayerSkin.sex                 = male and "mp_male" or "mp_female"
 	PlayerSkin.eyebrows_visibility = 1
 	PlayerSkin.eyebrows_tx_id      = 1
 	PlayerSkin.eyebrows_opacity    = 1.0
 	PlayerSkin.eyebrows_color      = 0x3F6E70FF
 
-	FaceOverlay("eyebrows", 1, 1, 1, 0, 0, 1.0, 0, 1, 0x3F6E70FF, 0, 0, 1, 1.0)
+	ApplyOverlay("eyebrows", 1, 1, 1, 0, 0, 1.0, 0, 1, 0x3F6E70FF, 0, 0, 1, 1.0, PlayerSkin.albedo)
+
+	IsPedReadyToRender()
+	EquipMetaPedOutfitPreset(ped, 3)
+	UpdatePedVariation()
 end
 
 function EnableCharCreationPrompts(boolean)
@@ -302,18 +386,28 @@ function EnableCharCreationPrompts(boolean)
 	UiPromptSetVisible(zoomout, boolean)
 end
 
+function DeleteAllPrompts()
+	UiPromptDelete(up)
+	UiPromptDelete(down)
+	UiPromptDelete(left)
+	UiPromptDelete(right)
+	UiPromptDelete(zoomin)
+	UiPromptDelete(zoomout)
+end
+
 function CreatePlayerModel(model, peds)
 	local Gender = model == "mp_male" and "male" or "female"
 	isMale = model == "mp_male" and true or false
-	DoScreenFadeOut(0)
+	DoScreenFadeOut(10)
 	repeat Wait(0) until IsScreenFadedOut()
 
-	for key, value in pairs(peds) do
+	ShowBusyspinnerWithText(T.Other.spinnertext2)
+
+	for _, value in pairs(peds) do
 		DeleteEntity(value)
 	end
 
-	SetEntityCoords(PlayerPedId(), -558.3258, -3781.111, 237.60, true, true, true, false)
-	SetEntityHeading(PlayerPedId(), 93.2)
+	SetEntityCoordsAndHeading(PlayerPedId(), -558.5060302734375, -3781.050048828125, 237.60, 93.2, true, false, true)
 	LoadPlayer(model)
 	SetPlayerModel(PlayerId(), joaat(model), false)
 	SetModelAsNoLongerNeeded(model)
@@ -323,25 +417,34 @@ function CreatePlayerModel(model, peds)
 	DefaultPedSetup(PlayerPedId(), isMale)
 	Wait(1000)
 	IsInCharCreation = true
+	IsCharCreationFinished = false
 	RegisterGenderPrompt()
 	CreateThread(function()
 		StartPrompts()
 	end)
 	EnableCharCreationPrompts(true)
-	local Clothing = OrganiseClothingData(Gender)
-	RemoveTagFromMetaPed(0x3F1F01E5)
+	Clothing = OrganiseClothingData(Gender)
+	RemoveTagFromMetaPed(Config.ComponentCategories.Teeth)
 	UpdatePedVariation(PlayerPedId())
 	SetEntityVisible(PlayerPedId(), true)
 	SetEntityInvincible(PlayerPedId(), true)
 	SetPedScale(PlayerPedId(), 1.0)
 	RenderScriptCams(true, true, 1000, true, true, 0)
 	CreateThread(function()
-		DrawLight()
+		while IsInCharCreation do
+			Wait(0)
+			FreezeEntityPosition(PlayerPedId(), false)
+			DrawLightWithRange(-560.1646, -3782.066, 238.5975, 250, 250, 250, 7.0, 30.0)
+		end
 	end)
 	Wait(2000)
+	ApplyDefaultClothing()
+	SetFacialIdleAnimOverride(PlayerPedId(), "mood_normal_zoom", "FACE_HUMAN@GEN_MALE@BASE")
+	ForcePedMotionState(PlayerPedId(), `MotionState_DoNothing`, false, 0, false)
+	PrepareCreatorMusic()
+	setInteriors(isMale)
+	OpenCharCreationMenu(Clothing, false)
+	BusyspinnerOff()
 	DoScreenFadeIn(3000)
 	repeat Wait(0) until IsScreenFadedIn()
-	ApplyDefaultClothing()
-	PrepareCreatorMusic()
-	OpenCharCreationMenu(Clothing, false)
 end
