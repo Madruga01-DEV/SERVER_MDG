@@ -4,26 +4,23 @@ RedM menu API
 
 # insatallation
 
-- `ensure vorp_menu` in the top of your resources.cfg 
+- `ensure vorp_menu` in the top of your resources/server.cfg 
+
+# Documentation
+
+[vorp_menu](https://docs.vorp-core.com/api-reference/menu)
 
 
-# features
-- supports all resolutions
-- menu is responsive width and height 
-- descriptions use now wrapping 
-- text are centralized
-- addNewElements 
-- removeElementByindex
-- removeElementByvalue
-- each elements has a height option 
+## Images
 
-and many more features
+![image](https://github.com/user-attachments/assets/70c83c6d-69b3-4c1c-ad3f-4d325b30db34)
+![image](https://github.com/user-attachments/assets/4aa44c68-b1d5-4b6c-aa0a-44bcf0f3d50c)
 
-<img width="310" alt="image" src="https://user-images.githubusercontent.com/87246847/177007395-6230bbb6-22cc-459d-8b7b-aa8eced04050.png">
 
+## video
+https://github.com/user-attachments/assets/01808aae-41e9-42ab-87f6-a003a5bfe921
 
 
 
 # Credits
-
 * @SLIZZARN
