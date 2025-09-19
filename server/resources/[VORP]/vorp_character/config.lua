@@ -1,5 +1,5 @@
 -- check translation file to see if your language is available or add it.
-Lang = "English"
+Lang = "Portuguese_BR"
 
 Config = {}
 
@@ -25,7 +25,7 @@ Config.UseInitialAnimScene = true
 Config.ShowGold = false
 
 -- set false to not show character description on selction menu
-Config.showchardesc = true
+Config.showchardesc = false
 
 
 -- after creating character player will spawn here

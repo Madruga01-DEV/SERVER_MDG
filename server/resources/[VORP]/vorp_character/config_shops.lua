@@ -1,6 +1,6 @@
 ConfigShops                      = {}
 
-ConfigShops.UseShops             = true  -- if you want to use the shops set to true if not set to false
+ConfigShops.UseShops             = false  -- if you want to use the shops set to true if not set to false
 
 ConfigShops.SecondChancePrice    = 15000 -- if store is second chance then this is the price they need to pay to use it
 
