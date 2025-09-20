@@ -116,7 +116,7 @@ end
 
 --
 Citizen.CreateThread(function()
-	if GetCurrentResourceName() ~= "mdg_chat" then -- There will be problems with the script if the name is changed...
+	if GetCurrentResourceName() ~= "chat" then -- There will be problems with the script if the name is changed...
 		print("^1=====================================")
 		print("^1NOME DO SCRIPT DIFERENTE DO ORIGINAL")
 		print("^1HAVERÁ/PODERÁ HAVER PROBLEMAS COM O SCRIPT SE O NOME FOR ALTERADO")
