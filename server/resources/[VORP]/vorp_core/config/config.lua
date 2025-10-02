@@ -26,7 +26,7 @@ Config = {
     --=============================================
 
     initGold               = 0.0,          -- Initial gold amount for new players.
-    initMoney              = 0.0,        -- Initial money amount for new players.
+    initMoney              = 100.0,        -- Initial money amount for new players.
     initRol                = 0.0,          -- Initial role-play currency amount for new players.
     initInvCapacity        = 60.0,         -- Initial number of character inventory weight for new players. for old characters you must change in the database if you dont ave a new server
     initXp                 = 0,            -- Initial experience points for new players.

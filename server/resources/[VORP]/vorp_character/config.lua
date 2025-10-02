@@ -1016,6 +1016,7 @@ Config.DefaultChar = {
             "CLOTHING_ITEM_%s_BODIES_UPPER_003_V_001",
             "CLOTHING_ITEM_%s_BODIES_UPPER_004_V_001",
             "CLOTHING_ITEM_%s_BODIES_UPPER_005_V_001",
+            "CLOTHING_ITEM_%s_BODIES_UPPER_006_V_001"
         },
         Legs = {
             "CLOTHING_ITEM_%s_BODIES_LOWER_001_V_001",
@@ -1023,6 +1024,7 @@ Config.DefaultChar = {
             "CLOTHING_ITEM_%s_BODIES_LOWER_003_V_001",
             "CLOTHING_ITEM_%s_BODIES_LOWER_004_V_001",
             "CLOTHING_ITEM_%s_BODIES_LOWER_005_V_001",
+            "CLOTHING_ITEM_%s_BODIES_LOWER_006_V_001"
         },
 
         Albedo = {
@@ -1060,6 +1062,7 @@ Config.DefaultChar = {
             "CLOTHING_ITEM_%s_BODIES_UPPER_003_V_002",
             "CLOTHING_ITEM_%s_BODIES_UPPER_004_V_002",
             "CLOTHING_ITEM_%s_BODIES_UPPER_005_V_002",
+            "CLOTHING_ITEM_%s_BODIES_UPPER_006_V_002",
         },
         Legs = {
             "CLOTHING_ITEM_%s_BODIES_LOWER_001_V_002",
@@ -1067,6 +1070,7 @@ Config.DefaultChar = {
             "CLOTHING_ITEM_%s_BODIES_LOWER_003_V_002",
             "CLOTHING_ITEM_%s_BODIES_LOWER_004_V_002",
             "CLOTHING_ITEM_%s_BODIES_LOWER_005_V_002",
+            "CLOTHING_ITEM_%s_BODIES_LOWER_006_V_002",
         },
 
         Albedo = { "MP_HEAD_%sR1_SC01_C0_000_AB" },
@@ -1103,6 +1107,7 @@ Config.DefaultChar = {
             "CLOTHING_ITEM_%s_BODIES_UPPER_003_V_003",
             "CLOTHING_ITEM_%s_BODIES_UPPER_004_V_003",
             "CLOTHING_ITEM_%s_BODIES_UPPER_005_V_003",
+            "CLOTHING_ITEM_%s_BODIES_UPPER_006_V_003",
         },
         Legs = {
             "CLOTHING_ITEM_%s_BODIES_LOWER_001_V_003",
@@ -1110,6 +1115,7 @@ Config.DefaultChar = {
             "CLOTHING_ITEM_%s_BODIES_LOWER_003_V_003",
             "CLOTHING_ITEM_%s_BODIES_LOWER_004_V_003",
             "CLOTHING_ITEM_%s_BODIES_LOWER_005_V_003",
+            "CLOTHING_ITEM_%s_BODIES_LOWER_006_V_003",
         },
 
         Albedo = { "MP_HEAD_%sR1_SC02_C0_000_AB" },
@@ -1146,6 +1152,7 @@ Config.DefaultChar = {
             "CLOTHING_ITEM_%s_BODIES_UPPER_003_V_004",
             "CLOTHING_ITEM_%s_BODIES_UPPER_004_V_004",
             "CLOTHING_ITEM_%s_BODIES_UPPER_005_V_004",
+            "CLOTHING_ITEM_%s_BODIES_UPPER_006_V_004",
         },
         Legs = {
             "CLOTHING_ITEM_%s_BODIES_LOWER_001_V_004",
@@ -1153,6 +1160,7 @@ Config.DefaultChar = {
             "CLOTHING_ITEM_%s_BODIES_LOWER_003_V_004",
             "CLOTHING_ITEM_%s_BODIES_LOWER_004_V_004",
             "CLOTHING_ITEM_%s_BODIES_LOWER_005_V_004",
+            "CLOTHING_ITEM_%s_BODIES_LOWER_006_V_004",
         },
 
         Albedo = { "MP_HEAD_%sR1_SC03_C0_000_AB" },
@@ -1188,6 +1196,7 @@ Config.DefaultChar = {
             "CLOTHING_ITEM_%s_BODIES_UPPER_003_V_005",
             "CLOTHING_ITEM_%s_BODIES_UPPER_004_V_005",
             "CLOTHING_ITEM_%s_BODIES_UPPER_005_V_005",
+            "CLOTHING_ITEM_%s_BODIES_UPPER_006_V_005",
         },
         Legs = {
             "CLOTHING_ITEM_%s_BODIES_LOWER_001_V_005",
@@ -1195,6 +1204,7 @@ Config.DefaultChar = {
             "CLOTHING_ITEM_%s_BODIES_LOWER_003_V_005",
             "CLOTHING_ITEM_%s_BODIES_LOWER_004_V_005",
             "CLOTHING_ITEM_%s_BODIES_LOWER_005_V_005",
+            "CLOTHING_ITEM_%s_BODIES_LOWER_006_V_005",
         },
 
         Albedo = { "MP_HEAD_%sR1_SC04_C0_000_AB" },
@@ -1230,6 +1240,7 @@ Config.DefaultChar = {
             "CLOTHING_ITEM_%s_BODIES_UPPER_003_V_006",
             "CLOTHING_ITEM_%s_BODIES_UPPER_004_V_006",
             "CLOTHING_ITEM_%s_BODIES_UPPER_005_V_006",
+            "CLOTHING_ITEM_%s_BODIES_UPPER_006_V_006",
         },
         Legs = {
             "CLOTHING_ITEM_%s_BODIES_LOWER_001_V_006",
@@ -1237,6 +1248,7 @@ Config.DefaultChar = {
             "CLOTHING_ITEM_%s_BODIES_LOWER_003_V_006",
             "CLOTHING_ITEM_%s_BODIES_LOWER_004_V_006",
             "CLOTHING_ITEM_%s_BODIES_LOWER_005_V_006",
+            "CLOTHING_ITEM_%s_BODIES_LOWER_006_V_006",
         },
 
         Albedo = { "MP_HEAD_%sR1_SC05_C0_000_AB" },
