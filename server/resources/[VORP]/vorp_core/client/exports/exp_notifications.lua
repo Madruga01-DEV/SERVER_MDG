@@ -7,7 +7,7 @@ end)
 exports("DisplayLeftNotification", function(title, subTitle, dict, icon, duration, color)
   VorpNotification:NotifyLeft(tostring(title), tostring(subTitle), tostring(dict), tostring(icon), tonumber(duration),
     (tostring(color) or "COLOR_WHITE"))
-end) 
+end)
 
 exports("DisplayTopCenterNotification", function(text, location, duration)
   VorpNotification:NotifyTop(tostring(text), tostring(location), tonumber(duration))
@@ -30,10 +30,6 @@ exports("ShowAdvancedRightNotification", function(_text, _dict, icon, text_color
     tonumber(duration), quality, showquality)
 end)
 
-exports("ShowBasicTopNotification", function(text, duration)
-  VorpNotification:NotifyBasicTop(tostring(text), tonumber(duration))
-end)
- 
 exports("ShowSimpleCenterText", function(text, duration, text_color)
   VorpNotification:NotifyCenter(tostring(text), tonumber(duration), tostring(text_color))
 end)
@@ -62,4 +58,16 @@ end)
 exports("LeftRank", function(title, subTitle, dict, icon, duration, color)
   VorpNotification:NotifyLeftRank(tostring(title), tostring(subTitle), tostring(dict), tostring(icon), tonumber(duration),
     (tostring(color)))
+end)
+
+exports("ThreeSimpleTop", function(title, subtitle, secondary_subtitle, duration)
+  VorpNotification:NotifyThreeSimpleTop(tostring(title), tostring(subtitle), tostring(secondary_subtitle), tonumber(duration))
+end)
+
+exports("OneSimpleTop", function(title, duration)
+  VorpNotification:NotifyOneSimpleTop(tostring(title), tonumber(duration))
+end)
+
+exports("LeftInteractive", function(title, description, description_2, dict, texture, soundDict, soundName, duration, color)
+  VorpNotification:NotifyLeftInteractive(tostring(title), tostring(description), tostring(description_2), tostring(dict), tostring(texture), tostring(soundDict), tostring(soundName), tonumber(duration), tostring(color))
 end)

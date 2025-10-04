@@ -9,48 +9,47 @@ local function CheckWhitelistStatusOnConnect(identifier)
     return false
 end
 
-function GetSteamID(src)
-    local steamId = GetPlayerIdentifierByType(src, 'steam')
-    return steamId
-end
-
 function GetDiscordID(src)
     local discordId = GetPlayerIdentifierByType(src, 'discord')
     local discordIdentifier = discordId and discordId:sub(9) or ""
     return discordIdentifier
 end
 
-function GetLicenseID(src)
-    local sid = GetPlayerIdentifiers(src)[2] or false
-    if (sid == false or sid:sub(1, 5) ~= "license") then
-        return false
+local function checkBannedUser(setKickReason, deferrals, identifier)
+    local resultList = MySQL.single.await('SELECT banned, banneduntil FROM users WHERE identifier = ?', { identifier })
+
+    if resultList then
+        local user = resultList
+        if user.banned == true then
+            local bannedUntilTime = user.banneduntil
+            local currentTime = tonumber(os.time(os.date("!*t")))
+
+            if bannedUntilTime == 0 then
+                deferrals.done(T.permanentlyBan)
+                setKickReason(T.permanentlyBan)
+            elseif bannedUntilTime > currentTime then
+                local bannedUntil = os.date(Config.DateTimeFormat, bannedUntilTime + Config.TimeZoneDifference * 3600)
+                deferrals.done(T.BannedUser .. bannedUntil .. Config.TimeZone)
+                setKickReason(T.BannedUser .. bannedUntil .. Config.TimeZone)
+            else
+                TriggerEvent("vorpbans:addtodb", false, identifier, 0)
+            end
+        end
     end
-    return sid
+    deferrals.done()
 end
 
 AddEventHandler("playerConnecting", function(playerName, setKickReason, deferrals)
     local _source = source
     deferrals.defer()
-    local steamIdentifier = GetSteamID(_source)
 
+    local steamIdentifier = GetPlayerIdentifierByType(_source, 'steam')
+
+    Wait(1)
     if not steamIdentifier then
         deferrals.done(T.NoSteam)
         setKickReason(T.NoSteam)
         return CancelEvent()
-    end
-
-    if Config.CheckDoubleAccounts then
-        if _users[steamIdentifier] then
-            deferrals.done(T.TwoAccounts)
-            setKickReason(T.TwoAccounts2)
-            return CancelEvent()
-        end
-
-        if _usersLoading[steamIdentifier] then
-            deferrals.done(T.AccountEarlyLoad)
-            setKickReason(T.AccountEarlyLoad2)
-            return CancelEvent()
-        end
     end
 
     if Config.Whitelist then
@@ -68,10 +67,11 @@ AddEventHandler("playerConnecting", function(playerName, setKickReason, deferral
     end
 
     deferrals.update(T.LoadingUser)
+    checkBannedUser(setKickReason, deferrals, steamIdentifier)
 
-    LoadUser(_source, setKickReason, deferrals, steamIdentifier, GetLicenseID(_source))
-    if playerName and Config.PrintPlayerInfoOnEnter then
-        print("Player ^2" .. playerName .. " ^7steam: ^3" .. steamIdentifier .. "^7 Loading...")
+    if Logs.EnableWebhookJoinleave then
+        local finaltext = string.format(T.PlayerJoinLeave.Join, playerName, steamIdentifier)
+        TriggerEvent("vorp_core:addWebhook", T.JoinTitle, Logs.JoinWebhookURL, finaltext)
     end
 
     --TODO  this can de added as default in class characters
@@ -83,11 +83,9 @@ end)
 AddEventHandler('playerJoining', function()
     local _source = source
 
-    if not Config.Whitelist then
-        return
-    end
+    if not Config.Whitelist then return end
 
-    local identifier = GetSteamID(_source)
+    local identifier = GetPlayerIdentifierByType(_source, 'steam')
     local discordId = GetDiscordID(_source)
     local userid = Whitelist.Functions.GetUserId(identifier)
 
@@ -95,7 +93,8 @@ AddEventHandler('playerJoining', function()
         if not Whitelist.Functions.GetFirstConnection(userid) then
             local steamName = GetPlayerName(_source) or ""
             local message = string.format(Translation[Lang].addWebhook.whitelistid, steamName, identifier, discordId, userid)
-            TriggerEvent("vorp_core:addWebhook", Translation[Lang].addWebhook.whitelistid1, Config.NewPlayerWebhook, message)
+            local webhook = "" -- add your webhook here if you use white list
+            TriggerEvent("vorp_core:addWebhook", Translation[Lang].addWebhook.whitelistid1, webhook, message)
             Whitelist.Functions.SetFirstConnection(userid, false)
         end
     end

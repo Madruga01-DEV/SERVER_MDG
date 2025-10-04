@@ -208,7 +208,6 @@ function CoreAction.Utils.LoadModel(hash)
     if not HasModelLoaded(hash) then
         RequestModel(hash, false)
         repeat Wait(0) until HasModelLoaded(hash)
-        return true
     end
 
     return true
@@ -218,7 +217,6 @@ function CoreAction.Utils.LoadTexture(hash)
     if not HasStreamedTextureDictLoaded(hash) then
         RequestStreamedTextureDict(hash, true)
         repeat Wait(0) until HasStreamedTextureDictLoaded(hash)
-        return true
     end
     return true
 end

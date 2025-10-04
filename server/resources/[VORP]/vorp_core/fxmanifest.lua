@@ -22,6 +22,7 @@ client_scripts {
 }
 
 server_scripts {
+    'config/logs.lua',
     '@oxmysql/lib/MySQL.lua',
     'server/class/*.lua',
     'config/commands.lua',
@@ -35,7 +36,7 @@ files {
 
 ui_page 'ui/index.html'
 
-version '3.1'
+version '3.2'
 vorp_checker 'yes'
 vorp_name '^4Resource version Check^3'
 vorp_github 'https://github.com/VORPCORE/vorp_core-lua'

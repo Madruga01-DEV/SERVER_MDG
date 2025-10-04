@@ -1,6 +1,5 @@
 local HealthData = {}
 local pvp = Config.PVP
-local multiplierHealth, multiplierStamina
 local T = Translation[Lang].MessageOfSystem
 local active = false
 -- FUNCTIONS
@@ -48,24 +47,30 @@ end
 
 -- PLAYERSPAWN
 AddEventHandler('playerSpawned', function()
+    exports.spawnmanager:setAutoSpawn(false)
     DoScreenFadeOut(0)
-    TriggerServerEvent('vorp_core:instanceplayers', tonumber(GetPlayerServerId(PlayerId())) + 45557)
     Citizen.InvokeNative(0x1E5B70E53DB661E5, 0, 0, 0, T.Hold, T.Load, T.Almost) --_DISPLAY_LOADING_SCREENS
     DisplayRadar(false)
     SetMinimapHideFow(false)
-    Wait(2000)
+    SetEntityCanBeDamaged(PlayerPedId(), false)
     TriggerServerEvent("vorp:playerSpawn")
+
+    Wait(2000)
     SetTimeout(7000, function()
         ShutdownLoadingScreen()
     end)
-    SetEntityCanBeDamaged(PlayerPedId(), false)
+
+    local isInSession = false
     CreateThread(function()
-        while not LocalPlayer.state.IsInSession do
+        while not isInSession do
             Wait(0)
             DisableControlAction(0, `INPUT_MP_TEXT_CHAT_ALL`, true)
             DisableControlAction(0, `INPUT_QUICK_USE_ITEM`, true)
         end
     end)
+
+    repeat Wait(1000) until LocalPlayer.state.IsInSession
+    isInSession = true
 end)
 
 --EVENTS character Innitialize
@@ -98,7 +103,11 @@ AddEventHandler('vorp:initCharacter', function(coords, heading, isdead)
     else
         local PlayerId = PlayerId()
         if Config.Loadinscreen then
-            Citizen.InvokeNative(0x1E5B70E53DB661E5, 0, 0, 0, T.Hold, T.Load, T.Almost)
+            if Config.LoadingScreenPlayerInfo then
+                Citizen.InvokeNative(0x1E5B70E53DB661E5, 0, 0, 0, LocalPlayer.state.Character.FirstName .. " " .. LocalPlayer.state.Character.LastName, "Job:" .. " " .. LocalPlayer.state.Character.JobLabel)
+            else
+                Citizen.InvokeNative(0x1E5B70E53DB661E5, 0, 0, 0, T.Hold, T.Load, T.Almost)
+            end
             Wait(Config.LoadinScreenTimer)
             Wait(1000)
             ShutdownLoadingScreen()
@@ -106,16 +115,10 @@ AddEventHandler('vorp:initCharacter', function(coords, heading, isdead)
 
         if not Config.HealthRecharge.enable then
             Citizen.InvokeNative(0x8899C244EBCF70DE, PlayerId, 0.0) -- SetPlayerHealthRechargeMultiplier
-        else
-            Citizen.InvokeNative(0x8899C244EBCF70DE, PlayerId, Config.HealthRecharge.multiplier)
-            multiplierHealth = Citizen.InvokeNative(0x22CD23BB0C45E0CD, PlayerId) -- GetPlayerHealthRechargeMultiplier
         end
 
         if not Config.StaminaRecharge.enable then
             Citizen.InvokeNative(0xFECA17CF3343694B, PlayerId, 0.0) -- SetPlayerStaminaRechargeMultiplier
-        else
-            Citizen.InvokeNative(0xFECA17CF3343694B, PlayerId, Config.StaminaRecharge.multiplier)
-            multiplierStamina = Citizen.InvokeNative(0x617D3494AD58200F, PlayerId) -- GetPlayerStaminaRechargeMultiplier
         end
 
         SetEntityCanBeDamaged(PlayerPedId(), true)
@@ -135,6 +138,9 @@ AddEventHandler('vorp:initCharacter', function(coords, heading, isdead)
             CoreAction.Admin.HealPlayer()
         end
     end
+
+    TriggerEvent("vorp_core:Client:OnPlayerSpawned")
+
     SetTimeout(2000, function()
         DoScreenFadeIn(4000)
         repeat Wait(500) until IsScreenFadedIn()
@@ -180,10 +186,10 @@ end)
 CreateThread(function()
     repeat Wait(5000) until LocalPlayer.state.IsInSession
     while true do
-        local sleep = 1000
-        local pped = PlayerPedId()
 
-        sleep = 0
+        local pped = PlayerPedId()
+        local sleep = 0
+
         if IsControlPressed(0, 0xCEFD9220) then
             active = true
             CoreAction.Utils.setPVP()
@@ -217,6 +223,9 @@ CreateThread(function()
         DisableControlAction(0, 0xCF8A4ECA, true) -- Disable hud
         DisableControlAction(0, 0x9CC7A1A4, true) -- disable special ability when open hud
         DisableControlAction(0, 0x1F6D95E5, true) -- diable f4 key that contains HUD
+        if IsUiappActiveByHash(`MAP`) == 1 then -- only when map is open incase someone needs to use the X key
+            DisableControlAction(0, `INPUT_FRONTEND_RS`, true) -- disables the x button that freezes players when in the big map
+        end
     end
 end)
 
@@ -254,30 +263,30 @@ end)
 CreateThread(function()
     repeat Wait(5000) until LocalPlayer.state.IsInSession
 
-    while true do
+    while Config.HealthRecharge.enable or Config.StaminaRecharge.enable do
         local sleep = 1000
 
         if not IsPlayerDead(PlayerId()) then
             sleep = 500
             local PlayerId = PlayerId()
-            local multiplierH = Citizen.InvokeNative(0x22CD23BB0C45E0CD, PlayerId) -- GetPlayerHealthRechargeMultiplier
+            local PlayerPed = PlayerPedId()
 
-            if multiplierHealth and multiplierHealth ~= multiplierH then
-                Wait(500)
-                Citizen.InvokeNative(0x8899C244EBCF70DE, PlayerId, Config.HealthRecharge.multiplier) -- SetPlayerHealthRechargeMultiplier
-            elseif not multiplierHealth and multiplierH then
-                Wait(500)
-                Citizen.InvokeNative(0x8899C244EBCF70DE, PlayerId, 0.0) -- SetPlayerHealthRechargeMultiplier
+            if Config.HealthRecharge.enable then
+                local NewRechargeMultiplier = GetAttributeCoreValue(PlayerPed, 0, Citizen.ResultAsInteger()) / 100 * Config.HealthRecharge.multiplier
+                local RechargeMultiplier = GetPlayerHealthRechargeMultiplier(PlayerId, Citizen.ResultAsFloat())
+                
+                if math.abs(NewRechargeMultiplier - RechargeMultiplier) > 0.01 then
+                    SetPlayerHealthRechargeMultiplier(PlayerId, NewRechargeMultiplier)
+                end
             end
 
-            local multiplierS = Citizen.InvokeNative(0x617D3494AD58200F, PlayerId) -- GetPlayerStaminaRechargeMultiplier
+            if Config.StaminaRecharge.enable then
+                local NewRechargeMultiplier = GetAttributeCoreValue(PlayerPed, 1, Citizen.ResultAsInteger()) / 100 * Config.StaminaRecharge.multiplier
+                local RechargeMultiplier = GetPlayerStaminaRechargeMultiplier(PlayerId, Citizen.ResultAsFloat())
 
-            if multiplierStamina and multiplierStamina ~= multiplierS then
-                Wait(500)
-                Citizen.InvokeNative(0xFECA17CF3343694B, PlayerId, Config.StaminaRecharge.multiplier) -- SetPlayerStaminaRechargeMultiplier
-            elseif not multiplierStamina and multiplierS then
-                Wait(500)
-                Citizen.InvokeNative(0xFECA17CF3343694B, PlayerId, 0.0) -- SetPlayerStaminaRechargeMultiplier
+                if math.abs(NewRechargeMultiplier - RechargeMultiplier) > 0.01 then
+                    SetPlayerStaminaRechargeMultiplier(PlayerId, NewRechargeMultiplier)
+                end
             end
         end
 

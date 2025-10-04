@@ -17,7 +17,7 @@ Config = {
             TriggerEvent("vorpmetabolism:changeValue", "Thirst", 1000)
             TriggerEvent("vorpmetabolism:changeValue", "Hunger", 1000)
             TriggerEvent('fred_meta:consume', 100, 100, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0) -- fred metabolism
-            TriggerEvent('bbk_metabolism:consume', 100, 100, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0)
+            TriggerEvent('mdg_metabolism:consume', 100, 100, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0)
             TriggerEvent("hud:isTalking",lastTalkingStatus)
             TriggerServerEvent("hud.decrease", "hunger", 100)
             TriggerServerEvent("hud.decrease", "thirst", 100)

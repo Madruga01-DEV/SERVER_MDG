@@ -37,15 +37,14 @@ local T = Translation[Lang].Commands
 Commands = {
     giveExp = {
         webhook = "",
-        custom = "",
-        title = "",
-        ---#end webhook
+        custom = T.giveExp.custom,
+        title = T.giveExp.title,
         commandName = "addExp",
-        label = "add experince to players, this will auto level too",
+        label = T.giveExp.label,
         suggestion = {
-            { name = "id",    help = "player id" },
-            { name = "skill", help = "skill category like Crafting" },
-            { name = "Exp",   help = "amount of experience you wish to give to player" },
+            { name = T.giveExp.name,  help = T.giveExp.help },
+            { name = T.giveExp.name1, help = T.giveExp.help1 },
+            { name = T.giveExp.name2, help = T.giveExp.help2 },
         },
         userCheck = true,
         groupAllowed = { "admin" },
@@ -56,12 +55,12 @@ Commands = {
     },
     myExp = {
         webhook = "",
-        custom = "",
-        title = "",
+        custom = T.myExp.custom,
+        title = T.myExp.title,
         commandName = "myExp",
-        label = "check your skill experience",
+        label = T.myExp.label,
         suggestion = {
-            { name = "skill", help = "skill category like Crafting" },
+            { name = T.myExp.name, help = T.myExp.help },
         },
         userCheck = false,
         groupAllowed = {},
@@ -86,6 +85,24 @@ Commands = {
         aceAllowed = 'vorpcore.setGroup.Command',
         callFunction = function(...)
             SetGroup(...)
+        end
+    },
+    addGroupCharacter = {
+        webhook = "",
+        custom = T.addGroupCharacter.custom,
+        title = T.addGroupCharacter.tittle,
+        ---#end webhook
+        commandName = "addGroupChar",
+        label = T.addGroupCharacter.label,
+        suggestion = {
+            { name = T.addGroupCharacter.name,  help = T.addGroupCharacter.help },
+            { name = T.addGroupCharacter.name1, help = T.addGroupCharacter.help1 },
+        },
+        userCheck = true,
+        groupAllowed = { "admin" },
+        aceAllowed = 'vorpcore.setGroup.Command',
+        callFunction = function(...)
+            SetGroupCharacter(...)
         end
     },
     addJob = {
@@ -179,7 +196,7 @@ Commands = {
         },
         userCheck = true,
         groupAllowed = { "admin" },
-        aceAllowed = 'vorpcore.setGroup.Command',
+        aceAllowed = 'vorpcore.addMoney.Command',
         callFunction = function(...)
             AddMoney(...)
         end
@@ -408,18 +425,6 @@ Commands = {
         aceAllowed = nil,  -- leave nil anyone can use
         callFunction = function(...)
             MyJob(...)
-        end
-    },
-    myHours = {
-        webhook = "",
-        commandName = "myHours",
-        label = T.myHours.label,
-        suggestion = {},
-        userCheck = false,
-        groupAllowed = {}, -- leave empty anyone can use
-        aceAllowed = nil,  -- leave nil anyone can use
-        callFunction = function(...)
-            MyHours(...)
         end
     },
 

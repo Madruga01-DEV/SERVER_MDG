@@ -6,7 +6,6 @@ RegisterNetEvent('vorp:TipRight')
 RegisterNetEvent('vorp:TipBottom')
 RegisterNetEvent('vorp:ShowTopNotification')
 RegisterNetEvent('vorp:ShowAdvancedRightNotification')
-RegisterNetEvent('vorp:ShowBasicTopNotification')
 RegisterNetEvent('vorp:ShowSimpleCenterText')
 RegisterNetEvent('vorp:ShowBottomRight')
 RegisterNetEvent('vorp:failmissioNotifY')
@@ -14,7 +13,9 @@ RegisterNetEvent('vorp:deadplayerNotifY')
 RegisterNetEvent('vorp:updatemissioNotify')
 RegisterNetEvent('vorp:warningNotify')
 RegisterNetEvent('vorp:LeftRank')
-
+RegisterNetEvent('vorp:ThreeSimpleTop')
+RegisterNetEvent('vorp:OneSimpleTop')
+RegisterNetEvent('vorp:LeftInteractive')
 
 AddEventHandler('vorp:NotifyLeft', function(firsttext, secondtext, dict, icon, duration, color)
     VorpNotification:NotifyLeft(tostring(firsttext), tostring(secondtext), tostring(dict), tostring(icon), tonumber(duration), (tostring(color) or "COLOR_WHITE"))
@@ -45,10 +46,6 @@ AddEventHandler('vorp:ShowAdvancedRightNotification', function(text, dict, icon,
         tostring(text_color), tonumber(duration), quality)
 end)
 
-AddEventHandler('vorp:ShowBasicTopNotification', function(text, duration)
-    VorpNotification:NotifyBasicTop(tostring(text), tonumber(duration))
-end)
-
 AddEventHandler('vorp:ShowSimpleCenterText', function(text, duration)
     VorpNotification:NotifyCenter(tostring(text), tonumber(duration))
 end)
@@ -76,4 +73,16 @@ end)
 
 AddEventHandler('vorp:LeftRank', function(title, subtitle, dict, icon, duration, color)
     VorpNotification:NotifyLeftRank(tostring(title), tostring(subtitle), tostring(dict), tostring(icon), tonumber(duration), (tostring(color)))
+end)
+
+AddEventHandler('vorp:ThreeSimpleTop', function(title, subtitle, secondary_subtitle, duration)
+    VorpNotification:NotifyThreeSimpleTop(tostring(title), tostring(subtitle), tostring(secondary_subtitle), tonumber(duration))
+end)
+
+AddEventHandler('vorp:OneSimpleTop', function(title, duration)
+    VorpNotification:NotifyOneSimpleTop(tostring(title), tonumber(duration))
+end)
+
+AddEventHandler('vorp:LeftInteractive', function(title, description, description_2, dict, texture, soundDict, soundName, duration, color)
+    VorpNotification:NotifyLeftInteractive(tostring(title), tostring(description), tostring(description_2), tostring(dict), tostring(texture), tostring(soundDict), tostring(soundName), tonumber(duration), tostring(color))
 end)

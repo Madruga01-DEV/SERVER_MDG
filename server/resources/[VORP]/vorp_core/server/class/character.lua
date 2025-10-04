@@ -6,6 +6,7 @@ local function SetState(source, key, field, newValue)
         Player(source).state:set(key, state, true)
     end
 end
+
 if not Config.Skills then
     print("Update the config Skills config missing")
     return
@@ -250,41 +251,62 @@ function Character(data)
             return
         end
 
-        self.skills[index].Exp = self.skills[index].Exp + value
+        local levelsData = Config.Skills[index].Levels
+        local oldExp = self.skills[index].Exp
+        local newExp = oldExp + value
+
+        if newExp <= 0 then
+            self.skills[index].Exp = 0
+        else
+            self.skills[index].Exp = newExp
+        end
+
         local currentExp = self.skills[index].Exp
         local currentLevel = self.skills[index].Level
         local MaxLevel = self.skills[index].MaxLevel
 
-        if MaxLevel == currentLevel then return end
+        if value < 0 then -- we are deducting exp
+            -- check if we lower level
+            if newExp < 0 and currentLevel > 1 then
+                local newLevel = currentLevel - 1
+                if not newLevel then
+                    print("New level could not be found")
+                    return
+                end
 
-        local nextLevelExp = self.skills[index].NextLevel
+                local expLoss = math.abs(value) -- Gives us how much XP was lost (as value would be negative when deducting XP)
+                local leftoverLoss = expLoss - oldExp
+                local prevLevelCap = levelsData[newLevel].NextLevel
+                local newExpInPrevLevel = prevLevelCap - leftoverLoss -- (Rollover the xp into previous level cap)
 
-        if not nextLevelExp then
-            print(("Levels are not set up in config for %s"):format(index))
-            return
-        end
+                self.skills[index].Level = newLevel
+                self.skills[index].Exp = newExpInPrevLevel
+                self.skills[index].Label = levelsData[newLevel].Label
+                self.skills[index].NextLevel = levelsData[newLevel].NextLevel
 
-        if currentExp >= nextLevelExp then
-            self.skills[index].Level = currentLevel + 1
-            self.skills[index].Exp = 0
-            TriggerClientEvent("vorp_core:Client:OnPlayerLevelUp", self.source, index, self.skills[index].Level)
-            TriggerEvent("vorp_core:Server:OnPlayerLevelUp", self.source, index, self.skills[index].Level)
-        end
-        -- this logic is for the case where the player has more exp than the next level enabling level up twice etc, which in my opinion is unlikely to happen unless you use pvp servers
-        --[[ while currentExp >= nextLevelExp and currentLevel < MaxLevel do
-            currentLevel = currentLevel + 1
-            self.skills[index].Level = currentLevel
-
-            currentExp = currentExp - nextLevelExp
-            self.skills[index].Exp = currentExp
-
-            if currentLevel == MaxLevel then
-                self.skills[index].Exp = 0
-                return
+                TriggerClientEvent("vorp_core:Client:OnPlayerLevelUp", self.source, index, self.skills[index].Level, currentLevel)
+                TriggerEvent("vorp_core:Server:OnPlayerLevelUp", self.source, index, self.skills[index].Level, currentLevel)
             end
+        else
+            if MaxLevel == currentLevel then return end
 
-            nextLevelExp = Config.Skills[index].Levels[currentLevel].NextLevel
-        end ]]
+            local nextLevelExp = self.skills[index].NextLevel
+            if currentExp > nextLevelExp then
+                local newLevel = currentLevel + 1
+                if not newLevel then
+                    print("New level could not be found")
+                    return
+                end
+
+                self.skills[index].Level = newLevel
+                self.skills[index].Exp = currentExp - nextLevelExp -- (Rollover the xp eg 102/100 will mean 2 xp into next level)
+                self.skills[index].Label = levelsData[newLevel].Label
+                self.skills[index].NextLevel = levelsData[newLevel].NextLevel
+                
+                TriggerClientEvent("vorp_core:Client:OnPlayerLevelUp", self.source, index, self.skills[index].Level, currentLevel)
+                TriggerEvent("vorp_core:Server:OnPlayerLevelUp", self.source, index, self.skills[index].Level, currentLevel)
+            end
+        end
     end
 
     self.IsDead = function(value)

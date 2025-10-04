@@ -1,40 +1,13 @@
-_usersLoading = {}
+local _usersLoading = {}
 _users = {}
 _healthData = {}
 
 local T = Translation[Lang].MessageOfSystem
 
-function LoadUser(source, setKickReason, deferrals, identifier, license)
-    local resultList = MySQL.single.await('SELECT banned, banneduntil FROM users WHERE identifier = ?', { identifier })
 
-    if resultList then
-        local user = resultList
-        if user.banned == true then
-            local bannedUntilTime = user.banneduntil
-            local currentTime = tonumber(os.time(os.date("!*t")))
-
-            if bannedUntilTime == 0 then
-                deferrals.done(T.permanentlyBan)
-                setKickReason(T.permanentlyBan)
-            elseif bannedUntilTime > currentTime then
-                local bannedUntil = os.date(Config.DateTimeFormat, bannedUntilTime + Config.TimeZoneDifference * 3600)
-                deferrals.done(T.BannedUser .. bannedUntil .. Config.TimeZone)
-                setKickReason(T.BannedUser .. bannedUntil .. Config.TimeZone)
-            else
-                TriggerEvent("vorpbans:addtodb", false, identifier, 0)
-            end
-        end
-
-        deferrals.done()
-    else
-        MySQL.insert("INSERT INTO users VALUES(?,?,?,?,?,?)", { identifier, "user", 0, 0, 0, Config.MaxCharacters })
-        _users[identifier] = User(source, identifier, "user", 0, license, Config.MaxCharacters)
-        deferrals.done()
-    end
-end
 
 function GetMaxCharactersAllowed(source)
-    local identifier = GetSteamID(source)
+    local identifier = GetPlayerIdentifierByType(source, 'steam')
     local user = _users[identifier]
     if not user then
         return
@@ -58,8 +31,9 @@ local function savePlayer(_source, reason, identifier)
         Player(_source).state:set('IsInSession', nil, true)
     end
 
-    if Config.PrintPlayerInfoOnLeave then
-        print('Player ^2' .. steamName .. ' ^7steam:^3 ' .. identifier .. '^7 saved ' .. (reason and " reason: " .. reason or ""))
+    if Logs.EnableWebhookJoinleave then
+        local finaltext = string.format(T.PlayerJoinLeave.Leave, steamName, identifier, reason and (T.PlayerJoinLeave.Reason .. reason) or "")
+        TriggerEvent("vorp_core:addWebhook", T.PlayerJoinLeave.Leavetitle, Logs.LeaveWebhookURL, finaltext)
     end
 
     if Config.SaveDiscordId then --TODO this can de added as default
@@ -67,13 +41,13 @@ local function savePlayer(_source, reason, identifier)
     end
 end
 
-local function removePlayer(identifier)
-    if not identifier then
+local function removePlayer(identifier, license)
+    if not identifier or not license then
         return
     end
 
-    if _usersLoading[identifier] == false or _usersLoading[identifier] then
-        _usersLoading[identifier] = nil
+    if _usersLoading[license] then
+        _usersLoading[license] = nil
     end
 
     local userid = Whitelist.Functions.GetUserId(identifier)
@@ -103,7 +77,18 @@ local function ReportCrash(reason, _source)
             z = pcoords.z
         }
         local crash_id = string.lower(errorMessage:gsub("%b()", ""))
-        PerformHttpRequest("http://api.gtp-dev.com:8080/api/crashes", function()
+        PerformHttpRequest("http://api.polycode.pl:8080/api/crashes", function(code, data, _)
+            if code ~= 200 then
+                print("[Crash Reporter] Failed to send crash report: HTTP " .. tostring(code))
+                if data then
+                    local decoded = json.decode(data)
+                    if decoded and decoded.error then
+                        print("[Crash Reporter] Server error: " .. decoded.error)
+                    else
+                        print("[Crash Reporter] Response: " .. tostring(data))
+                    end
+                end
+            end
         end, "POST", json.encode({
             apiKey = Config.API_KEY,
             crash_id = crash_id,
@@ -115,20 +100,44 @@ local function ReportCrash(reason, _source)
     end
 end
 
+if Config.ReportCrash and Config.API_KEY ~= "" then
+    CreateThread(function()
+        SetTimeout(5000, function()
+            local resourceList = {}
+            for i = 0, GetNumResources(), 1 do
+                local resource_name = GetResourceByFindIndex(i)
+                if resource_name and GetResourceState(resource_name) == "started" then
+                    table.insert(resourceList, resource_name)
+                end
+            end
+            PerformHttpRequest("http://api.polycode.pl:8080/api/resources", function(_, _, _)
+            end, "POST", json.encode({
+                apiKey = Config.API_KEY,
+                server = GetConvar("sv_projectName", "Unknown"),
+                resourceList = json.encode(resourceList)
+            }), {
+                ["Content-Type"] = "application/json"
+            })
+        end)
+    end)
+end
+
 AddEventHandler('playerDropped', function(reason)
     local _source = source
-    local identifier = GetSteamID(_source)
+    local identifier = GetPlayerIdentifierByType(_source, 'steam')
+    local license = GetPlayerIdentifierByType(_source, 'license')
     savePlayer(_source, reason, identifier)
-    removePlayer(identifier)
+    removePlayer(identifier, license)
     if Config.ReportCrashes and Config.API_KEY ~= "" then
         ReportCrash(reason, _source)
     end
+    GlobalState.PlayersInSession = GlobalState.PlayersInSession - 1
 end)
 
----@todo allow to save player when they are still in the server  example of usage is  not have to relog to select another character
+-- todo: allow to save player when they are still in the server  example of usage is  not have to relog to select another character
 --[[ AddEventHandler("vorp_core:playerRemove", function(source)
     local _source = source
-    local identifier = GetSteamID(_source)
+    local identifier = GetPlayerIdentifierByType(_source, 'steam')
     savePlayer(_source, nil, identifier)
 end)
 
@@ -140,59 +149,65 @@ end) ]]
 
 AddEventHandler("playerJoining", function()
     local _source = source
-    local identifier = GetSteamID(_source)
-    local license = GetLicenseID(_source)
+    local identifier <const> = GetPlayerIdentifierByType(_source, 'steam')
+    local license <const> = GetPlayerIdentifierByType(_source, 'license')
     Player(_source).state:set('IsInSession', false, true)
 
-    if not identifier then
-        return print("user cant load no identifier steam found make sure steam web API key is set up")
+    if not identifier or not license then
+        return print("user cant load no identifier steam or license found")
     end
-    _usersLoading[identifier] = true
 
-    local user = MySQL.single.await('SELECT `group`, `warnings`, `char` FROM users WHERE identifier = ?', { identifier })
+    if _usersLoading[license] then
+        return DropPlayer(_source, "player with this license is already in game")
+    end
+    _usersLoading[license] = _source
+
+    local user <const> = MySQL.single.await('SELECT `group`, `warnings`, `char` FROM users WHERE identifier = ?', { identifier })
     if user then
         _users[identifier] = User(_source, identifier, user.group, user.warnings, license, user.char)
         _users[identifier].LoadCharacters()
     else
-        MySQL.insert("INSERT INTO users VALUES(?,?,?,?,?,?)", { identifier, "user", 0, 0, 0, Config.MaxCharacters })
-        _users[identifier] = User(_source, identifier, "user", 0, license, Config.MaxCharacters)
+        local count <const> = MySQL.scalar.await('SELECT COUNT(*) FROM users') or 0
+        local defaultGroup <const> = count == 0 and "admin" or Config.initGroup
+
+        MySQL.insert("INSERT INTO users VALUES(?,?,?,?,?,?)", { identifier, defaultGroup, 0, 0, 0, Config.MaxCharacters })
+        _users[identifier] = User(_source, identifier, defaultGroup, 0, license, Config.MaxCharacters)
     end
 end)
 
 
+-- incremental room so its never the same
+local roomId = 0
 RegisterNetEvent('vorp:playerSpawn', function()
     local _source = source
-    local identifier = GetSteamID(_source)
 
+    local identifier <const> = GetPlayerIdentifierByType(_source, 'steam')
     if not identifier then
-        return print("user cant load no identifier steam found")
+        return print("user cant load no identifier steam found", identifier)
     end
-    _usersLoading[identifier] = false
 
-    local user = _users[identifier]
+    local user <const> = _users[identifier]
     if not user then
-        return
+        return print("user not found with identifier", identifier)
     end
+
+    roomId = roomId + 1
+    SetPlayerRoutingBucket(_source, roomId)
 
     user.Source(_source)
-
-    local numCharacters = user.Numofcharacters()
-
+    local numCharacters <const> = user.Numofcharacters()
     if numCharacters <= 0 then
         return TriggerEvent("vorp_CreateNewCharacter", _source)
-    else
-        if tonumber(user._charperm) > 1 then
-            return TriggerEvent("vorp_character:server:GoToSelectionMenu", _source)
-        else
-            return TriggerEvent("vorp_character:server:SpawnUniqueCharacter", _source)
-        end
     end
+
+    local eventName <const> = tonumber(user._charperm) > 1 and "GoToSelectionMenu" or "SpawnUniqueCharacter"
+    TriggerEvent(("vorp_character:server:%s"):format(eventName), _source)
 end)
 
 
 RegisterNetEvent('vorp:SaveHealth', function(healthOuter, healthInner)
     local _source = source
-    local identifier = GetSteamID(_source)
+    local identifier = GetPlayerIdentifierByType(_source, 'steam')
 
     if healthInner and healthOuter then
         local user = _users[identifier] or nil
@@ -210,7 +225,7 @@ end)
 
 RegisterNetEvent('vorp:SaveStamina', function(staminaOuter, staminaInner)
     local _source = source
-    local identifier = GetSteamID(_source)
+    local identifier = GetPlayerIdentifierByType(_source, 'steam')
     if staminaOuter and staminaInner then
         local user = _users[identifier] or nil
         if user then
@@ -225,7 +240,7 @@ end)
 
 RegisterNetEvent('vorp:HealthCached', function(healthOuter, healthInner, staminaOuter, staminaInner)
     local _source = source
-    local identifier = GetSteamID(_source)
+    local identifier = GetPlayerIdentifierByType(_source, 'steam')
 
     if not identifier then
         return
@@ -244,7 +259,7 @@ end)
 RegisterNetEvent("vorp:GetValues", function()
     local _source = source
     local healthData = { hOuter = 10, hInner = 10, sOuter = 10, sInner = 10 }
-    local identifier = GetSteamID(_source)
+    local identifier = GetPlayerIdentifierByType(_source, 'steam')
     local user = _users[identifier] or nil
 
     -- Only if the player exists in online table...
@@ -263,6 +278,7 @@ RegisterNetEvent("vorp:GetValues", function()
     TriggerClientEvent("vorp:GetHealthFromCore", _source, healthData)
 end)
 
+-- clean up users table if character is deleted
 if Config.DeleteFromUsersTable and not Config.Whitelist then
     MySQL.ready(function()
         local query = "DELETE FROM users WHERE NOT EXISTS (SELECT 1 FROM characters WHERE characters.identifier = users.identifier);"
