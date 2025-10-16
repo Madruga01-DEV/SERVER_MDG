@@ -120,7 +120,7 @@ Citizen.CreateThread(function()
 		print("^1=====================================")
 		print("^1NOME DO SCRIPT DIFERENTE DO ORIGINAL")
 		print("^1HAVERÁ/PODERÁ HAVER PROBLEMAS COM O SCRIPT SE O NOME FOR ALTERADO")
-		print("^1MUDAR NOME PARA: ^mdg_chat^1")
+		print("^1MUDAR NOME PARA: ^chat^1")
 		print("^1=====================================^0")
 	end
 end)
@@ -131,7 +131,7 @@ AddEventHandler('onResourceStart', function(resourceName)
 		return
 	end
 	print('^6 '..resourceName..'^2 Carregado com sucesso ^7')
-	print('^1 Desenvolvido por Mdg ^7')
+	print('^1 Desenvolvido por VLT ^7')
 	print('^7 Se você tiver alguma dúvida ou precisar de suporte, junte-se:^5 https://discord.gg/ueDwVpvnyv ^7')
 end)
 --
