@@ -27,7 +27,3 @@ files {
 
 ui_page 'ui/index.html'
 
-version '1.1'
-vorp_checker 'yes'
-vorp_name '^4Resource version Check^3'
-vorp_github 'https://github.com/VORPCORE/vorp_zonenotify'
