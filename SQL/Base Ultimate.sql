@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
--- Anfitrião:                    127.0.0.1
--- Versão do servidor:           10.4.32-MariaDB - mariadb.org binary distribution
--- SO do servidor:               Win64
--- HeidiSQL Versão:              12.11.0.7065
+-- Servidor:                     127.0.0.1
+-- Versão do servidor:           10.4.28-MariaDB - mariadb.org binary distribution
+-- OS do Servidor:               Win64
+-- HeidiSQL Versão:              12.5.0.6677
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -15,11 +15,11 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- A despejar estrutura da base de dados para mdg_ultimate
+-- Copiando estrutura do banco de dados para mdg_ultimate
 CREATE DATABASE IF NOT EXISTS `mdg_ultimate` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci */;
 USE `mdg_ultimate`;
 
--- A despejar estrutura para procedimento mdg_ultimate.AlterTableMail
+-- Copiando estrutura para procedure mdg_ultimate.AlterTableMail
 DELIMITER //
 CREATE PROCEDURE `AlterTableMail`()
 BEGIN
@@ -72,27 +72,25 @@ BEGIN
 END//
 DELIMITER ;
 
--- A despejar estrutura para tabela mdg_ultimate.animations
+-- Copiando estrutura para tabela mdg_ultimate.animations
 CREATE TABLE IF NOT EXISTS `animations` (
   `charid` int(11) NOT NULL,
   `steam` varchar(255) DEFAULT NULL,
   `animations` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.animations: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.animations: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.animationsfavorite
+-- Copiando estrutura para tabela mdg_ultimate.animationsfavorite
 CREATE TABLE IF NOT EXISTS `animationsfavorite` (
   `charid` int(11) NOT NULL DEFAULT 0,
   `steam` varchar(255) DEFAULT NULL,
   `favorite` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.animationsfavorite: ~1 rows (aproximadamente)
-INSERT INTO `animationsfavorite` (`charid`, `steam`, `favorite`) VALUES
-	(1, 'steam:11000013527d62e', '{"favorite1":"","favorite8":"","favorite3":"","favorite11":"","favorite7":"","favorite5":"","favorite10":"","favorite9":"","favorite2":"","favorite6":"","favorite12":"","favorite4":""}');
+-- Copiando dados para a tabela mdg_ultimate.animationsfavorite: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.bills
+-- Copiando estrutura para tabela mdg_ultimate.bills
 CREATE TABLE IF NOT EXISTS `bills` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `job` longtext DEFAULT NULL,
@@ -105,9 +103,9 @@ CREATE TABLE IF NOT EXISTS `bills` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.bills: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.bills: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.birds
+-- Copiando estrutura para tabela mdg_ultimate.birds
 CREATE TABLE IF NOT EXISTS `birds` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(60) NOT NULL,
@@ -120,9 +118,9 @@ CREATE TABLE IF NOT EXISTS `birds` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.birds: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.birds: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.characters
+-- Copiando estrutura para tabela mdg_ultimate.characters
 CREATE TABLE IF NOT EXISTS `characters` (
   `identifier` varchar(50) NOT NULL DEFAULT '',
   `steamname` varchar(50) NOT NULL DEFAULT '',
@@ -168,6 +166,8 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `info` longtext DEFAULT '{}',
   `mdg_faxina` int(11) DEFAULT 0,
   `trust` int(11) DEFAULT 0,
+  `hud_positions` text DEFAULT NULL,
+  `VLT_sweep` int(11) DEFAULT 0,
   UNIQUE KEY `identifier_charidentifier` (`identifier`,`charidentifier`) USING BTREE,
   KEY `charidentifier` (`charidentifier`) USING BTREE,
   KEY `identifier` (`identifier`),
@@ -179,13 +179,11 @@ CREATE TABLE IF NOT EXISTS `characters` (
   KEY `steamname` (`steamname`),
   KEY `info` (`info`(768)),
   CONSTRAINT `FK_characters_users` FOREIGN KEY (`identifier`) REFERENCES `users` (`identifier`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
 
--- A despejar dados para tabela mdg_ultimate.characters: ~1 rows (aproximadamente)
-INSERT INTO `characters` (`identifier`, `steamname`, `charidentifier`, `group`, `money`, `gold`, `rol`, `xp`, `healthouter`, `healthinner`, `staminaouter`, `staminainner`, `hours`, `LastLogin`, `inventory`, `slots`, `job`, `joblabel`, `meta`, `firstname`, `lastname`, `character_desc`, `gender`, `age`, `nickname`, `skinPlayer`, `compPlayer`, `compTints`, `jobgrade`, `coords`, `status`, `isdead`, `skills`, `walk`, `gunsmith`, `ammo`, `discordid`, `lastjoined`, `motel`, `moonshineenty`, `clan`, `info`, `mdg_faxina`, `trust`) VALUES
-	('steam:11000013527d62e', 'Jão Raiado', 1, 'admin', 179.30, 0.00, 0.00, 0, 500, 100, 500, 100, 0, '2025-08-30', '{}', 60.0, 'admin', '0 ', '{"Thirst":69.77,"Hunger":93.77,"Stress":0.8,"Metabolism":4924.5}', 'Madruga', 'Dev', 'none', 'Male', 30, 'none', '{"blush_palette_id":0,"shadows_palette_color_tertiary":0,"ChinH":0.0,"NoseAng":0.0,"NeckW":0.0,"foundation_palette_color_secondary":0,"NoseW":0.0,"shadows_palette_color_primary":0,"scars_tx_id":0,"MouthX":0.0,"ageing_opacity":0,"complex_tx_id":0,"Eyes":612262189,"EyeD":0.0,"CheekBonesD":0.0,"spots_opacity":0,"hair_color_primary":0,"paintedmasks_palette_color_tertiary":0,"shadows_tx_id":0,"shadows_opacity":0,"MouthCRLD":0.0,"NeckD":0.0,"foundation_opacity":0,"albedo":1590586643,"ArmsS":0.0,"lipsticks_opacity":0,"beardstabble_opacity":0,"ShouldersM":0.0,"MouthD":0.0,"acne_opacity":0,"NoseDis":0.0,"NoseS":0.0,"FaceS":0.0,"ULiphW":0.0,"FaceW":0.0,"paintedmasks_palette_id":0,"foundation_visibility":0,"lipsticks_palette_color_secondary":0,"LegsType":1207869376,"shadows_visibility":0,"paintedmasks_palette_color_secondary":0,"MouthY":0.0,"Waist":-644349862,"eyebrows_opacity":1.0,"EyeLidW":0.0,"LegsS":0.0,"eyeliner_tx_id":0,"HeadType":2063814808,"HipsS":0.0,"EyeAng":0.0,"EyeDis":0.0,"eyeliner_color_primary":0,"eyebrows_tx_id":1,"beardstabble_tx_id":0,"spots_visibility":0,"ageing_tx_id":0,"MouthCRW":0.0,"Body":2362013313,"Torso":1180660122,"foundation_palette_id":0,"hair_opacity":0,"LLiphH":0.0,"eyeliner_palette_id":0,"WaistW":0.0,"ChestS":0.0,"sex":"mp_male","foundation_tx_id":0,"JawD":0.0,"ShouldersS":0.0,"MouthW":0.0,"ULiphH":0.0,"beardstabble_visibility":0,"LLiphD":0.0,"EyeLidL":0.0,"HeadSize":0.0,"MouthCLW":0.0,"disc_opacity":0,"scars_opacity":0,"ChinD":0.0,"freckles_visibility":0,"spots_tx_id":0,"CheekBonesH":0.0,"blush_palette_color_primary":0,"hair_tx_id":0,"acne_visibility":0,"LLiphW":0.0,"grime_opacity":0,"hair_visibility":0,"paintedmasks_visibility":0,"eyeliner_visibility":0,"MouthCLLD":0.0,"EarsD":0.0,"FaceD":0.0,"Scale":0.0,"blush_visibility":0,"EyeBrowW":0.0,"grime_visibility":0,"acne_tx_id":0,"lipsticks_tx_id":0,"shadows_palette_id":0,"CalvesS":0.0,"EyeBrowH":0.0,"EarsW":0.0,"moles_visibility":0,"EyeLidR":0.0,"JawH":0.0,"ULiphD":0.0,"EyeH":0.0,"grime_tx_id":0,"paintedmasks_tx_id":0,"EyeBrowD":0.0,"complex_visibility":0,"scars_visibility":0,"foundation_palette_color_tertiary":0,"disc_visibility":0,"complex_opacity":0,"MouthCLD":0.0,"lipsticks_palette_id":0,"EarsH":0.0,"NoseH":0.0,"ageing_visibility":0,"EyeLidH":0.0,"MouthCLH":0.0,"moles_tx_id":0,"ChinW":0.0,"CheekBonesW":0.0,"freckles_tx_id":0,"beardstabble_color_primary":0,"eyebrows_color":1064202495,"blush_tx_id":0,"lipsticks_visibility":0,"MouthCRH":0.0,"MouthCRD":0.0,"Hair":3536417625,"foundation_palette_color_primary":0,"paintedmasks_opacity":0,"eyebrows_visibility":1,"blush_opacity":0,"paintedmasks_palette_color_primary":0,"lipsticks_palette_color_primary":0,"moles_opacity":0,"Beard":0,"EarsA":0.0,"disc_tx_id":0,"shadows_palette_color_secondary":0,"BodyType":-369348190,"eyeliner_opacity":0,"freckles_opacity":0,"lipsticks_palette_color_tertiary":0,"NoseC":0.0,"ShouldersT":0.0,"JawW":0.0}', '{"NeckWear":0,"Loadouts":0,"Boots":-218859683,"Dress":0,"Armor":-1,"dresses":0,"NeckTies":0,"Buckle":0,"Skirt":0,"RingLh":0,"Glove":0,"Spats":0,"Bracelet":0,"EyeWear":0,"Gunbelt":795591403,"CoatClosed":0,"Chap":0,"Mask":0,"GunbeltAccs":0,"Suspender":0,"RingRh":0,"Spurs":0,"Accessories":869906529,"Badge":0,"Vest":0,"Coat":0,"Holster":0,"Poncho":0,"Satchels":0,"bow":0,"Gauntlets":0,"Pant":1939930032,"Belt":0,"Hat":0,"armor":0,"Shirt":-1665588256,"Teeth":712446626,"Cloak":0}', '{"Gunbelt":{"795591403":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":795591403}},"Shirt":{"-1665588256":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-1665588256}},"Boots":{"-218859683":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-218859683}},"Pant":{"1939930032":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":1939930032}}}', 1, '{"heading":187.08660888671876,"x":-797.3010864257813,"y":-1327.3187255859376,"z":46.6014404296875}', '{}', 0, '{"Hunting":{"Exp":0,"Level":1,"NextLevel":100,"MaxLevel":5,"Label":"Beginner"},"Fishing":{"Exp":0,"Level":1,"NextLevel":100,"MaxLevel":5,"Label":"Beginner"},"Crafting":{"Exp":0,"Level":1,"NextLevel":100,"MaxLevel":5,"Label":"Beginner"},"Mining":{"Exp":0,"Level":1,"NextLevel":100,"MaxLevel":5,"Label":"Beginner"}}', 'noanim', 0.00, '{}', '986785126866378762', '[]', '0', '{}', 0, '{"complex":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":0,"palette_color_tertiary":0,"opacity":0},"máscaras pintadas":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"sardas":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"sobrancelhas":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"face":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"acne":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":0,"palette_color_tertiary":0,"opacity":0},"cabelo":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"cicatrizes":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"pontos":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"blush":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":0,"visibility":0,"tx_id":0,"palette_color_tertiary":0,"opacity":0},"envelhecimento":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"barba":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"delineadores":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"sombras":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"batons":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"toupeiras":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"sujeira":{"tx_color_type":0,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":1,"palette_color_tertiary":0,"opacity":1.0},"disc":{"tx_color_type":1,"palette_color_secondary":0,"palette_color_primary":0,"var":0,"palette_id":1,"visibility":0,"tx_id":0,"palette_color_tertiary":0,"opacity":0}}', 0, 0);
+-- Copiando dados para a tabela mdg_ultimate.characters: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.character_inventories
+-- Copiando estrutura para tabela mdg_ultimate.character_inventories
 CREATE TABLE IF NOT EXISTS `character_inventories` (
   `character_id` int(11) DEFAULT NULL,
   `inventory_type` varchar(100) NOT NULL DEFAULT 'default',
@@ -198,14 +196,9 @@ CREATE TABLE IF NOT EXISTS `character_inventories` (
   KEY `character_inventory_idx` (`character_id`,`inventory_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.character_inventories: ~4 rows (aproximadamente)
-INSERT INTO `character_inventories` (`character_id`, `inventory_type`, `item_crafted_id`, `item_name`, `amount`, `created_at`, `degradation`, `percentage`) VALUES
-	(1, 'default', 12, 'consumable_canned_corn', 1, '2025-08-30 00:38:36', NULL, NULL),
-	(1, 'default', 13, 'consumable_apple_candy', 1, '2025-08-30 00:38:45', NULL, NULL),
-	(1, 'default', 14, 'mapa', 1, '2025-08-30 00:39:33', NULL, NULL),
-	(1, 'default', 15, 'pocket_compass', 1, '2025-08-30 00:40:19', NULL, NULL);
+-- Copiando dados para a tabela mdg_ultimate.character_inventories: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.clan
+-- Copiando estrutura para tabela mdg_ultimate.clan
 CREATE TABLE IF NOT EXISTS `clan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `info` longtext NOT NULL DEFAULT '[]',
@@ -219,9 +212,9 @@ CREATE TABLE IF NOT EXISTS `clan` (
   KEY `container` (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.clan: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.clan: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.clothes_bought
+-- Copiando estrutura para tabela mdg_ultimate.clothes_bought
 CREATE TABLE IF NOT EXISTS `clothes_bought` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(100) NOT NULL,
@@ -237,13 +230,11 @@ CREATE TABLE IF NOT EXISTS `clothes_bought` (
   `tint2` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `identifier` (`identifier`,`charid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.clothes_bought: ~0 rows (aproximadamente)
-INSERT INTO `clothes_bought` (`id`, `identifier`, `charid`, `hash`, `drawable`, `albedo`, `normal`, `material`, `palette`, `tint0`, `tint1`, `tint2`) VALUES
-	(1, 'steam:11000013527d62e', 1, 869906529, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+-- Copiando dados para a tabela mdg_ultimate.clothes_bought: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.communityservice
+-- Copiando estrutura para tabela mdg_ultimate.communityservice
 CREATE TABLE IF NOT EXISTS `communityservice` (
   `identifier` varchar(100) NOT NULL DEFAULT '0',
   `name` varchar(100) NOT NULL DEFAULT '0',
@@ -252,9 +243,9 @@ CREATE TABLE IF NOT EXISTS `communityservice` (
   `servicecount` varchar(100) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
 
--- A despejar dados para tabela mdg_ultimate.communityservice: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.communityservice: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.container
+-- Copiando estrutura para tabela mdg_ultimate.container
 CREATE TABLE IF NOT EXISTS `container` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` longtext DEFAULT NULL,
@@ -264,8 +255,8 @@ CREATE TABLE IF NOT EXISTS `container` (
   UNIQUE KEY `ID` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.container: ~84 rows (aproximadamente)
-INSERT INTO `container` (`id`, `name`, `items`, `invslots`) VALUES
+-- Copiando dados para a tabela mdg_ultimate.container: ~84 rows (aproximadamente)
+INSERT IGNORE INTO `container` (`id`, `name`, `items`, `invslots`) VALUES
 	(1, 'police', '[]', 0),
 	(2, 'miner', '[]', 0),
 	(3, 'horsetrainer', '[]', 0),
@@ -351,7 +342,7 @@ INSERT INTO `container` (`id`, `name`, `items`, `invslots`) VALUES
 	(83, 'ArmariaBW', '[]', 5000),
 	(84, 'TabacariaBW', '[]', 5000);
 
--- A despejar estrutura para tabela mdg_ultimate.doors
+-- Copiando estrutura para tabela mdg_ultimate.doors
 CREATE TABLE IF NOT EXISTS `doors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `doorinfo` longtext NOT NULL DEFAULT '[]',
@@ -361,9 +352,9 @@ CREATE TABLE IF NOT EXISTS `doors` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.doors: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.doors: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.herbalists
+-- Copiando estrutura para tabela mdg_ultimate.herbalists
 CREATE TABLE IF NOT EXISTS `herbalists` (
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `charidentifier` int(11) NOT NULL,
@@ -372,9 +363,9 @@ CREATE TABLE IF NOT EXISTS `herbalists` (
   UNIQUE KEY `identifier_charidentifier` (`identifier`,`charidentifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- A despejar dados para tabela mdg_ultimate.herbalists: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.herbalists: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.horses
+-- Copiando estrutura para tabela mdg_ultimate.horses
 CREATE TABLE IF NOT EXISTS `horses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(600) NOT NULL,
@@ -403,9 +394,9 @@ CREATE TABLE IF NOT EXISTS `horses` (
   KEY `model` (`model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.horses: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horses: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.horsesstore
+-- Copiando estrutura para tabela mdg_ultimate.horsesstore
 CREATE TABLE IF NOT EXISTS `horsesstore` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `model` varchar(50) NOT NULL,
@@ -427,9 +418,9 @@ CREATE TABLE IF NOT EXISTS `horsesstore` (
   KEY `model` (`model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.horsesstore: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horsesstore: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.horsestrainers
+-- Copiando estrutura para tabela mdg_ultimate.horsestrainers
 CREATE TABLE IF NOT EXISTS `horsestrainers` (
   `steam` varchar(600) DEFAULT NULL,
   `charidentifier` varchar(255) DEFAULT NULL,
@@ -437,9 +428,9 @@ CREATE TABLE IF NOT EXISTS `horsestrainers` (
   `name` varchar(600) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.horsestrainers: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horsestrainers: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.horses_breeding
+-- Copiando estrutura para tabela mdg_ultimate.horses_breeding
 CREATE TABLE IF NOT EXISTS `horses_breeding` (
   `identifier` varchar(600) NOT NULL,
   `charid` varchar(255) NOT NULL,
@@ -457,9 +448,9 @@ CREATE TABLE IF NOT EXISTS `horses_breeding` (
   `breeding_comp_horse_2` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.horses_breeding: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horses_breeding: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.horse_breeding
+-- Copiando estrutura para tabela mdg_ultimate.horse_breeding
 CREATE TABLE IF NOT EXISTS `horse_breeding` (
   `horse` int(11) NOT NULL,
   `dateStart` bigint(20) NOT NULL,
@@ -470,9 +461,9 @@ CREATE TABLE IF NOT EXISTS `horse_breeding` (
   CONSTRAINT `horse_breeding_ibfk_2` FOREIGN KEY (`horse`) REFERENCES `mdg_horses` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.horse_breeding: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horse_breeding: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.horse_breeding_history
+-- Copiando estrutura para tabela mdg_ultimate.horse_breeding_history
 CREATE TABLE IF NOT EXISTS `horse_breeding_history` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `horse_id` int(11) NOT NULL,
@@ -488,9 +479,9 @@ CREATE TABLE IF NOT EXISTS `horse_breeding_history` (
   CONSTRAINT `horse_breeding_history_ibfk_3` FOREIGN KEY (`foal_id`) REFERENCES `mdg_horses` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.horse_breeding_history: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horse_breeding_history: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.horse_complements
+-- Copiando estrutura para tabela mdg_ultimate.horse_complements
 CREATE TABLE IF NOT EXISTS `horse_complements` (
   `identifier` varchar(50) DEFAULT NULL,
   `charidentifier` int(11) NOT NULL,
@@ -498,9 +489,9 @@ CREATE TABLE IF NOT EXISTS `horse_complements` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- A despejar dados para tabela mdg_ultimate.horse_complements: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horse_complements: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.horse_components
+-- Copiando estrutura para tabela mdg_ultimate.horse_components
 CREATE TABLE IF NOT EXISTS `horse_components` (
   `horse_id` int(11) NOT NULL,
   `components` longtext DEFAULT NULL,
@@ -508,9 +499,9 @@ CREATE TABLE IF NOT EXISTS `horse_components` (
   CONSTRAINT `horse_components_ibfk_1` FOREIGN KEY (`horse_id`) REFERENCES `mdg_horses` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.horse_components: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horse_components: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.housing
+-- Copiando estrutura para tabela mdg_ultimate.housing
 CREATE TABLE IF NOT EXISTS `housing` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
@@ -520,9 +511,9 @@ CREATE TABLE IF NOT EXISTS `housing` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- A despejar dados para tabela mdg_ultimate.housing: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.housing: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.items
+-- Copiando estrutura para tabela mdg_ultimate.items
 CREATE TABLE IF NOT EXISTS `items` (
   `item` varchar(50) NOT NULL,
   `label` varchar(50) NOT NULL,
@@ -541,10 +532,10 @@ CREATE TABLE IF NOT EXISTS `items` (
   KEY `FK_items_item_group` (`groupId`) USING BTREE,
   CONSTRAINT `FK_items_item_group` FOREIGN KEY (`groupId`) REFERENCES `item_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `metadata` CHECK (json_valid(`metadata`))
-) ENGINE=InnoDB AUTO_INCREMENT=216645 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=216655 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- A despejar dados para tabela mdg_ultimate.items: ~2 082 rows (aproximadamente)
-INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `id`, `groupId`, `metadata`, `desc`, `weight`, `degradation`) VALUES
+-- Copiando dados para a tabela mdg_ultimate.items: ~2.092 rows (aproximadamente)
+INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `id`, `groupId`, `metadata`, `desc`, `weight`, `degradation`) VALUES
 	('absinthe', 'Absinto', 100, 1, 'item_standard', 1, 1600, 1, '{}', '', 0.25, 0),
 	('accessories', 'Accessories', 20, 1, 'item_standard', 1, 17605, 1, '{}', 'nice item', 0.25, 0),
 	('acid', 'Ácido', 100, 1, 'item_standard', 1, 1, 1, '{}', '', 0.25, 0),
@@ -626,6 +617,7 @@ INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `
 	('aoemagic', 'Poção quebra ossos 2', 100, 1, 'item_standard', 1, 1202, 1, '{}', 'nice item', 0.25, 0),
 	('apiary_bee_gk', 'abelhas', 10, 1, 'item_standard', 1, 17039, 1, '{}', '', 0.25, 0),
 	('apiary_honeycomb_gk', 'Favo de mel', 100, 1, 'item_standard', 1, 17040, 1, '{}', '', 0.25, 0),
+	('apito', 'Apito para passaros', 100, 1, 'item_standard', 1, 216653, 1, '{}', 'nice item', 0.25, 0),
 	('apple', 'Maçã', 30, 1, 'item_standard', 1, 54, 1, '{}', '', 0.25, 0),
 	('Apple Tree', 'arvore de maça', 100, 1, 'item_standard', 1, 16882, 1, '{}', '', 0.25, 0),
 	('applebarrel', 'barril de maçã', 100, 1, 'item_standard', 1, 762, 1, '{}', '', 0.25, 0),
@@ -1210,6 +1202,7 @@ INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `
 	('deertrophy', 'Cabeça de Veado', 100, 1, 'item_standard', 1, 17219, 1, '{}', '', 0.25, 0),
 	('deer_pelt', 'Pele de Cervo', 100, 1, 'item_standard', 1, 630, 1, '{}', '', 2.50, 0),
 	('deer_taxidermy', 'Taxidermia de Cervos', 100, 1, 'item_standard', 1, 642, 1, '{}', '', 0.25, 0),
+	('desativado', 'Item Desativado', 100, 1, 'item_standard', 1, 216652, 1, '{}', 'nice item', 0.25, 0),
 	('desertsage', 'Desert Sage', 50, 1, 'item_standard', 1, 17690, 1, '{}', 'an item', 0.25, 0),
 	('desertsageseed', 'Desert Sage seed', 50, 1, 'item_standard', 1, 17694, 1, '{}', 'an item', 0.25, 0),
 	('Desert_Sage', 'Sálvia do Deserto', 100, 1, 'item_standard', 1, 148, 1, '{}', '', 0.25, 0),
@@ -1351,6 +1344,13 @@ INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `
 	('folha_cocain', 'folha de cocaina', 100, 1, 'item_standard', 1, 16922, 1, '{}', '', 0.25, 0),
 	('foodbarrel', 'barril de comida', 100, 1, 'item_standard', 1, 764, 1, '{}', '', 0.25, 0),
 	('food_barrel', 'barril de comida', 100, 1, 'item_standard', 1, 636, 1, '{}', '', 0.25, 0),
+	('formula_adolescente', 'Formula De Adolescente', 100, 1, 'item_standard', 1, 216647, 1, '{}', 'nice item', 0.50, 0),
+	('formula_anao', 'Formula de Anão', 100, 1, 'item_standard', 1, 216646, 1, '{}', 'nice item', 0.50, 0),
+	('formula_formiga', 'Formula de Formiga', 100, 1, 'item_standard', 1, 216645, 1, '{}', 'nice item', 0.50, 0),
+	('formula_gigante', 'Formula de Gigante', 100, 1, 'item_standard', 1, 216650, 1, '{}', 'nice item', 0.50, 0),
+	('formula_grande', 'Formula Grande', 100, 1, 'item_standard', 1, 216649, 1, '{}', 'nice item', 0.50, 0),
+	('formula_normal', 'Formula Tamanho Normal', 100, 1, 'item_standard', 1, 216648, 1, '{}', 'nice item', 0.50, 0),
+	('formula_titan', 'Formula de Titan', 100, 1, 'item_standard', 1, 216651, 1, '{}', 'nice item', 0.50, 0),
 	('fosforo', 'fosforos', 100, 1, 'item_standard', 1, 215643, 1, '{}', 'nice item', 0.25, 0),
 	('foxskin', 'pele de raposa', 100, 1, 'item_standard', 1, 512, 1, '{}', '', 0.25, 0),
 	('foxt', 'dente de raposa', 100, 1, 'item_standard', 1, 513, 1, '{}', '', 0.25, 0),
@@ -1954,6 +1954,7 @@ INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `
 	('Prairie_Poppy', 'oliva', 100, 1, 'item_standard', 1, 234, 1, '{}', '', 0.25, 0),
 	('Prairie_Poppy_Seed', 'semente de papoula da pradaria', 100, 1, 'item_standard', 1, 235, 1, '{}', '', 0.25, 0),
 	('prairif', 'Pena de Frango da Pradaria', 100, 1, 'item_standard', 1, 508, 1, '{}', '', 0.25, 0),
+	('prancheta', 'Prancheta', 100, 1, 'item_standard', 1, 216654, 1, '{}', 'nice item', 0.25, 0),
 	('printphoto', 'Foto de Bolso', 10, 1, 'item_standard', 1, 215655, 1, '{}', 'Identity photo', 0.25, 0),
 	('Pripronta', 'Carne pronta', 100, 1, 'item_standard', 1, 216618, 1, '{}', 'nice item', 0.25, 0),
 	('prison_clothes', 'roupa de prisão', 100, 1, 'item_standard', 1, 17294, 1, '{}', 'nice item', 0.25, 0),
@@ -2628,7 +2629,7 @@ INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `
 	('Yarrow_Seed', 'semente de milefólio', 100, 1, 'item_standard', 1, 337, 1, '{}', 'Seeds to grow Yarrow plants.', 0.25, 0),
 	('yuccaleaf', 'Yucca Leaf', 50, 1, 'item_standard', 1, 17689, 1, '{}', 'an item', 0.25, 0);
 
--- A despejar estrutura para tabela mdg_ultimate.items_crafted
+-- Copiando estrutura para tabela mdg_ultimate.items_crafted
 CREATE TABLE IF NOT EXISTS `items_crafted` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `character_id` int(11) NOT NULL,
@@ -2639,33 +2640,19 @@ CREATE TABLE IF NOT EXISTS `items_crafted` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `ID` (`id`),
   KEY `crafted_item_idx` (`character_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.items_crafted: ~13 rows (aproximadamente)
-INSERT INTO `items_crafted` (`id`, `character_id`, `item_id`, `item_name`, `updated_at`, `metadata`) VALUES
-	(1, 1, 118, 'consumable_coffee', '2025-05-13 19:05:52', '[]'),
-	(2, 1, 1632, 'consumable_chickenpie', '2025-05-13 19:05:52', '[]'),
-	(3, 1, 216044, 'consumable_asian_soda_lime', '2025-05-13 19:05:52', '[]'),
-	(4, 1, 1650, 'consumable_steakpie', '2025-05-13 19:05:52', '[]'),
-	(5, 1, 216033, 'outfit', '2025-05-13 19:19:42', '{"description":"Sexo: Masculino - Nome: roupa","sexe":"male","outfit":{"spats":0,"hair_accessories":0,"aprons":0,"accessories":{"hash":869906529},"loadouts":0,"belt_buckles":0,"vests":0,"boot_accessories":0,"coats":0,"cloaks":0,"chaps":0,"coats_closed":0,"suspenders":0,"gunbelts":{"hash":795591403,"palette":0,"tint2":0,"tint1":0,"tint0":0},"hats":0,"jewelry_bracelets":0,"armor":0,"pants":{"hash":1939930032,"palette":0,"tint2":0,"tint1":0,"tint0":0},"gauntlets":0,"boots":{"hash":-218859683,"palette":0,"tint2":0,"tint1":0,"tint0":0},"badges":0,"jewelry_rings_right":0,"masks":0,"belts":0,"masks_large":0,"skirts":0,"satchels":0,"gunbelt_accs":0,"holsters_left":0,"neckties":0,"jewelry_rings_left":0,"dresses":0,"ponchos":0,"eyewear":0,"shirts_full":{"hash":-1665588256,"palette":0,"tint2":0,"tint1":0,"tint0":0},"gloves":0,"neckwear":0},"name":"roupa"}'),
-	(6, 1, 216420, 'consumable_canned_corn', '2025-05-13 19:21:58', '[]'),
-	(7, 1, 215862, 'water_clean', '2025-08-16 19:48:57', '[]'),
-	(9, 1, 16726, 'mapa', '2025-08-30 00:27:42', '[]'),
-	(10, 1, 17292, 'pocket_compass', '2025-08-30 00:29:05', '[]'),
-	(12, 1, 216420, 'consumable_canned_corn', '2025-08-30 00:38:36', '[]'),
-	(13, 1, 216419, 'consumable_apple_candy', '2025-08-30 00:38:45', '[]'),
-	(14, 1, 16726, 'mapa', '2025-08-30 00:39:33', '[]'),
-	(15, 1, 17292, 'pocket_compass', '2025-08-30 00:40:19', '[]');
+-- Copiando dados para a tabela mdg_ultimate.items_crafted: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.item_group
+-- Copiando estrutura para tabela mdg_ultimate.item_group
 CREATE TABLE IF NOT EXISTS `item_group` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL COMMENT 'Description of Item Group',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.item_group: ~11 rows (aproximadamente)
-INSERT INTO `item_group` (`id`, `description`) VALUES
+-- Copiando dados para a tabela mdg_ultimate.item_group: ~11 rows (aproximadamente)
+INSERT IGNORE INTO `item_group` (`id`, `description`) VALUES
 	(1, 'default'),
 	(2, 'medical'),
 	(3, 'foods'),
@@ -2678,7 +2665,7 @@ INSERT INTO `item_group` (`id`, `description`) VALUES
 	(10, 'horse'),
 	(11, 'herbs');
 
--- A despejar estrutura para tabela mdg_ultimate.jail
+-- Copiando estrutura para tabela mdg_ultimate.jail
 CREATE TABLE IF NOT EXISTS `jail` (
   `identifier` varchar(100) NOT NULL DEFAULT '0',
   `name` varchar(100) NOT NULL DEFAULT '0',
@@ -2688,9 +2675,9 @@ CREATE TABLE IF NOT EXISTS `jail` (
   `jaillocation` varchar(100) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
 
--- A despejar dados para tabela mdg_ultimate.jail: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.jail: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.loadout
+-- Copiando estrutura para tabela mdg_ultimate.loadout
 CREATE TABLE IF NOT EXISTS `loadout` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
@@ -2715,20 +2702,20 @@ CREATE TABLE IF NOT EXISTS `loadout` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.loadout: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.loadout: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mail
+-- Copiando estrutura para tabela mdg_ultimate.mail
 CREATE TABLE IF NOT EXISTS `mail` (
   `address` int(11) NOT NULL AUTO_INCREMENT,
   `charidentifier` int(11) DEFAULT NULL,
   PRIMARY KEY (`address`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mail: ~1 rows (aproximadamente)
-INSERT INTO `mail` (`address`, `charidentifier`) VALUES
-	(5, 13);
+-- Copiando dados para a tabela mdg_ultimate.mail: ~1 rows (aproximadamente)
+INSERT IGNORE INTO `mail` (`address`, `charidentifier`) VALUES
+	(1, 1);
 
--- A despejar estrutura para tabela mdg_ultimate.mailbox_mails
+-- Copiando estrutura para tabela mdg_ultimate.mailbox_mails
 CREATE TABLE IF NOT EXISTS `mailbox_mails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sender_id` varchar(50) DEFAULT NULL,
@@ -2743,9 +2730,9 @@ CREATE TABLE IF NOT EXISTS `mailbox_mails` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mailbox_mails: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mailbox_mails: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mails
+-- Copiando estrutura para tabela mdg_ultimate.mails
 CREATE TABLE IF NOT EXISTS `mails` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `anon` tinyint(1) DEFAULT NULL,
@@ -2763,9 +2750,9 @@ CREATE TABLE IF NOT EXISTS `mails` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mails: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mails: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mail_addressbook
+-- Copiando estrutura para tabela mdg_ultimate.mail_addressbook
 CREATE TABLE IF NOT EXISTS `mail_addressbook` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `address` int(11) DEFAULT NULL,
@@ -2777,9 +2764,9 @@ CREATE TABLE IF NOT EXISTS `mail_addressbook` (
   CONSTRAINT `mail_addressbook_ibfk_1` FOREIGN KEY (`address`) REFERENCES `mail` (`address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mail_addressbook: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mail_addressbook: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mail_editablefolders
+-- Copiando estrutura para tabela mdg_ultimate.mail_editablefolders
 CREATE TABLE IF NOT EXISTS `mail_editablefolders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `address` int(11) DEFAULT NULL,
@@ -2789,18 +2776,18 @@ CREATE TABLE IF NOT EXISTS `mail_editablefolders` (
   CONSTRAINT `mail_editablefolders_ibfk_1` FOREIGN KEY (`address`) REFERENCES `mail` (`address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mail_editablefolders: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mail_editablefolders: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdgfarmsdex
+-- Copiando estrutura para tabela mdg_ultimate.mdgfarmsdex
 CREATE TABLE IF NOT EXISTS `mdgfarmsdex` (
   `dex` longtext DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdgfarmsdex: ~1 rows (aproximadamente)
-INSERT INTO `mdgfarmsdex` (`dex`) VALUES
+-- Copiando dados para a tabela mdg_ultimate.mdgfarmsdex: ~0 rows (aproximadamente)
+INSERT IGNORE INTO `mdgfarmsdex` (`dex`) VALUES
 	('3');
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_bank
+-- Copiando estrutura para tabela mdg_ultimate.mdg_bank
 CREATE TABLE IF NOT EXISTS `mdg_bank` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
@@ -2814,9 +2801,9 @@ CREATE TABLE IF NOT EXISTS `mdg_bank` (
   KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_bank: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_bank: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_barber
+-- Copiando estrutura para tabela mdg_ultimate.mdg_barber
 CREATE TABLE IF NOT EXISTS `mdg_barber` (
   `id` int(3) NOT NULL,
   `identifier` varchar(60) NOT NULL,
@@ -2830,13 +2817,13 @@ CREATE TABLE IF NOT EXISTS `mdg_barber` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_barber: ~3 rows (aproximadamente)
-INSERT INTO `mdg_barber` (`id`, `identifier`, `charid`, `ownername`, `money`, `name`, `price`, `blipsprite`, `blipmodif`) VALUES
+-- Copiando dados para a tabela mdg_ultimate.mdg_barber: ~3 rows (aproximadamente)
+INSERT IGNORE INTO `mdg_barber` (`id`, `identifier`, `charid`, `ownername`, `money`, `name`, `price`, `blipsprite`, `blipmodif`) VALUES
 	(1, '0', 0, '', 4, 'Blackwater Barber', 2500, -2090472724, 0),
 	(2, '0', 0, '', 3, 'Valentine Barber', 2000, -2090472724, 0),
 	(3, '0', 0, '', 4, 'Saint Denis Barber', 3000, -2090472724, 0);
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_clothes_state
+-- Copiando estrutura para tabela mdg_ultimate.mdg_clothes_state
 CREATE TABLE IF NOT EXISTS `mdg_clothes_state` (
   `identifier` varchar(50) NOT NULL,
   `charid` int(11) NOT NULL,
@@ -2845,9 +2832,9 @@ CREATE TABLE IF NOT EXISTS `mdg_clothes_state` (
   PRIMARY KEY (`identifier`,`charid`,`category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_clothes_state: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_clothes_state: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_coaches_system
+-- Copiando estrutura para tabela mdg_ultimate.mdg_coaches_system
 CREATE TABLE IF NOT EXISTS `mdg_coaches_system` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(60) NOT NULL,
@@ -2860,9 +2847,9 @@ CREATE TABLE IF NOT EXISTS `mdg_coaches_system` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_coaches_system: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_coaches_system: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_collect_quests
+-- Copiando estrutura para tabela mdg_ultimate.mdg_collect_quests
 CREATE TABLE IF NOT EXISTS `mdg_collect_quests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2872,18 +2859,18 @@ CREATE TABLE IF NOT EXISTS `mdg_collect_quests` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_collect_quests: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_collect_quests: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_farms
+-- Copiando estrutura para tabela mdg_ultimate.mdg_farms
 CREATE TABLE IF NOT EXISTS `mdg_farms` (
   `charid` int(11) NOT NULL,
   `farm` longtext NOT NULL DEFAULT '[]',
   PRIMARY KEY (`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_farms: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_farms: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_gang_members
+-- Copiando estrutura para tabela mdg_ultimate.mdg_gang_members
 CREATE TABLE IF NOT EXISTS `mdg_gang_members` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(255) NOT NULL,
@@ -2893,9 +2880,9 @@ CREATE TABLE IF NOT EXISTS `mdg_gang_members` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_gang_members: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_gang_members: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_gang_props
+-- Copiando estrutura para tabela mdg_ultimate.mdg_gang_props
 CREATE TABLE IF NOT EXISTS `mdg_gang_props` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `area_name` varchar(50) DEFAULT NULL,
@@ -2908,18 +2895,18 @@ CREATE TABLE IF NOT EXISTS `mdg_gang_props` (
   UNIQUE KEY `area_name` (`area_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_gang_props: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_gang_props: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_gang_territories
+-- Copiando estrutura para tabela mdg_ultimate.mdg_gang_territories
 CREATE TABLE IF NOT EXISTS `mdg_gang_territories` (
   `area_name` varchar(50) NOT NULL,
   `gang_name` varchar(50) NOT NULL,
   PRIMARY KEY (`area_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_gang_territories: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_gang_territories: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_horses
+-- Copiando estrutura para tabela mdg_ultimate.mdg_horses
 CREATE TABLE IF NOT EXISTS `mdg_horses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2937,11 +2924,11 @@ CREATE TABLE IF NOT EXISTS `mdg_horses` (
   `isDead` tinyint(1) NOT NULL DEFAULT 0,
   `isOut` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_horses: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_horses: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_horses_stats
+-- Copiando estrutura para tabela mdg_ultimate.mdg_horses_stats
 CREATE TABLE IF NOT EXISTS `mdg_horses_stats` (
   `horseid` int(11) NOT NULL,
   `distance` int(11) NOT NULL DEFAULT 0,
@@ -2955,9 +2942,9 @@ CREATE TABLE IF NOT EXISTS `mdg_horses_stats` (
   PRIMARY KEY (`horseid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_horses_stats: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_horses_stats: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_identidade_advanced
+-- Copiando estrutura para tabela mdg_ultimate.mdg_identidade_advanced
 CREATE TABLE IF NOT EXISTS `mdg_identidade_advanced` (
   `identifier` varchar(60) NOT NULL,
   `firstname` varchar(50) DEFAULT NULL,
@@ -2968,27 +2955,27 @@ CREATE TABLE IF NOT EXISTS `mdg_identidade_advanced` (
   PRIMARY KEY (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_identidade_advanced: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_identidade_advanced: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_jornalista
+-- Copiando estrutura para tabela mdg_ultimate.mdg_jornalista
 CREATE TABLE IF NOT EXISTS `mdg_jornalista` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `news` longtext DEFAULT '[]',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_jornalista: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_jornalista: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_madame_nazar
+-- Copiando estrutura para tabela mdg_ultimate.mdg_madame_nazar
 CREATE TABLE IF NOT EXISTS `mdg_madame_nazar` (
   `charid` int(11) DEFAULT NULL,
   `identifier` varchar(100) DEFAULT NULL,
   `mdg_madame_nazar` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_madame_nazar: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_madame_nazar: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_matabolism_v2
+-- Copiando estrutura para tabela mdg_ultimate.mdg_matabolism_v2
 CREATE TABLE IF NOT EXISTS `mdg_matabolism_v2` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `personaId` int(11) DEFAULT NULL,
@@ -3001,13 +2988,11 @@ CREATE TABLE IF NOT EXISTS `mdg_matabolism_v2` (
   `statStress` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `personaId` (`personaId`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_matabolism_v2: ~1 rows (aproximadamente)
-INSERT INTO `mdg_matabolism_v2` (`id`, `personaId`, `statHunger`, `statThirst`, `statHealth`, `statHealthCore`, `statStamina`, `statStaminaCore`, `statStress`) VALUES
-	(1, 1, 19, 19, 500, 100, 1, 100, 0);
+-- Copiando dados para a tabela mdg_ultimate.mdg_matabolism_v2: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_outfits
+-- Copiando estrutura para tabela mdg_ultimate.mdg_outfits
 CREATE TABLE IF NOT EXISTS `mdg_outfits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(100) NOT NULL,
@@ -3016,14 +3001,11 @@ CREATE TABLE IF NOT EXISTS `mdg_outfits` (
   `outfit` varchar(5000) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `identifier` (`identifier`,`charid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_outfits: ~2 rows (aproximadamente)
-INSERT INTO `mdg_outfits` (`id`, `identifier`, `charid`, `name`, `outfit`) VALUES
-	(1, 'steam:11000013527d62e', 1, 'roupa', '{"accessories":{"hash":869906529},"gloves":0,"neckwear":0,"spats":0,"chaps":0,"hats":0,"gunbelt_accs":0,"gauntlets":0,"coats_closed":0,"jewelry_rings_right":0,"belt_buckles":0,"belts":0,"neckties":0,"dresses":0,"holsters_left":0,"masks_large":0,"masks":0,"armor":0,"eyewear":0,"aprons":0,"ponchos":0,"shirts_full":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-1665588256},"coats":0,"pants":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":1939930032},"suspenders":0,"loadouts":0,"jewelry_bracelets":0,"jewelry_rings_left":0,"hair_accessories":0,"gunbelts":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":795591403},"boot_accessories":0,"cloaks":0,"vests":0,"boots":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-218859683},"skirts":0,"satchels":0,"badges":0}'),
-	(2, 'steam:11000013527d62e', 1, 'roupa', '{"accessories":869906529,"gloves":0,"neckwear":0,"spats":0,"chaps":0,"hats":0,"gunbelt_accs":0,"gauntlets":0,"coats_closed":0,"jewelry_rings_right":0,"belt_buckles":0,"belts":0,"neckties":0,"dresses":0,"holsters_left":0,"masks_large":0,"masks":0,"armor":0,"eyewear":0,"aprons":0,"ponchos":0,"shirts_full":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-1665588256},"coats":0,"pants":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":1939930032},"suspenders":0,"loadouts":0,"jewelry_bracelets":0,"jewelry_rings_left":0,"hair_accessories":0,"gunbelts":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":795591403},"boot_accessories":0,"cloaks":0,"vests":0,"boots":{"palette":0,"tint2":0,"tint1":0,"tint0":0,"hash":-218859683},"skirts":0,"satchels":0,"badges":0}');
+-- Copiando dados para a tabela mdg_ultimate.mdg_outfits: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_ped_system
+-- Copiando estrutura para tabela mdg_ultimate.mdg_ped_system
 CREATE TABLE IF NOT EXISTS `mdg_ped_system` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -3037,9 +3019,9 @@ CREATE TABLE IF NOT EXISTS `mdg_ped_system` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_ped_system: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_ped_system: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_quests
+-- Copiando estrutura para tabela mdg_ultimate.mdg_quests
 CREATE TABLE IF NOT EXISTS `mdg_quests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -3049,9 +3031,9 @@ CREATE TABLE IF NOT EXISTS `mdg_quests` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_quests: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_quests: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_stable_bought
+-- Copiando estrutura para tabela mdg_ultimate.mdg_stable_bought
 CREATE TABLE IF NOT EXISTS `mdg_stable_bought` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -3063,9 +3045,9 @@ CREATE TABLE IF NOT EXISTS `mdg_stable_bought` (
   KEY `identifier` (`identifier`,`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_stable_bought: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_stable_bought: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_stable_color
+-- Copiando estrutura para tabela mdg_ultimate.mdg_stable_color
 CREATE TABLE IF NOT EXISTS `mdg_stable_color` (
   `id` int(11) NOT NULL,
   `drawable` int(11) DEFAULT NULL,
@@ -3079,9 +3061,9 @@ CREATE TABLE IF NOT EXISTS `mdg_stable_color` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_stable_color: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_stable_color: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_traficante_drogas
+-- Copiando estrutura para tabela mdg_ultimate.mdg_traficante_drogas
 CREATE TABLE IF NOT EXISTS `mdg_traficante_drogas` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL DEFAULT '0',
@@ -3090,9 +3072,9 @@ CREATE TABLE IF NOT EXISTS `mdg_traficante_drogas` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_traficante_drogas: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_traficante_drogas: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_vip
+-- Copiando estrutura para tabela mdg_ultimate.mdg_vip
 CREATE TABLE IF NOT EXISTS `mdg_vip` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` text DEFAULT NULL,
@@ -3103,9 +3085,9 @@ CREATE TABLE IF NOT EXISTS `mdg_vip` (
   UNIQUE KEY `charid` (`charid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_vip: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_vip: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.mdg_wagons
+-- Copiando estrutura para tabela mdg_ultimate.mdg_wagons
 CREATE TABLE IF NOT EXISTS `mdg_wagons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -3122,9 +3104,9 @@ CREATE TABLE IF NOT EXISTS `mdg_wagons` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.mdg_wagons: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_wagons: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.outfits
+-- Copiando estrutura para tabela mdg_ultimate.outfits
 CREATE TABLE IF NOT EXISTS `outfits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(45) NOT NULL,
@@ -3135,9 +3117,9 @@ CREATE TABLE IF NOT EXISTS `outfits` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- A despejar dados para tabela mdg_ultimate.outfits: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.outfits: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.pets
+-- Copiando estrutura para tabela mdg_ultimate.pets
 CREATE TABLE IF NOT EXISTS `pets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(500) DEFAULT NULL,
@@ -3150,9 +3132,9 @@ CREATE TABLE IF NOT EXISTS `pets` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- A despejar dados para tabela mdg_ultimate.pets: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.pets: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.playerhousing
+-- Copiando estrutura para tabela mdg_ultimate.playerhousing
 CREATE TABLE IF NOT EXISTS `playerhousing` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` int(11) NOT NULL DEFAULT 0,
@@ -3182,9 +3164,9 @@ CREATE TABLE IF NOT EXISTS `playerhousing` (
   KEY `primarydoor` (`primarydoor`(768))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.playerhousing: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.playerhousing: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.playerhousing_sold_home_ledger
+-- Copiando estrutura para tabela mdg_ultimate.playerhousing_sold_home_ledger
 CREATE TABLE IF NOT EXISTS `playerhousing_sold_home_ledger` (
   `id` int(11) NOT NULL DEFAULT 0,
   `identifier` varchar(50) DEFAULT NULL,
@@ -3192,9 +3174,9 @@ CREATE TABLE IF NOT EXISTS `playerhousing_sold_home_ledger` (
   `amount` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.playerhousing_sold_home_ledger: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.playerhousing_sold_home_ledger: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.playershops
+-- Copiando estrutura para tabela mdg_ultimate.playershops
 CREATE TABLE IF NOT EXISTS `playershops` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL DEFAULT '0',
@@ -3218,9 +3200,9 @@ CREATE TABLE IF NOT EXISTS `playershops` (
   KEY `weapons` (`weapons`(768))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.playershops: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.playershops: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.playershops2
+-- Copiando estrutura para tabela mdg_ultimate.playershops2
 CREATE TABLE IF NOT EXISTS `playershops2` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `society` varchar(50) NOT NULL DEFAULT '0',
@@ -3238,9 +3220,9 @@ CREATE TABLE IF NOT EXISTS `playershops2` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.playershops2: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.playershops2: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.player_trains
+-- Copiando estrutura para tabela mdg_ultimate.player_trains
 CREATE TABLE IF NOT EXISTS `player_trains` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '0',
@@ -3258,9 +3240,9 @@ CREATE TABLE IF NOT EXISTS `player_trains` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.player_trains: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.player_trains: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.player_transformations
+-- Copiando estrutura para tabela mdg_ultimate.player_transformations
 CREATE TABLE IF NOT EXISTS `player_transformations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(255) NOT NULL,
@@ -3276,9 +3258,9 @@ CREATE TABLE IF NOT EXISTS `player_transformations` (
   KEY `idx_transform_end` (`transform_end`)
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.player_transformations: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.player_transformations: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.posters
+-- Copiando estrutura para tabela mdg_ultimate.posters
 CREATE TABLE IF NOT EXISTS `posters` (
   `poster_link` varchar(255) DEFAULT NULL,
   `city` varchar(255) DEFAULT '',
@@ -3287,9 +3269,9 @@ CREATE TABLE IF NOT EXISTS `posters` (
   KEY `poster_link` (`poster_link`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.posters: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.posters: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.ranch
+-- Copiando estrutura para tabela mdg_ultimate.ranch
 CREATE TABLE IF NOT EXISTS `ranch` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `steam` varchar(100) DEFAULT NULL,
@@ -3311,36 +3293,34 @@ CREATE TABLE IF NOT EXISTS `ranch` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
--- A despejar dados para tabela mdg_ultimate.ranch: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.ranch: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.real_logic_horses
+-- Copiando estrutura para tabela mdg_ultimate.real_logic_horses
 CREATE TABLE IF NOT EXISTS `real_logic_horses` (
   `update_time` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.real_logic_horses: ~1 rows (aproximadamente)
-INSERT INTO `real_logic_horses` (`update_time`) VALUES
-	(8);
+-- Copiando dados para a tabela mdg_ultimate.real_logic_horses: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.real_logic_pets
+-- Copiando estrutura para tabela mdg_ultimate.real_logic_pets
 CREATE TABLE IF NOT EXISTS `real_logic_pets` (
   `update_time` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.real_logic_pets: ~1 rows (aproximadamente)
-INSERT INTO `real_logic_pets` (`update_time`) VALUES
-	(0);
+-- Copiando dados para a tabela mdg_ultimate.real_logic_pets: ~0 rows (aproximadamente)
+INSERT IGNORE INTO `real_logic_pets` (`update_time`) VALUES
+	(9);
 
--- A despejar estrutura para tabela mdg_ultimate.real_logic_ranch
+-- Copiando estrutura para tabela mdg_ultimate.real_logic_ranch
 CREATE TABLE IF NOT EXISTS `real_logic_ranch` (
   `update_time` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.real_logic_ranch: ~1 rows (aproximadamente)
-INSERT INTO `real_logic_ranch` (`update_time`) VALUES
+-- Copiando dados para a tabela mdg_ultimate.real_logic_ranch: ~0 rows (aproximadamente)
+INSERT IGNORE INTO `real_logic_ranch` (`update_time`) VALUES
 	(0);
 
--- A despejar estrutura para tabela mdg_ultimate.rooms
+-- Copiando estrutura para tabela mdg_ultimate.rooms
 CREATE TABLE IF NOT EXISTS `rooms` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
@@ -3350,17 +3330,17 @@ CREATE TABLE IF NOT EXISTS `rooms` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
--- A despejar dados para tabela mdg_ultimate.rooms: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.rooms: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.society
+-- Copiando estrutura para tabela mdg_ultimate.society
 CREATE TABLE IF NOT EXISTS `society` (
   `job` longtext DEFAULT NULL,
   `jobgrade` int(11) DEFAULT NULL,
   `salary` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.society: ~42 rows (aproximadamente)
-INSERT INTO `society` (`job`, `jobgrade`, `salary`) VALUES
+-- Copiando dados para a tabela mdg_ultimate.society: ~42 rows (aproximadamente)
+INSERT IGNORE INTO `society` (`job`, `jobgrade`, `salary`) VALUES
 	('police', 0, 0),
 	('police', 1, 0),
 	('police', 2, 0),
@@ -3404,14 +3384,14 @@ INSERT INTO `society` (`job`, `jobgrade`, `salary`) VALUES
 	('horsetrainer', 3, 0),
 	('horsetrainer', 4, 0);
 
--- A despejar estrutura para tabela mdg_ultimate.society_ledger
+-- Copiando estrutura para tabela mdg_ultimate.society_ledger
 CREATE TABLE IF NOT EXISTS `society_ledger` (
   `job` longtext DEFAULT NULL,
   `ledger` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.society_ledger: ~91 rows (aproximadamente)
-INSERT INTO `society_ledger` (`job`, `ledger`) VALUES
+-- Copiando dados para a tabela mdg_ultimate.society_ledger: ~91 rows (aproximadamente)
+INSERT IGNORE INTO `society_ledger` (`job`, `ledger`) VALUES
 	('police', 150),
 	('miner', 0),
 	('doctor', 50),
@@ -3504,7 +3484,7 @@ INSERT INTO `society_ledger` (`job`, `ledger`) VALUES
 	('police', 0),
 	('police', 0);
 
--- A despejar estrutura para tabela mdg_ultimate.society_shops
+-- Copiando estrutura para tabela mdg_ultimate.society_shops
 CREATE TABLE IF NOT EXISTS `society_shops` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `society` varchar(50) NOT NULL DEFAULT '0',
@@ -3516,9 +3496,9 @@ CREATE TABLE IF NOT EXISTS `society_shops` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.society_shops: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.society_shops: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.stables
+-- Copiando estrutura para tabela mdg_ultimate.stables
 CREATE TABLE IF NOT EXISTS `stables` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -3535,9 +3515,9 @@ CREATE TABLE IF NOT EXISTS `stables` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- A despejar dados para tabela mdg_ultimate.stables: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.stables: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.stagecoaches
+-- Copiando estrutura para tabela mdg_ultimate.stagecoaches
 CREATE TABLE IF NOT EXISTS `stagecoaches` (
   `identifier` varchar(40) NOT NULL,
   `charid` int(11) NOT NULL,
@@ -3545,9 +3525,9 @@ CREATE TABLE IF NOT EXISTS `stagecoaches` (
   `stagecoach` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.stagecoaches: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.stagecoaches: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.underground
+-- Copiando estrutura para tabela mdg_ultimate.underground
 CREATE TABLE IF NOT EXISTS `underground` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -3576,9 +3556,9 @@ CREATE TABLE IF NOT EXISTS `underground` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.underground: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.underground: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.users
+-- Copiando estrutura para tabela mdg_ultimate.users
 CREATE TABLE IF NOT EXISTS `users` (
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `group` varchar(50) DEFAULT 'user',
@@ -3590,20 +3570,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `identifier` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.users: ~1 rows (aproximadamente)
-INSERT INTO `users` (`identifier`, `group`, `warnings`, `banned`, `banneduntil`, `char`) VALUES
-	('steam:11000013527d62e', 'admin', 0, 0, 0, 1);
+-- Copiando dados para a tabela mdg_ultimate.users: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vltfarmsdex
+-- Copiando estrutura para tabela mdg_ultimate.vltfarmsdex
 CREATE TABLE IF NOT EXISTS `vltfarmsdex` (
   `dex` longtext DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vltfarmsdex: ~1 rows (aproximadamente)
-INSERT INTO `vltfarmsdex` (`dex`) VALUES
+-- Copiando dados para a tabela mdg_ultimate.vltfarmsdex: ~0 rows (aproximadamente)
+INSERT IGNORE INTO `vltfarmsdex` (`dex`) VALUES
 	('0');
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_admin_adv
+-- Copiando estrutura para tabela mdg_ultimate.vlt_admin_adv
 CREATE TABLE IF NOT EXISTS `vlt_admin_adv` (
   `identifier` varchar(50) NOT NULL DEFAULT '',
   `discord` varchar(50) DEFAULT NULL,
@@ -3621,9 +3599,9 @@ CREATE TABLE IF NOT EXISTS `vlt_admin_adv` (
   UNIQUE KEY `identifier` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_admin_adv: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_admin_adv: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_bank
+-- Copiando estrutura para tabela mdg_ultimate.vlt_bank
 CREATE TABLE IF NOT EXISTS `vlt_bank` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
@@ -3637,13 +3615,11 @@ CREATE TABLE IF NOT EXISTS `vlt_bank` (
   KEY `name` (`name`),
   KEY `bankusers` (`identifier`) USING BTREE,
   CONSTRAINT `bankusers` FOREIGN KEY (`identifier`) REFERENCES `users` (`identifier`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_bank: ~1 rows (aproximadamente)
-INSERT INTO `vlt_bank` (`id`, `name`, `identifier`, `charidentifier`, `money`, `gold`, `items`, `invspace`) VALUES
-	(2, 'Valentine', 'steam:11000013527d62e', 1, 0.00, 0.00, '[]', 10);
+-- Copiando dados para a tabela mdg_ultimate.vlt_bank: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_barber_system
+-- Copiando estrutura para tabela mdg_ultimate.vlt_barber_system
 CREATE TABLE IF NOT EXISTS `vlt_barber_system` (
   `id` int(3) NOT NULL,
   `identifier` varchar(60) NOT NULL,
@@ -3657,13 +3633,13 @@ CREATE TABLE IF NOT EXISTS `vlt_barber_system` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_barber_system: ~3 rows (aproximadamente)
-INSERT INTO `vlt_barber_system` (`id`, `identifier`, `charid`, `ownername`, `money`, `name`, `price`, `blipsprite`, `blipmodif`) VALUES
+-- Copiando dados para a tabela mdg_ultimate.vlt_barber_system: ~3 rows (aproximadamente)
+INSERT IGNORE INTO `vlt_barber_system` (`id`, `identifier`, `charid`, `ownername`, `money`, `name`, `price`, `blipsprite`, `blipmodif`) VALUES
 	(1, '0', 0, '', 0, 'Blackwater Barber', 2500, -2090472724, 0),
-	(2, '0', 0, '', 81, 'Valentine Barber', 2000, -2090472724, 0),
+	(2, '0', 0, '', 0, 'Valentine Barber', 2000, -2090472724, 0),
 	(3, '0', 0, '', 0, 'Saint Denis Barber', 3000, -2090472724, 0);
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_boats_system
+-- Copiando estrutura para tabela mdg_ultimate.vlt_boats_system
 CREATE TABLE IF NOT EXISTS `vlt_boats_system` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(60) NOT NULL,
@@ -3675,9 +3651,9 @@ CREATE TABLE IF NOT EXISTS `vlt_boats_system` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_boats_system: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_boats_system: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_domination_members
+-- Copiando estrutura para tabela mdg_ultimate.vlt_domination_members
 CREATE TABLE IF NOT EXISTS `vlt_domination_members` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(255) NOT NULL,
@@ -3687,9 +3663,9 @@ CREATE TABLE IF NOT EXISTS `vlt_domination_members` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_domination_members: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_domination_members: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_domination_props
+-- Copiando estrutura para tabela mdg_ultimate.vlt_domination_props
 CREATE TABLE IF NOT EXISTS `vlt_domination_props` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `area_name` varchar(50) DEFAULT NULL,
@@ -3702,18 +3678,18 @@ CREATE TABLE IF NOT EXISTS `vlt_domination_props` (
   UNIQUE KEY `area_name` (`area_name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=508 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_domination_props: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_domination_props: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_domination_territories
+-- Copiando estrutura para tabela mdg_ultimate.vlt_domination_territories
 CREATE TABLE IF NOT EXISTS `vlt_domination_territories` (
   `area_name` varchar(50) NOT NULL,
   `gang_name` varchar(50) NOT NULL,
   PRIMARY KEY (`area_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_domination_territories: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_domination_territories: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_horses
+-- Copiando estrutura para tabela mdg_ultimate.vlt_horses
 CREATE TABLE IF NOT EXISTS `vlt_horses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -3731,9 +3707,9 @@ CREATE TABLE IF NOT EXISTS `vlt_horses` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_horses: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_horses: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_horses_stats
+-- Copiando estrutura para tabela mdg_ultimate.vlt_horses_stats
 CREATE TABLE IF NOT EXISTS `vlt_horses_stats` (
   `horseid` int(11) NOT NULL,
   `distance` int(11) NOT NULL DEFAULT 0,
@@ -3747,9 +3723,9 @@ CREATE TABLE IF NOT EXISTS `vlt_horses_stats` (
   PRIMARY KEY (`horseid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_horses_stats: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_horses_stats: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_identity
+-- Copiando estrutura para tabela mdg_ultimate.vlt_identity
 CREATE TABLE IF NOT EXISTS `vlt_identity` (
   `identifier` varchar(60) NOT NULL,
   `firstname` varchar(50) DEFAULT NULL,
@@ -3760,31 +3736,29 @@ CREATE TABLE IF NOT EXISTS `vlt_identity` (
   PRIMARY KEY (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_identity: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_identity: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_journalist
+-- Copiando estrutura para tabela mdg_ultimate.vlt_journalist
 CREATE TABLE IF NOT EXISTS `vlt_journalist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `news` longtext DEFAULT '[]',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_journalist: ~1 rows (aproximadamente)
-INSERT INTO `vlt_journalist` (`id`, `news`) VALUES
+-- Copiando dados para a tabela mdg_ultimate.vlt_journalist: ~0 rows (aproximadamente)
+INSERT IGNORE INTO `vlt_journalist` (`id`, `news`) VALUES
 	(1, '[]');
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_madame_nazar
+-- Copiando estrutura para tabela mdg_ultimate.vlt_madame_nazar
 CREATE TABLE IF NOT EXISTS `vlt_madame_nazar` (
   `charid` int(11) DEFAULT NULL,
   `identifier` varchar(100) DEFAULT NULL,
   `VLT_madame_nazar` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_madame_nazar: ~1 rows (aproximadamente)
-INSERT INTO `vlt_madame_nazar` (`charid`, `identifier`, `VLT_madame_nazar`) VALUES
-	(1, 'steam:11000013527d62e', 0);
+-- Copiando dados para a tabela mdg_ultimate.vlt_madame_nazar: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_matabolism
+-- Copiando estrutura para tabela mdg_ultimate.vlt_matabolism
 CREATE TABLE IF NOT EXISTS `vlt_matabolism` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `personaId` int(11) DEFAULT NULL,
@@ -3797,13 +3771,11 @@ CREATE TABLE IF NOT EXISTS `vlt_matabolism` (
   `statStress` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `personaId` (`personaId`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_matabolism: ~1 rows (aproximadamente)
-INSERT INTO `vlt_matabolism` (`id`, `personaId`, `statHunger`, `statThirst`, `statHealth`, `statHealthCore`, `statStamina`, `statStaminaCore`, `statStress`) VALUES
-	(1, 1, 44, 65, 500, 100, 1, 100, 0);
+-- Copiando dados para a tabela mdg_ultimate.vlt_matabolism: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_ped_menu
+-- Copiando estrutura para tabela mdg_ultimate.vlt_ped_menu
 CREATE TABLE IF NOT EXISTS `vlt_ped_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -3817,18 +3789,18 @@ CREATE TABLE IF NOT EXISTS `vlt_ped_menu` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_ped_menu: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_ped_menu: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_plantation
+-- Copiando estrutura para tabela mdg_ultimate.vlt_plantation
 CREATE TABLE IF NOT EXISTS `vlt_plantation` (
   `charid` int(11) NOT NULL,
   `farm` longtext NOT NULL DEFAULT '[]',
   PRIMARY KEY (`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_plantation: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_plantation: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_posters
+-- Copiando estrutura para tabela mdg_ultimate.vlt_posters
 CREATE TABLE IF NOT EXISTS `vlt_posters` (
   `id` varchar(50) NOT NULL DEFAULT '0',
   `identifier` varchar(50) DEFAULT NULL,
@@ -3840,9 +3812,9 @@ CREATE TABLE IF NOT EXISTS `vlt_posters` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_posters: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_posters: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_stable_bought
+-- Copiando estrutura para tabela mdg_ultimate.vlt_stable_bought
 CREATE TABLE IF NOT EXISTS `vlt_stable_bought` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -3854,9 +3826,9 @@ CREATE TABLE IF NOT EXISTS `vlt_stable_bought` (
   KEY `identifier` (`identifier`,`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_stable_bought: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_stable_bought: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_stable_color
+-- Copiando estrutura para tabela mdg_ultimate.vlt_stable_color
 CREATE TABLE IF NOT EXISTS `vlt_stable_color` (
   `id` int(11) NOT NULL,
   `drawable` int(11) DEFAULT NULL,
@@ -3870,9 +3842,9 @@ CREATE TABLE IF NOT EXISTS `vlt_stable_color` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_stable_color: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_stable_color: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.vlt_wagons
+-- Copiando estrutura para tabela mdg_ultimate.vlt_wagons
 CREATE TABLE IF NOT EXISTS `vlt_wagons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -3889,9 +3861,9 @@ CREATE TABLE IF NOT EXISTS `vlt_wagons` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.vlt_wagons: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_wagons: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.wagons
+-- Copiando estrutura para tabela mdg_ultimate.wagons
 CREATE TABLE IF NOT EXISTS `wagons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(600) NOT NULL,
@@ -3920,9 +3892,9 @@ CREATE TABLE IF NOT EXISTS `wagons` (
   KEY `model` (`model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- A despejar dados para tabela mdg_ultimate.wagons: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.wagons: ~0 rows (aproximadamente)
 
--- A despejar estrutura para tabela mdg_ultimate.whitelist
+-- Copiando estrutura para tabela mdg_ultimate.whitelist
 CREATE TABLE IF NOT EXISTS `whitelist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
@@ -3933,58 +3905,58 @@ CREATE TABLE IF NOT EXISTS `whitelist` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- A despejar dados para tabela mdg_ultimate.whitelist: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.whitelist: ~0 rows (aproximadamente)
 
--- A despejar estrutura para disparador mdg_ultimate.add_mdg_horses_stats
+-- Copiando estrutura para trigger mdg_ultimate.add_mdg_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `add_mdg_horses_stats` AFTER INSERT ON `mdg_horses` FOR EACH ROW INSERT INTO mdg_horses_stats (horseid) VALUES (NEW.id)//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- A despejar estrutura para disparador mdg_ultimate.add_VLT_horses_stats
+-- Copiando estrutura para trigger mdg_ultimate.add_VLT_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `add_VLT_horses_stats` AFTER INSERT ON `VLT_horses` FOR EACH ROW INSERT INTO VLT_horses_stats (horseid) VALUES (NEW.id)//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- A despejar estrutura para disparador mdg_ultimate.delete_mdg_horses_stats
+-- Copiando estrutura para trigger mdg_ultimate.delete_mdg_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_mdg_horses_stats` AFTER DELETE ON `mdg_horses` FOR EACH ROW DELETE FROM mdg_horses_stats WHERE horseid = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- A despejar estrutura para disparador mdg_ultimate.delete_mdg_stable_color
+-- Copiando estrutura para trigger mdg_ultimate.delete_mdg_stable_color
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_mdg_stable_color` AFTER DELETE ON `mdg_stable_bought` FOR EACH ROW DELETE FROM `mdg_stable_color` WHERE id = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- A despejar estrutura para disparador mdg_ultimate.delete_VLT_horses_stats
+-- Copiando estrutura para trigger mdg_ultimate.delete_VLT_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_VLT_horses_stats` AFTER DELETE ON `VLT_horses` FOR EACH ROW DELETE FROM VLT_horses_stats WHERE horseid = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- A despejar estrutura para disparador mdg_ultimate.delete_VLT_stable_color
+-- Copiando estrutura para trigger mdg_ultimate.delete_VLT_stable_color
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_VLT_stable_color` AFTER DELETE ON `VLT_stable_bought` FOR EACH ROW DELETE FROM `VLT_stable_color` WHERE id = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- A despejar estrutura para disparador mdg_ultimate.update_mdg_stable_equiped_component
+-- Copiando estrutura para trigger mdg_ultimate.update_mdg_stable_equiped_component
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `update_mdg_stable_equiped_component` AFTER DELETE ON `mdg_horses` FOR EACH ROW UPDATE `mdg_stable_bought` SET equiped_on = 0 WHERE equiped_on = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- A despejar estrutura para disparador mdg_ultimate.update_VLT_stable_equiped_component
+-- Copiando estrutura para trigger mdg_ultimate.update_VLT_stable_equiped_component
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `update_VLT_stable_equiped_component` AFTER DELETE ON `VLT_horses` FOR EACH ROW UPDATE `VLT_stable_bought` SET equiped_on = 0 WHERE equiped_on = OLD.id//
