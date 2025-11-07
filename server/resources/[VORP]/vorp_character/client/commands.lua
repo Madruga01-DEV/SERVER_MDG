@@ -1,3 +1,15 @@
+local PED_RESOURCE      = '[7^Peds]'
+local APPLY_PED_TIMEOUT = 2000
+
+local function usingCustomPed()
+    if GetResourceState(PED_RESOURCE) ~= 'started' then return false end
+    local ok, ret = pcall(function()
+        return exports[PED_RESOURCE]:usingCustomPed()
+    end)
+    return ok and ret or false
+end
+exports('usingCustomPed', usingCustomPed)
+
 local function toggleComp(hash, item, key)
 	IsPedReadyToRender()
 	if IsMetaPedUsingComponent(hash) then
@@ -64,10 +76,9 @@ CreateThread(function()
 				end
 			end
 
-			-- to fix clip with boots and pants
 			if key == "Pant" then
 				if IsMetaPedUsingComponent(Config.ComponentCategories.Boots) then
-					UpdateShopItemWearableState(CachedComponents.Boots.comp, `base`) -- -2081918609
+					UpdateShopItemWearableState(CachedComponents.Boots.comp, `base`)
 					UpdatePedVariation()
 				end
 			end
@@ -121,7 +132,6 @@ RegisterCommand("dress", function()
 	end
 end, false)
 
-
 local bandanaOn = true
 RegisterCommand('bandanaon', function()
 	local player = PlayerPedId()
@@ -160,7 +170,6 @@ RegisterCommand('bandanaon', function()
 		end
 	end
 end, false)
-
 
 local sleeves = true
 RegisterCommand("sleeves", function()
@@ -226,7 +235,7 @@ RegisterCommand("tuck", function()
 	end
 
 	if tuck and ComponentB.drawable then
-		if ComponentP.comp == 1939930032 then -- dont ask me why
+		if ComponentP.comp == 1939930032 then
 			SetMetaPedTag(PlayerPedId(), ComponentP.drawable, ComponentP.albedo, ComponentP.normal, ComponentP.material, ComponentP.palette, ComponentP.tint0, ComponentP.tint1, ComponentP.tint2)
 		else
 			SetTextureOutfitTints(PlayerPedId(), 'pants', ComponentP)
@@ -267,25 +276,42 @@ function ApplyRolledClothingStatus()
 	end
 end
 
+-- COMANDO RC COMPLETO E CORRIGIDO
 RegisterCommand(Config.ReloadCharCommand, function(_, args)
-	local __player = PlayerPedId()
-	local hogtied = Citizen.InvokeNative(0x3AA24CCC0D451379, __player)
-	local cuffed = Citizen.InvokeNative(0x74E559B3BC910685, __player)
-	local dead = IsEntityDead(__player)
+    local ped = PlayerPedId()
 
-	if not Config.CanRunReload() then
-		return
-	end
+    TriggerServerEvent('applyCharacterPed')
+    Citizen.Wait(APPLY_PED_TIMEOUT)
 
-	if not hogtied and not cuffed and not dead then
-		if not next(CachedSkin) and not next(CachedComponents) then
-			return
-		end
+    if usingCustomPed() then
+        return
+    end
 
-		if args[1] ~= "" then
-			Custom = args[1]
-		end
-		LocalPlayer.state:set("IsBandanaOn", false, true)
-		LoadPlayerComponents(__player, CachedSkin, CachedComponents, false)
-	end
+    if not Config.CanRunReload() then return end
+
+    local hogtied = Citizen.InvokeNative(0x3AA24CCC0D451379, ped)
+    local cuffed  = Citizen.InvokeNative(0x74E559B3BC910685, ped)
+    local dead    = IsEntityDead(ped)
+    if hogtied or cuffed or dead then return end
+
+    if not next(CachedSkin) and not next(CachedComponents) then return end
+
+    if args[1] and args[1] ~= '' then
+        Custom = args[1]
+    end
+
+    LocalPlayer.state:set('IsBandanaOn', false, true)
+    
+    -- 1. Aplicar skin base e componentes
+    LoadPlayerComponents(ped, CachedSkin, CachedComponents, false)
+    
+    Wait(500)
+    
+    -- 2. Aplicar overlays base (sobrancelhas da skinPlayer)
+    ReapplyOverlays(CachedSkin)
+    
+    Wait(300)
+    
+    -- 3. Triggerar o script de maquiagem para reaplicar (MESMO EVENTO DO LOGIN)
+    TriggerServerEvent("vorpcharacter:reloadedskinlistener")
 end, false)

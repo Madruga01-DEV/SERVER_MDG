@@ -3,7 +3,7 @@ Lang = "Portuguese_BR"
 
 Config = {}
 
-Config.DevMode = false    -- if true you can restart script without having to restart the server
+Config.DevMode = true    -- if true you can restart script without having to restart the server
 
 Config.Align = "top-left" -- menu position
 

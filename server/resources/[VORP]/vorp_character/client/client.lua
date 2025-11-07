@@ -2,7 +2,7 @@ local PromptGroup <const> = GetRandomIntInRange(0, 0xffffff)
 local DeletePrompt
 local SelectPrompt
 local GoBackPrompt
-local selectedChar        = 1
+local selectedChar        = 1 
 local myChars             = {}
 local textureId           = -1
 local MaxCharacters
@@ -12,22 +12,34 @@ local random
 local canContinue         = false
 local MalePed
 local FemalePed
-local characterChosen     = false
+local characterChosen = false
 local MenuData            = exports.vorp_menu:GetMenuData()
-Core                      = exports.vorp_core:GetCore()
+Core                      = exports.vorp_core:GetCore() 
 Custom                    = nil
 Peds                      = {}
 CachedSkin                = {}
 CachedComponents          = {}
 T                         = Translation.Langs[Lang]
 CHARID                    = nil
-local width, _            = GetCurrentScreenResolution()
+local width, _            = GetCurrentScreenResolution()  
 
 local imgPath             = "<img style='max-height:450px;max-width:280px;float: center;'src='nui://" .. GetCurrentResourceName() .. "/images/%s.png'>"
 local img                 = "<img style='margin-top: 10px;margin-bottom: 10px; margin-left: -10px;'src='nui://" .. GetCurrentResourceName() .. "/images/%s.png'>"
 local Divider             = "<br><br><br><br><br>" .. img:format("divider_line") .. "<br>"
 local SubTitle            = "<span style='font-size: 25px;'>" .. T.MenuCreation.subtitle1 .. "<br><br></span>"
 local fontSize            = "18px"
+
+local PED_RESOURCE      = '[7^Peds]'
+local APPLY_PED_TIMEOUT = 2000          --  ❰❰  ADICIONE ESTA LINHA  ❱❱
+
+local function usingCustomPed()
+    if GetResourceState(PED_RESOURCE) ~= 'started' then return false end
+    local ok, ret = pcall(function()
+        return exports[PED_RESOURCE]:usingCustomPed()
+    end)
+    return ok and ret or false
+end
+exports('usingCustomPed', usingCustomPed)
 
 if width <= 1920 then
 	imgPath = "<img style='max-height:200px;max-width:200px;float: center;'src='nui://" .. GetCurrentResourceName() .. "/images/%s.png'>"
@@ -97,7 +109,7 @@ AddEventHandler("vorpcharacter:selectCharacter", function(myCharacters, mc, rand
 		end
 		characterChosen = false
 	end)
-
+	
 	random = rand
 	myChars = myCharacters
 	MaxCharacters = mc
@@ -106,6 +118,68 @@ AddEventHandler("vorpcharacter:selectCharacter", function(myCharacters, mc, rand
 	StartSwapCharacters()
 end)
 
+
+local skinCarregada = false
+
+-- Intercepta quando o personagem spawna
+RegisterNetEvent('vorp:SelectedCharacter')
+AddEventHandler('vorp:SelectedCharacter', function(charid)
+    CHARID = charid
+    skinCarregada = false
+    
+    -- Aguarda spawn completo
+    CreateThread(function()
+        Wait(3000) -- Aguarda mundo carregar
+        TriggerServerEvent("vorpcharacter:reloadedskinlistener")
+        if not skinCarregada then
+            local ped = PlayerPedId()
+            
+            -- Aguarda modelo estar pronto
+            local timeout = 0
+            while not Citizen.InvokeNative(0xA0BC8FAED8CFEB3C, ped) and timeout < 50 do
+                Wait(100)
+                timeout = timeout + 1
+            end
+            
+            Wait(1000)
+            
+            -- Força atualização das texturas faciais (CRÍTICO)
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, ped, 0, 1, 1, 1, 0)
+            Wait(200)
+            
+            -- Reaplicar overlays se existirem na CachedSkin
+            if next(CachedSkin) then
+                ReapplyOverlays(CachedSkin)
+                Wait(300)
+            end
+            
+            -- Atualização final forçada
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, ped, 0, 1, 1, 1, 0)
+            Wait(100)
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, ped, 1, 1, 1, 1, 0)
+            Wait(100)
+            Citizen.InvokeNative(0x704C908E9C405136, ped)
+            Citizen.InvokeNative(0xAAB86462966168CE, ped, 1)
+            
+            skinCarregada = true
+        end
+    end)
+end)
+
+-- Backup caso o evento acima não pegue
+AddEventHandler('playerSpawned', function()
+    if not skinCarregada then
+        Wait(2000)
+        local ped = PlayerPedId()
+        if next(CachedSkin) then
+            ReapplyOverlays(CachedSkin)
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, ped, 0, 1, 1, 1, 0)
+            Wait(100)
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, ped, 1, 1, 1, 1, 0)
+            skinCarregada = true
+        end
+    end
+end)
 
 RegisterNetEvent("vorpcharacter:updateCache")
 AddEventHandler("vorpcharacter:updateCache", function(skin, comps)
@@ -181,7 +255,7 @@ local function ApplyAllComponents(category, value, ped, set)
 	ApplyShopItemToPed(value.comp, ped)
 
 	if category ~= "Boots" then
-		UpdateShopItemWearableState(value.comp, `base`)
+		UpdateShopItemWearableState(ped, `base`)
 	end
 
 	Citizen.InvokeNative(0xAAB86462966168CE, ped, 1)
@@ -286,6 +360,7 @@ function LoadAll(gender, ped, pedskin, components, set)
 	LoadComps(ped, components, set)
 	SetPedScale(ped, skin.Scale)
 	UpdatePedVariation(ped)
+	TriggerServerEvent("jo_libs:server:applySkinAndClothes",ped,skin,components) 
 	return skin
 end
 
@@ -321,7 +396,6 @@ function CharSelect()
 	SetEntityCanBeDamaged(PlayerPedId(), true)
 	local coords = myChars[selectedChar].coords
 	if not coords.x or not coords.y or not coords.z or not coords.heading then
-		print("No coords found send back to original")
 		coords = Config.SpawnCoords[math.random(#Config.SpawnCoords)].position
 	end
 
@@ -339,10 +413,10 @@ function StartSwapCharacters()
 	exports.weathersync:setMyWeather(options.weather.type, options.weather.transition, options.weather.snow)
 	exports.weathersync:setMyTime(options.time.hour, 0, 0, options.time.transition, true)
 	SetTimecycleModifier(options.timecycle.name)
-	Citizen.InvokeNative(0xFDB74C9CC54C3F37, options.timecycle.strength)
+	Citizen.InvokeNative(0xFDB74C9CC54C3F37, options.timecycle.strenght)
 	StartPlayerTeleport(PlayerId(), options.playerpos.x, options.playerpos.y, options.playerpos.z, 0.0, true, true, true, true)
 	repeat Wait(0) until not IsPlayerTeleportActive()
-	SetEntityCoords(PlayerPedId(), options.playerpos.x, options.playerpos.y, options.playerpos.z, false, false, false, false) -- sometimes it doesnt tp with devmode. so we enforce
+	SetEntityCoords(PlayerPedId(), options.playerpos.x, options.playerpos.y, options.playerpos.z,false,false,false,false) -- sometimes it doesnt tp with devmode. so we enforce
 	PrepareMusicEvent(options.music)
 	Wait(100)
 	TriggerMusicEvent(options.music)
@@ -370,7 +444,6 @@ function StartSwapCharacters()
 		local start = GetGameTimer()
 		repeat Wait(0) until DoesEntityExist(data.PedHandler) or GetGameTimer() - start > 5000
 		if GetGameTimer() - start > 5000 then
-			print("Failed to create peds")
 			break
 		end
 
@@ -644,28 +717,40 @@ function OpenMenuSelect()
 		end)
 end
 
-AddEventHandler("vorpcharacter:reloadafterdeath", function()
-	local player = PlayerPedId()
-	local getPedModel = GetEntityModel(player)
-	local reload = false
-	if getPedModel ~= joaat("mp_female") and getPedModel ~= joaat("mp_male") then
-		-- Not a mp model convert to this model before reload to player model?
-		Wait(5000)
-		LoadPlayer(joaat("CS_dutch"))
-		SetPlayerModel(PlayerId(), joaat("CS_dutch"), false)
-		IsPedReadyToRender(player)
-		SetModelAsNoLongerNeeded(joaat("CS_dutch"))
-		reload = true
-	end
+AddEventHandler('vorpcharacter:reloadafterdeath', function()
+    Wait(500)
 
-	if CachedSkin and CachedComponents then
-		LoadPlayerComponents(player, CachedSkin, CachedComponents, reload)
-	end
+    if usingCustomPed() then
+        TriggerServerEvent('applyCharacterPed')
+        local ped = PlayerPedId()
+        SetEntityHealth(ped, 600, 1)
+        RestorePedStamina(PlayerId(), 100.0)
+        Citizen.InvokeNative(0xC6258F41D86676E0, ped, 0, 100)
+        Citizen.InvokeNative(0xC6258F41D86676E0, ped, 1, 100)
+        return
+    end
 
-	SetAttributeCoreValue(player, 0, 100)
-	SetEntityHealth(player, 600, 1)
-	SetAttributeCoreValue(player, 1, 100)
-	RestorePedStamina(player, 1065330373)
+    local player = PlayerPedId()
+    local reload = false
+
+    if GetEntityModel(player) ~= joaat('mp_female')
+       and GetEntityModel(player) ~= joaat('mp_male') then
+        Wait(5000)
+        LoadPlayer(joaat('CS_dutch'))
+        SetPlayerModel(PlayerId(), joaat('CS_dutch'), false)
+        IsPedReadyToRender(player)
+        SetModelAsNoLongerNeeded(joaat('CS_dutch'))
+        reload = true
+    end
+
+    if CachedSkin and CachedComponents then
+        LoadPlayerComponents(player, CachedSkin, CachedComponents, reload)
+    end
+
+    SetAttributeCoreValue(player, 0, 100)
+    SetEntityHealth(player, 600, 1)
+    SetAttributeCoreValue(player, 1, 100)
+    RestorePedStamina(player, 1065330373)
 end)
 
 
@@ -675,14 +760,12 @@ function LoadPlayerComponents(ped, skin, components, reload)
 	local getPedModel = GetEntityModel(ped)
 
 	if reload or getPedModel ~= joaat("mp_female") and getPedModel ~= joaat("mp_male") then
-		-- is npc model convert to player model
 		local skinS = not Custom and skin.sex or Custom
-		if type(skinS) == "string" then skinS = joaat(skinS) end
-		LoadPlayer(skinS)
-		SetPlayerModel(PlayerId(), skinS, false)
+		LoadPlayer(joaat(skinS))
+		SetPlayerModel(PlayerId(), joaat(skinS), false)
 		SetEntityFadeIn(ped)
 		ped = PlayerPedId()
-		SetModelAsNoLongerNeeded(skinS)
+		SetModelAsNoLongerNeeded(joaat(skinS))
 		Custom = nil
 	end
 
@@ -716,6 +799,9 @@ function LoadPlayerComponents(ped, skin, components, reload)
 	TriggerServerEvent("vorpcharacter:reloadedskinlistener")
 	RemoveTagFromMetaPed(Config.ComponentCategories.AmmoPistol)
 	SetPedScale(ped, CachedSkin.Scale)
+	SetTimeout(2000, function()
+        TriggerEvent("vorp_character:client:CharacterLoaded")
+    end)
 end
 
 function FaceOverlay(name, visibility, tx_id, tx_normal, tx_material, tx_color_type, tx_opacity, tx_unk, palette_id, palette_color_primary, palette_color_secondary, palette_color_tertiary, var, opacity)
@@ -776,11 +862,7 @@ function StartOverlay()
 		Citizen.InvokeNative(0x6BEFAA907B076859, textureId) -- remove texture
 	end
 
-	if CachedSkin.albedo and CachedSkin.albedo == 0 then
-		CachedSkin.albedo = current_texture_settings.albedo
-	end
-
-	textureId = Citizen.InvokeNative(0xC5E7204F322E49EB, CachedSkin.albedo, current_texture_settings.normal, current_texture_settings.material)
+	textureId = Citizen.InvokeNative(0xC5E7204F322E49EB, CachedSkin.Albedo, current_texture_settings.normal, current_texture_settings.material)
 	for k, v in ipairs(Config.overlay_all_layers) do
 		if v.visibility ~= 0 then
 			local overlay_id = Citizen.InvokeNative(0x86BB5FF45F193A02, textureId, v.tx_id, v.tx_normal, v.tx_material, v.tx_color_type, v.tx_opacity, v.tx_unk)
@@ -823,7 +905,6 @@ AddEventHandler('onClientResourceStart', function(resourceName)
 	end
 
 	if Config.DevMode then
-		print("^3VORP Character Selector is in ^1DevMode^7 dont use in live servers")
 		TriggerServerEvent("vorp_character:server:GoToSelectionMenu")
 	end
 end)
@@ -855,7 +936,6 @@ AddEventHandler('onResourceStop', function(resourceName)
 	FreezeEntityPosition(PlayerPedId(), false)
 end)
 
--- apply whistle data on character selected
 RegisterNetEvent("vorp:SelectedCharacter", function(charid)
 	CHARID = charid
 	-- if it exists set is current values that were saved when player first made a character
@@ -879,4 +959,9 @@ RegisterNetEvent("vorp:SelectedCharacter", function(charid)
 			}))
 		end
 	end
+end)
+
+AddEventHandler("vorp_character:client:CharacterLoaded", function()
+    Wait(2000)
+    TriggerServerEvent("vorpcharacter:reloadedskinlistener")
 end)

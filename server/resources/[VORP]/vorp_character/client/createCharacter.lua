@@ -335,7 +335,7 @@ function DefaultPedSetup(ped, male)
 	PlayerSkin.Body             = PlayerSkin.BodyType
 	PlayerSkin.HeadType         = joaat(("CLOTHING_ITEM_%s_HEAD_00%d_V_001"):format(gender, HeadIndexTracker))
 	PlayerSkin.LegsType         = joaat(("CLOTHING_ITEM_%s_BODIES_LOWER_001_V_001"):format(gender))
-	PlayerSkin.albedo           = joaat(("MP_HEAD_%sR1_SC08_C0_000_AB"):format(gender))
+	PlayerSkin.Albedo           = joaat(("MP_HEAD_%sR1_SC08_C0_000_AB"):format(gender))
 	PlayerClothing.Teeth.comp   = joaat(("CLOTHING_ITEM_%s_TEETH_000"):format(gender))
 	PlayerClothing.Gunbelt.comp = joaat(("CLOTHING_ITEM_%s_GUNBELT_000_TINT_001"):format(gender))
 	PlayerSkin.Hair             = joaat(("CLOTHING_ITEM_%s_HAIR_001_BLONDE"):format(gender))
@@ -364,7 +364,7 @@ function DefaultPedSetup(ped, male)
 	PlayerSkin.eyebrows_opacity    = 1.0
 	PlayerSkin.eyebrows_color      = 0x3F6E70FF
 
-	ApplyOverlay("eyebrows", 1, 1, 1, 0, 0, 1.0, 0, 1, 0x3F6E70FF, 0, 0, 1, 1.0, PlayerSkin.albedo)
+	ApplyOverlay("eyebrows", 1, 1, 1, 0, 0, 1.0, 0, 1, 0x3F6E70FF, 0, 0, 1, 1.0, PlayerSkin.Albedo)
 
 	IsPedReadyToRender()
 	EquipMetaPedOutfitPreset(ped, 3)
@@ -398,12 +398,10 @@ end
 function CreatePlayerModel(model, peds)
 	local Gender = model == "mp_male" and "male" or "female"
 	isMale = model == "mp_male" and true or false
-	DoScreenFadeOut(10)
+	DoScreenFadeOut(0)
 	repeat Wait(0) until IsScreenFadedOut()
 
-	ShowBusyspinnerWithText(T.Other.spinnertext2)
-
-	for _, value in pairs(peds) do
+	for key, value in pairs(peds) do
 		DeleteEntity(value)
 	end
 
@@ -444,7 +442,6 @@ function CreatePlayerModel(model, peds)
 	PrepareCreatorMusic()
 	setInteriors(isMale)
 	OpenCharCreationMenu(Clothing, false)
-	BusyspinnerOff()
 	DoScreenFadeIn(3000)
 	repeat Wait(0) until IsScreenFadedIn()
 end
