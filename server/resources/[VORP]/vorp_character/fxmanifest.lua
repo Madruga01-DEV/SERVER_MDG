@@ -4,11 +4,6 @@ game 'rdr3'
 lua54 'yes'
 
 
-name 'vorp character'
-author 'FIX : MDG'
-authorFIX "Madruga Dev"
-description 'A Character creator with also shops built in for vorpcore framework '
-
 shared_scripts {
 	'config.lua',
 	'config_shops.lua',

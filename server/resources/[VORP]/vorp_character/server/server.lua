@@ -111,7 +111,7 @@ end)
 
 local function iniSpawn()
 	local numSpawns = #Config.SpawnCoords
-	if numSpawns == 0 then return end
+	if numSpawns == 0 then return print("update config file") end
 
 	local randomIndex = math.random(1, numSpawns)
 	local selectedSpawn = Config.SpawnCoords[randomIndex]
@@ -145,10 +145,16 @@ RegisterServerEvent("vorpcharacter:deleteCharacter", function(selectedChar)
 	end
 end)
 
+-- only allow the player to use this once since they have to leave to change characters, can be removed once theres a way to allow changing characters in run time
+local charSelected <const> = {}
 RegisterServerEvent("vorp_CharSelectedCharacter", function(charid)
 	local _source = source
-	local user = Core.getUser(_source)
+	if charSelected[_source] then return print("player has already selected a character") end
+
+	-- player exists
+	local user <const> = Core.getUser(_source)
 	if user then
+		charSelected[_source] = true
 		user.setUsedCharacter(charid)
 	end
 end)
@@ -171,7 +177,6 @@ RegisterNetEvent("vorpcharacter:setPlayerCompChange", function(skinValues, comps
 end)
 
 
-RegisterNetEvent("vorp_character:server:SpawnUniqueCharacter")
 AddEventHandler("vorp_character:server:SpawnUniqueCharacter", function(source)
 	local userCharacters = GetPlayerData(source)
 	if not userCharacters then
@@ -189,7 +194,7 @@ AddEventHandler("vorp_character:server:GoToSelectionMenu", function(src)
 
 	if not Config.DevMode then
 		if Player(_source).state.IsInSession then
-			return 
+			return print("player is past selection")
 		end
 	end
 
@@ -225,7 +230,7 @@ Core.Callback.Register("vorp_character:callback:PayToShop", function(source, cal
 	end
 	local character = user.getUsedCharacter
 	local money = character.money
-	local amountToPay = arguments.amount
+	local amountToPay = tonumber(arguments.amount)
 
 	if money < amountToPay then
 		SetTimeout(5000, function()
@@ -344,154 +349,4 @@ Core.Callback.Register("vorp_character:callback:DeleteOutfit", function(source, 
 	MySQL.query("DELETE FROM outfits WHERE identifier = ? AND id = ?", { character.identifier, arguments.Outfit.id })
 
 	return callback(true)
-end)
-
-Core.Callback.Register("vorp_character:callback:GetUpdatedCharacter", function(source, callback)
-    local user = Core.getUser(source)
-    if not user then
-        return callback(false)
-    end
-    
-    local character = user.getUsedCharacter
-    local identifier = character.identifier
-    local charidentifier = character.charIdentifier
-    
-    MySQL.query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'characters' AND COLUMN_NAME = 'info'", {}, function(columns)
-        local hasInfoColumn = columns and #columns > 0
-        
-        local query = hasInfoColumn and 
-            "SELECT skinPlayer, compPlayer, compTints, info FROM characters WHERE identifier = ? AND charidentifier = ?" or
-            "SELECT skinPlayer, compPlayer, compTints FROM characters WHERE identifier = ? AND charidentifier = ?"
-        
-        MySQL.query(query, { identifier, charidentifier }, function(result)
-            if result[1] then
-                local skin = json.decode(result[1].skinPlayer or '{}')
-                local comps = json.decode(result[1].compPlayer or '{}')
-                local compTints = json.decode(result[1].compTints or '{}')
-                local info = hasInfoColumn and (result[1].info or '{}') or '{}'
-                
-                local NewComps = {}
-                for k, comp in pairs(comps) do
-                    NewComps[k] = { comp = comp, tint0 = 0, tint1 = 0, tint2 = 0, palette = 0 }
-                    if compTints and compTints[k] and compTints[k][tostring(comp)] then
-                        local compTint = compTints[k][tostring(comp)]
-                        NewComps[k].tint0 = compTint.tint0 or 0
-                        NewComps[k].tint1 = compTint.tint1 or 0
-                        NewComps[k].tint2 = compTint.tint2 or 0
-                        NewComps[k].palette = compTint.palette or 0
-                    end
-                end
-                
-                return callback({
-                    skin = skin,
-                    comps = NewComps,
-                    info = info
-                })
-            else
-                return callback(false)
-            end
-        end)
-    end)
-end)
-
-Core.Callback.Register("vorp_character:callback:GetFullCharacterData", function(source, callback)
-	local user = Core.getUser(source)
-	
-	if not user then
-		return callback(false)
-	end
-	
-	local character = user.getUsedCharacter
-	
-	if not character then
-		return callback(false)
-	end
-	
-	local skin = json.decode(character.skinPlayer or '{}')
-	local comps = json.decode(character.compPlayer or '{}')
-	local compTints = json.decode(character.compTints or '{}')
-	local info = json.decode(character.info or '{}')
-	
-	local NewComps = ConvertTable(comps, compTints)
-	
-	local fullData = {
-		skin = skin,
-		components = NewComps,
-		info = info
-	}
-	
-	return callback(fullData)
-end)
-
-RegisterServerEvent("vorp_character:server:RequestFullCharacterData")
-AddEventHandler("vorp_character:server:RequestFullCharacterData", function()
-    local _source = source
-    local user = Core.getUser(_source)
-    
-    if not user then
-        return
-    end
-    
-    local character = user.getUsedCharacter
-    
-    if not character then
-        return
-    end
-    
-    exports.oxmysql:execute("SELECT skinPlayer, compPlayer, compTints, info FROM characters WHERE identifier = ? AND charidentifier = ?", 
-    { character.identifier, character.charIdentifier }, 
-    function(result)
-        if result[1] then
-            local skin = json.decode(result[1].skinPlayer or '{}')
-            local comps = json.decode(result[1].compPlayer or '{}')
-            local compTints = json.decode(result[1].compTints or '{}')
-            local info = json.decode(result[1].info or '{}')
-            
-            local NewComps = ConvertTable(comps, compTints)
-            
-            TriggerClientEvent("vorp_character:client:ApplyFullCharacterData", _source, skin, NewComps, info)
-        end
-    end)
-end)
-
-RegisterServerEvent("vorp_character:server:GetMakeupInfo")
-AddEventHandler("vorp_character:server:GetMakeupInfo", function()
-    local _source = source
-    local user = Core.getUser(_source)
-    
-    if not user then
-        return
-    end
-    
-    local character = user.getUsedCharacter
-    
-    if not character then
-        return
-    end
-    exports.oxmysql:execute("SELECT info FROM characters WHERE identifier = ? AND charidentifier = ?", 
-    { character.identifier, character.charIdentifier }, 
-    function(result)
-        if not result or #result == 0 then
-            return
-        end
-        
-        if not result[1].info then
-            return
-        end
-
-        local infoData = json.decode(result[1].info)
-        
-        if not infoData then
-            return
-        end
-        
-        local count = 0
-        for k, v in pairs(infoData) do
-            if type(v) == "table" and v.visibility == 1 then
-                count = count + 1
-            end
-        end
-        TriggerClientEvent("vorp_character:client:ApplyMakeupFromInfo", _source, infoData)
-
-    end)
 end)

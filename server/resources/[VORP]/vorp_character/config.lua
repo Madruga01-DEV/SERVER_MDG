@@ -3,7 +3,7 @@ Lang = "Portuguese_BR"
 
 Config = {}
 
-Config.DevMode = true    -- if true you can restart script without having to restart the server
+Config.DevMode = false    -- if true you can restart script without having to restart the server
 
 Config.Align = "top-left" -- menu position
 
@@ -25,7 +25,7 @@ Config.UseInitialAnimScene = true
 Config.ShowGold = false
 
 -- set false to not show character description on selction menu
-Config.showchardesc = false
+Config.showchardesc = true
 
 
 -- after creating character player will spawn here

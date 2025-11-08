@@ -15,6 +15,14 @@ FemalePed = nil
 MalePed = nil
 
 
+-- you must set to true to wait the character scene, and once your loading screen is finished you must set to false to then continue the scene (this is only if you using loading screen and you manually shut them off other wise dont use it)
+-- example, you have loading screen where player needs to press a button to end loading screen, using the event  you can wait fot the scene to start so they dont miss it
+-- this is just optional
+local loadingScene = false
+AddEventHandler("vorpcharacter:stopLoadingScene", function(value)
+	loadingScene = value
+end)
+
 function SetupCameraCharacterCreationSelect()
 	local camera = CreateCamera(`DEFAULT_SCRIPTED_CAMERA`, true)
 	local pos = vec3(-562.15, -3776.22, 239.11)
@@ -48,6 +56,8 @@ local function Setup()
 	local peds = {}
 
 	if Config.UseInitialAnimScene then
+		repeat Wait(500) until not loadingScene
+
 		animscene, peds = SetupAnimscene()
 		LoadAnimScene(animscene)
 		repeat Wait(0) until Citizen.InvokeNative(0x477122B8D05E7968, animscene)
@@ -308,7 +318,7 @@ function StartPrompts(value)
 		SetCamCoord(cam, newPos.x, newPos.y, newPos.z)
 		SetCamRot(cam, rot.x, rot.y, rot.z, 2)
 
-	
+
 		if not IsInCharCreation then
 			if not IsInClothingStore then
 				break
@@ -326,7 +336,6 @@ function StartPrompts(value)
 	RenderScriptCams(false, true, 500, true, true, 0)
 end
 
-
 function DefaultPedSetup(ped, male)
 	local gender                = male and "M" or "F"
 	HeadIndexTracker            = male and 8 or 1
@@ -335,7 +344,7 @@ function DefaultPedSetup(ped, male)
 	PlayerSkin.Body             = PlayerSkin.BodyType
 	PlayerSkin.HeadType         = joaat(("CLOTHING_ITEM_%s_HEAD_00%d_V_001"):format(gender, HeadIndexTracker))
 	PlayerSkin.LegsType         = joaat(("CLOTHING_ITEM_%s_BODIES_LOWER_001_V_001"):format(gender))
-	PlayerSkin.Albedo           = joaat(("MP_HEAD_%sR1_SC08_C0_000_AB"):format(gender))
+	PlayerSkin.albedo           = joaat(("MP_HEAD_%sR1_SC08_C0_000_AB"):format(gender))
 	PlayerClothing.Teeth.comp   = joaat(("CLOTHING_ITEM_%s_TEETH_000"):format(gender))
 	PlayerClothing.Gunbelt.comp = joaat(("CLOTHING_ITEM_%s_GUNBELT_000_TINT_001"):format(gender))
 	PlayerSkin.Hair             = joaat(("CLOTHING_ITEM_%s_HAIR_001_BLONDE"):format(gender))
@@ -364,7 +373,7 @@ function DefaultPedSetup(ped, male)
 	PlayerSkin.eyebrows_opacity    = 1.0
 	PlayerSkin.eyebrows_color      = 0x3F6E70FF
 
-	ApplyOverlay("eyebrows", 1, 1, 1, 0, 0, 1.0, 0, 1, 0x3F6E70FF, 0, 0, 1, 1.0, PlayerSkin.Albedo)
+	ApplyOverlay("eyebrows", 1, 1, 1, 0, 0, 1.0, 0, 1, 0x3F6E70FF, 0, 0, 1, 1.0, PlayerSkin.albedo)
 
 	IsPedReadyToRender()
 	EquipMetaPedOutfitPreset(ped, 3)
@@ -398,10 +407,12 @@ end
 function CreatePlayerModel(model, peds)
 	local Gender = model == "mp_male" and "male" or "female"
 	isMale = model == "mp_male" and true or false
-	DoScreenFadeOut(0)
+	DoScreenFadeOut(10)
 	repeat Wait(0) until IsScreenFadedOut()
 
-	for key, value in pairs(peds) do
+	ShowBusyspinnerWithText(T.Other.spinnertext2)
+
+	for _, value in pairs(peds) do
 		DeleteEntity(value)
 	end
 
@@ -418,7 +429,35 @@ function CreatePlayerModel(model, peds)
 	IsCharCreationFinished = false
 	RegisterGenderPrompt()
 	CreateThread(function()
+		if not MenuData.RegisterControls then
+			return print("UPDATE VORP MENU")
+		end
+		-- obly accepts java script controls
+		-- for mouse send mousepress and listen for mousepress_left and mousepress_right
+		MenuData.RegisterControls({ 'a', 'd', 'w', 's', 'mousepress' }, function(control)
+			-- simulates control press
+			if control == 'mousepress_left' then
+				SetControlValueNextFrame(0, `INPUT_INSPECT_ZOOM`, 1.0) -- TODO add config
+			end
+			if control == 'mousepress_right' then
+				SetControlValueNextFrame(0, `INPUT_CONTEXT_ACTION`, 1.0)
+			end
+			if control == 'a' then
+				SetControlValueNextFrame(0, `INPUT_MOVE_LEFT_ONLY`, 1.0)
+			end
+			if control == 'd' then
+				SetControlValueNextFrame(0, `INPUT_MOVE_RIGHT_ONLY`, 1.0)
+			end
+			if control == 'w' then
+				SetControlValueNextFrame(0, `INPUT_MOVE_UP_ONLY`, 1.0)
+			end
+			if control == 's' then
+				SetControlValueNextFrame(0, `INPUT_MOVE_DOWN_ONLY`, 1.0)
+			end
+		end)
 		StartPrompts()
+		-- unregister controls when isnt needed anymore
+		MenuData.UnregisterControls()
 	end)
 	EnableCharCreationPrompts(true)
 	Clothing = OrganiseClothingData(Gender)
@@ -442,6 +481,7 @@ function CreatePlayerModel(model, peds)
 	PrepareCreatorMusic()
 	setInteriors(isMale)
 	OpenCharCreationMenu(Clothing, false)
+	BusyspinnerOff()
 	DoScreenFadeIn(3000)
 	repeat Wait(0) until IsScreenFadedIn()
 end

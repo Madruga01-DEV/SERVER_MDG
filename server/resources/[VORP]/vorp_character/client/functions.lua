@@ -136,18 +136,19 @@ function ApplyOverlay(name, visibility, tx_id, tx_normal, tx_material, tx_color_
         Citizen.InvokeNative(0x6BEFAA907B076859, textureId)
     end
 
-    textureId = Citizen.InvokeNative(0xC5E7204F322E49EB, albedo, current_texture_settings.normal,
-        current_texture_settings.material)
+    if albedo == 0 then
+        albedo = CachedSkin.albedo ~= 0 and CachedSkin.albedo or current_texture_settings.albedo
+    end
+
+    textureId = Citizen.InvokeNative(0xC5E7204F322E49EB, albedo, current_texture_settings.normal, current_texture_settings.material)
 
 
     for k, v in pairs(Config.overlay_all_layers) do
         if v.visibility ~= 0 then
-            local overlay_id = Citizen.InvokeNative(0x86BB5FF45F193A02, textureId, v.tx_id, v.tx_normal,
-                v.tx_material, v.tx_color_type, v.tx_opacity, v.tx_unk)
+            local overlay_id = Citizen.InvokeNative(0x86BB5FF45F193A02, textureId, v.tx_id, v.tx_normal, v.tx_material, v.tx_color_type, v.tx_opacity, v.tx_unk)
             if v.tx_color_type == 0 then
                 Citizen.InvokeNative(0x1ED8588524AC9BE1, textureId, overlay_id, v.palette)
-                Citizen.InvokeNative(0x2DF59FFE6FFD6044, textureId, overlay_id, v.palette_color_primary,
-                    v.palette_color_secondary, v.palette_color_tertiary)
+                Citizen.InvokeNative(0x2DF59FFE6FFD6044, textureId, overlay_id, v.palette_color_primary, v.palette_color_secondary, v.palette_color_tertiary)
             end
 
             Citizen.InvokeNative(0x3329AAE2882FC8E4, textureId, overlay_id, v.var);
@@ -193,8 +194,7 @@ function SetupAnimscene()
     SetPedConfigFlag(Deputy, 130, true)
     SetPedConfigFlag(Deputy, 301, true)
     SetPedConfigFlag(Deputy, 315, true)
-    GiveWeaponToPed_2(Deputy, `WEAPON_REPEATER_CARBINE`, 100, true, false, 0, false, 0.5, 1.0, 752097756, false, 0.0,
-        false)
+    GiveWeaponToPed_2(Deputy, `WEAPON_REPEATER_CARBINE`, 100, true, false, 0, false, 0.5, 1.0, 752097756, false, 0.0,  false)
     FreezeEntityPosition(Deputy, true)
 
     local animscene = CreateAnimScene("script@mp@character_creator@transitions", 0.25, "pl_intro", false, true)
@@ -214,14 +214,14 @@ function SelectionPeds()
     Female_MP = CreatePed(joaat(fModel), -558.43, -3776.65, 237.7, 93.2, false, true, true, true)
     TaskStandStill(Female_MP, -1)
     SetEntityInvincible(Female_MP, true)
-    DefaultPedSetup(Female_MP, false)
+  --  DefaultPedSetup(Female_MP, false)
     SetModelAsNoLongerNeeded(fModel)
 
     LoadPlayer(mModel)
     Male_MP = CreatePed(joaat(mModel), -558.52, -3775.6, 237.7, 93.2, false, true, true, true)
     TaskStandStill(Male_MP, -1)
     SetEntityInvincible(Male_MP, true)
-    DefaultPedSetup(Male_MP, true)
+  --  DefaultPedSetup(Male_MP, true)
     SetModelAsNoLongerNeeded(mModel)
 
     return { Male_MP, Female_MP }
@@ -339,7 +339,7 @@ function ApplyDefaultClothing()
     end
 
     if #componentsWithWearableState < 1 then
-        return
+        return print("no components with wearable state")
     end
 
     local Helper = {
@@ -576,11 +576,12 @@ end
 -- exports
 exports('GetPlayerComponent', function(category)
     if not category then
-    
+        print("must provide a category")
         return nil
     end
 
     if not PlayerClothing[category] then
+        print("category does not exist")
         return nil
     end
 
@@ -590,243 +591,6 @@ exports('GetPlayerComponent', function(category)
 
     return CachedComponents[category]
 end)
-
-function ReapplyOverlays(skin)
-    if not skin then return end
-    
-    local ped = PlayerPedId()
-    
-    if skin.eyebrows_visibility and skin.eyebrows_visibility > 0 then
-        ApplyOverlay(
-            "eyebrows",
-            skin.eyebrows_tx_id or 1,
-            skin.eyebrows_visibility or 1,
-            1, 0, 0,
-            skin.eyebrows_opacity or 1.0,
-            0, 1,
-            skin.eyebrows_color or 0x3F6E70FF,
-            0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.scars_visibility and skin.scars_visibility > 0 then
-        ApplyOverlay(
-            "scars",
-            skin.scars_tx_id or 1,
-            skin.scars_visibility or 1,
-            1, 0, 0,
-            skin.scars_opacity or 1.0,
-            0, 1, 0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.spots_visibility and skin.spots_visibility > 0 then
-        ApplyOverlay(
-            "spots",
-            skin.spots_tx_id or 1,
-            skin.spots_visibility or 1,
-            1, 0, 0,
-            skin.spots_opacity or 1.0,
-            0, 1, 0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.disc_visibility and skin.disc_visibility > 0 then
-        ApplyOverlay(
-            "disc",
-            skin.disc_tx_id or 1,
-            skin.disc_visibility or 1,
-            1, 0, 0,
-            skin.disc_opacity or 1.0,
-            0, 1, 0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.complex_visibility and skin.complex_visibility > 0 then
-        ApplyOverlay(
-            "complex",
-            skin.complex_tx_id or 1,
-            skin.complex_visibility or 1,
-            1, 0, 0,
-            skin.complex_opacity or 1.0,
-            0, 1, 0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.acne_visibility and skin.acne_visibility > 0 then
-        ApplyOverlay(
-            "acne",
-            skin.acne_tx_id or 1,
-            skin.acne_visibility or 1,
-            1, 0, 0,
-            skin.acne_opacity or 1.0,
-            0, 1, 0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.ageing_visibility and skin.ageing_visibility > 0 then
-        ApplyOverlay(
-            "ageing",
-            skin.ageing_tx_id or 1,
-            skin.ageing_visibility or 1,
-            1, 0, 0,
-            skin.ageing_opacity or 1.0,
-            0, 1, 0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.freckles_visibility and skin.freckles_visibility > 0 then
-        ApplyOverlay(
-            "freckles",
-            skin.freckles_tx_id or 1,
-            skin.freckles_visibility or 1,
-            1, 0, 0,
-            skin.freckles_opacity or 1.0,
-            0, 1, 0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.moles_visibility and skin.moles_visibility > 0 then
-        ApplyOverlay(
-            "moles",
-            skin.moles_tx_id or 1,
-            skin.moles_visibility or 1,
-            1, 0, 0,
-            skin.moles_opacity or 1.0,
-            0, 1, 0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.grime_visibility and skin.grime_visibility > 0 then
-        ApplyOverlay(
-            "grime",
-            skin.grime_tx_id or 1,
-            skin.grime_visibility or 1,
-            1, 0, 0,
-            skin.grime_opacity or 1.0,
-            0, 1, 0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.lipsticks_visibility and skin.lipsticks_visibility > 0 then
-        ApplyOverlay(
-            "lipsticks",
-            skin.lipsticks_tx_id or 1,
-            skin.lipsticks_visibility or 1,
-            1,
-            skin.lipsticks_palette_id or 0,
-            skin.lipsticks_palette_color_primary or 0,
-            skin.lipsticks_opacity or 1.0,
-            skin.lipsticks_palette_color_secondary or 0,
-            skin.lipsticks_palette_color_tertiary or 0,
-            0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.shadows_visibility and skin.shadows_visibility > 0 then
-        ApplyOverlay(
-            "shadows",
-            skin.shadows_tx_id or 1,
-            skin.shadows_visibility or 1,
-            1,
-            skin.shadows_palette_id or 0,
-            skin.shadows_palette_color_primary or 0,
-            skin.shadows_opacity or 1.0,
-            skin.shadows_palette_color_secondary or 0,
-            skin.shadows_palette_color_tertiary or 0,
-            0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.beardstabble_visibility and skin.beardstabble_visibility > 0 then
-        ApplyOverlay(
-            "beardstabble",
-            skin.beardstabble_tx_id or 1,
-            skin.beardstabble_visibility or 1,
-            1, 0,
-            skin.beardstabble_color_primary or 0,
-            skin.beardstabble_opacity or 1.0,
-            0, 0, 0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.eyeliner_visibility and skin.eyeliner_visibility > 0 then
-        ApplyOverlay(
-            "eyeliner",
-            skin.eyeliner_tx_id or 1,
-            skin.eyeliner_visibility or 1,
-            1,
-            skin.eyeliner_palette_id or 0,
-            skin.eyeliner_color_primary or 0,
-            skin.eyeliner_opacity or 1.0,
-            0, 0, 0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.blush_visibility and skin.blush_visibility > 0 then
-        ApplyOverlay(
-            "blush",
-            skin.blush_tx_id or 1,
-            skin.blush_visibility or 1,
-            1,
-            skin.blush_palette_id or 0,
-            skin.blush_palette_color_primary or 0,
-            skin.blush_opacity or 1.0,
-            0, 0, 0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.foundation_visibility and skin.foundation_visibility > 0 then
-        ApplyOverlay(
-            "foundation",
-            skin.foundation_tx_id or 1,
-            skin.foundation_visibility or 1,
-            1,
-            skin.foundation_palette_id or 0,
-            skin.foundation_palette_color_primary or 0,
-            skin.foundation_opacity or 1.0,
-            skin.foundation_palette_color_secondary or 0,
-            skin.foundation_palette_color_tertiary or 0,
-            0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    if skin.paintedmasks_visibility and skin.paintedmasks_visibility > 0 then
-        ApplyOverlay(
-            "paintedmasks",
-            skin.paintedmasks_tx_id or 1,
-            skin.paintedmasks_visibility or 1,
-            1,
-            skin.paintedmasks_palette_id or 0,
-            skin.paintedmasks_palette_color_primary or 0,
-            skin.paintedmasks_opacity or 1.0,
-            skin.paintedmasks_palette_color_secondary or 0,
-            skin.paintedmasks_palette_color_tertiary or 0,
-            0, 0, 0, 1, 1.0,
-            skin.Albedo or skin.albedo
-        )
-    end
-    
-    UpdatePedVariation(ped)
-end
-
-
 
 exports('GetAllPlayerComponents', function()
     return CachedComponents
