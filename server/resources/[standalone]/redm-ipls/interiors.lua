@@ -77,6 +77,23 @@ local Doors = {
     [4235597664] = 0, -- Amradillo jail cell
 }
 
+Citizen.CreateThread(function()
+    Citizen.InvokeNative(0x1392105DA88BBFFB, GetHashKey("exterior_pronghornranch"), -2550.0, 400.0, 0, 0)
+
+    if Citizen.InvokeNative(0x5AC0944C156E5F44, "pro_empty_nav") then
+        Citizen.InvokeNative(0x527B97C203BB8606, "pro_empty_nav") -- disable
+    end
+    if Citizen.InvokeNative(0x5AC0944C156E5F44, "pro_fence_broken_nav") then
+        Citizen.InvokeNative(0x527B97C203BB8606, "pro_fence_broken_nav") -- disable
+    end
+    if Citizen.InvokeNative(0x5AC0944C156E5F44, "pro_burned_nav") then
+        Citizen.InvokeNative(0x527B97C203BB8606, "pro_burned_nav") -- disable
+    end
+    if not Citizen.InvokeNative(0x5AC0944C156E5F44, "pro_fence_fixed_nav") then
+        Citizen.InvokeNative(0x7C334FF4D9215912, "pro_fence_fixed_nav") -- enable
+    end
+end)
+
 -- Função principal para configurar as portas
 CreateThread(function()
     for door, state in pairs(Doors) do
