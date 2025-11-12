@@ -16,8 +16,8 @@
 
 
 -- Copiando estrutura do banco de dados para new_ultimate
-CREATE DATABASE IF NOT EXISTS `new_ultimate` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci */;
-USE `new_ultimate`;
+CREATE DATABASE IF NOT EXISTS `mdg_ultimate` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci */;
+USE `mdg_ultimate`;
 
 -- Copiando estrutura para procedure new_ultimate.AlterTableMail
 DELIMITER //
