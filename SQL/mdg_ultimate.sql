@@ -15,11 +15,11 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- Copiando estrutura do banco de dados para new_ultimate
+-- Copiando estrutura do banco de dados para mdg_ultimate
 CREATE DATABASE IF NOT EXISTS `mdg_ultimate` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci */;
 USE `mdg_ultimate`;
 
--- Copiando estrutura para procedure new_ultimate.AlterTableMail
+-- Copiando estrutura para procedure mdg_ultimate.AlterTableMail
 DELIMITER //
 CREATE PROCEDURE `AlterTableMail`()
 BEGIN
@@ -72,25 +72,25 @@ BEGIN
 END//
 DELIMITER ;
 
--- Copiando estrutura para tabela new_ultimate.animations
+-- Copiando estrutura para tabela mdg_ultimate.animations
 CREATE TABLE IF NOT EXISTS `animations` (
   `charid` int(11) NOT NULL,
   `steam` varchar(255) DEFAULT NULL,
   `animations` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.animations: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.animations: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.animationsfavorite
+-- Copiando estrutura para tabela mdg_ultimate.animationsfavorite
 CREATE TABLE IF NOT EXISTS `animationsfavorite` (
   `charid` int(11) NOT NULL DEFAULT 0,
   `steam` varchar(255) DEFAULT NULL,
   `favorite` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.animationsfavorite: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.animationsfavorite: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.bills
+-- Copiando estrutura para tabela mdg_ultimate.bills
 CREATE TABLE IF NOT EXISTS `bills` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `job` longtext DEFAULT NULL,
@@ -103,9 +103,9 @@ CREATE TABLE IF NOT EXISTS `bills` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.bills: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.bills: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.birds
+-- Copiando estrutura para tabela mdg_ultimate.birds
 CREATE TABLE IF NOT EXISTS `birds` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(60) NOT NULL,
@@ -118,9 +118,9 @@ CREATE TABLE IF NOT EXISTS `birds` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.birds: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.birds: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.centralcart_scheduler
+-- Copiando estrutura para tabela mdg_ultimate.centralcart_scheduler
 CREATE TABLE IF NOT EXISTS `centralcart_scheduler` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` varchar(255) NOT NULL,
@@ -130,9 +130,9 @@ CREATE TABLE IF NOT EXISTS `centralcart_scheduler` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.centralcart_scheduler: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.centralcart_scheduler: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.characters
+-- Copiando estrutura para tabela mdg_ultimate.characters
 CREATE TABLE IF NOT EXISTS `characters` (
   `identifier` varchar(50) NOT NULL DEFAULT '',
   `steamname` varchar(50) NOT NULL DEFAULT '',
@@ -193,9 +193,9 @@ CREATE TABLE IF NOT EXISTS `characters` (
   CONSTRAINT `FK_characters_users` FOREIGN KEY (`identifier`) REFERENCES `users` (`identifier`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela new_ultimate.characters: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.characters: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.character_inventories
+-- Copiando estrutura para tabela mdg_ultimate.character_inventories
 CREATE TABLE IF NOT EXISTS `character_inventories` (
   `character_id` int(11) DEFAULT NULL,
   `inventory_type` varchar(100) NOT NULL DEFAULT 'default',
@@ -208,9 +208,9 @@ CREATE TABLE IF NOT EXISTS `character_inventories` (
   KEY `character_inventory_idx` (`character_id`,`inventory_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.character_inventories: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.character_inventories: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.clan
+-- Copiando estrutura para tabela mdg_ultimate.clan
 CREATE TABLE IF NOT EXISTS `clan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `info` longtext NOT NULL DEFAULT '[]',
@@ -224,9 +224,9 @@ CREATE TABLE IF NOT EXISTS `clan` (
   KEY `container` (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.clan: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.clan: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.clothes_bought
+-- Copiando estrutura para tabela mdg_ultimate.clothes_bought
 CREATE TABLE IF NOT EXISTS `clothes_bought` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(100) NOT NULL,
@@ -244,9 +244,9 @@ CREATE TABLE IF NOT EXISTS `clothes_bought` (
   KEY `identifier` (`identifier`,`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.clothes_bought: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.clothes_bought: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.communityservice
+-- Copiando estrutura para tabela mdg_ultimate.communityservice
 CREATE TABLE IF NOT EXISTS `communityservice` (
   `identifier` varchar(100) NOT NULL DEFAULT '0',
   `name` varchar(100) NOT NULL DEFAULT '0',
@@ -255,9 +255,9 @@ CREATE TABLE IF NOT EXISTS `communityservice` (
   `servicecount` varchar(100) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela new_ultimate.communityservice: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.communityservice: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.container
+-- Copiando estrutura para tabela mdg_ultimate.container
 CREATE TABLE IF NOT EXISTS `container` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` longtext DEFAULT NULL,
@@ -267,7 +267,7 @@ CREATE TABLE IF NOT EXISTS `container` (
   UNIQUE KEY `ID` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.container: ~86 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.container: ~86 rows (aproximadamente)
 INSERT IGNORE INTO `container` (`id`, `name`, `items`, `invslots`) VALUES
 	(1, 'police', '[]', 0),
 	(2, 'miner', '[]', 0),
@@ -356,7 +356,7 @@ INSERT IGNORE INTO `container` (`id`, `name`, `items`, `invslots`) VALUES
 	(85, 'TreinadorSW', '{}', 5000),
 	(86, 'TreinadorSD', '{}', 5000);
 
--- Copiando estrutura para tabela new_ultimate.doors
+-- Copiando estrutura para tabela mdg_ultimate.doors
 CREATE TABLE IF NOT EXISTS `doors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `doorinfo` longtext NOT NULL DEFAULT '[]',
@@ -366,9 +366,9 @@ CREATE TABLE IF NOT EXISTS `doors` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.doors: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.doors: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.herbalists
+-- Copiando estrutura para tabela mdg_ultimate.herbalists
 CREATE TABLE IF NOT EXISTS `herbalists` (
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `charidentifier` int(11) NOT NULL,
@@ -377,9 +377,9 @@ CREATE TABLE IF NOT EXISTS `herbalists` (
   UNIQUE KEY `identifier_charidentifier` (`identifier`,`charidentifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela new_ultimate.herbalists: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.herbalists: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.horses
+-- Copiando estrutura para tabela mdg_ultimate.horses
 CREATE TABLE IF NOT EXISTS `horses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(600) NOT NULL,
@@ -408,9 +408,9 @@ CREATE TABLE IF NOT EXISTS `horses` (
   KEY `model` (`model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.horses: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horses: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.horsesstore
+-- Copiando estrutura para tabela mdg_ultimate.horsesstore
 CREATE TABLE IF NOT EXISTS `horsesstore` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `model` varchar(50) NOT NULL,
@@ -432,9 +432,9 @@ CREATE TABLE IF NOT EXISTS `horsesstore` (
   KEY `model` (`model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.horsesstore: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horsesstore: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.horsestrainers
+-- Copiando estrutura para tabela mdg_ultimate.horsestrainers
 CREATE TABLE IF NOT EXISTS `horsestrainers` (
   `steam` varchar(600) DEFAULT NULL,
   `charidentifier` varchar(255) DEFAULT NULL,
@@ -442,9 +442,9 @@ CREATE TABLE IF NOT EXISTS `horsestrainers` (
   `name` varchar(600) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.horsestrainers: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horsestrainers: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.horses_breeding
+-- Copiando estrutura para tabela mdg_ultimate.horses_breeding
 CREATE TABLE IF NOT EXISTS `horses_breeding` (
   `identifier` varchar(600) NOT NULL,
   `charid` varchar(255) NOT NULL,
@@ -462,9 +462,9 @@ CREATE TABLE IF NOT EXISTS `horses_breeding` (
   `breeding_comp_horse_2` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.horses_breeding: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horses_breeding: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.horse_breeding
+-- Copiando estrutura para tabela mdg_ultimate.horse_breeding
 CREATE TABLE IF NOT EXISTS `horse_breeding` (
   `horse` int(11) NOT NULL,
   `dateStart` bigint(20) NOT NULL,
@@ -475,9 +475,9 @@ CREATE TABLE IF NOT EXISTS `horse_breeding` (
   CONSTRAINT `horse_breeding_ibfk_2` FOREIGN KEY (`horse`) REFERENCES `mdg_horses` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.horse_breeding: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horse_breeding: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.horse_breeding_history
+-- Copiando estrutura para tabela mdg_ultimate.horse_breeding_history
 CREATE TABLE IF NOT EXISTS `horse_breeding_history` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `horse_id` int(11) NOT NULL,
@@ -493,9 +493,9 @@ CREATE TABLE IF NOT EXISTS `horse_breeding_history` (
   CONSTRAINT `horse_breeding_history_ibfk_3` FOREIGN KEY (`foal_id`) REFERENCES `mdg_horses` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.horse_breeding_history: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horse_breeding_history: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.horse_complements
+-- Copiando estrutura para tabela mdg_ultimate.horse_complements
 CREATE TABLE IF NOT EXISTS `horse_complements` (
   `identifier` varchar(50) DEFAULT NULL,
   `charidentifier` int(11) NOT NULL,
@@ -503,9 +503,9 @@ CREATE TABLE IF NOT EXISTS `horse_complements` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela new_ultimate.horse_complements: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horse_complements: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.horse_components
+-- Copiando estrutura para tabela mdg_ultimate.horse_components
 CREATE TABLE IF NOT EXISTS `horse_components` (
   `horse_id` int(11) NOT NULL,
   `components` longtext DEFAULT NULL,
@@ -513,9 +513,9 @@ CREATE TABLE IF NOT EXISTS `horse_components` (
   CONSTRAINT `horse_components_ibfk_1` FOREIGN KEY (`horse_id`) REFERENCES `mdg_horses` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.horse_components: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.horse_components: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.housing
+-- Copiando estrutura para tabela mdg_ultimate.housing
 CREATE TABLE IF NOT EXISTS `housing` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
@@ -525,9 +525,9 @@ CREATE TABLE IF NOT EXISTS `housing` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela new_ultimate.housing: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.housing: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.items
+-- Copiando estrutura para tabela mdg_ultimate.items
 CREATE TABLE IF NOT EXISTS `items` (
   `item` varchar(50) NOT NULL,
   `label` varchar(50) NOT NULL,
@@ -545,14 +545,16 @@ CREATE TABLE IF NOT EXISTS `items` (
   KEY `FK_items_item_group` (`groupId`) USING BTREE,
   CONSTRAINT `FK_items_item_group` FOREIGN KEY (`groupId`) REFERENCES `item_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `metadata` CHECK (json_valid(`metadata`))
-) ENGINE=InnoDB AUTO_INCREMENT=1439 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=1517 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela new_ultimate.items: ~740 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.items: ~740 rows (aproximadamente)
 INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `id`, `groupId`, `metadata`, `desc`, `weight`) VALUES
 	('accessories', 'Acessórios', 100, 1, 'item_standard', 1, 252, 1, '{}', 'nice item', 0.20),
 	('Alaskan_Ginseng', 'Ginseng do Alaska', 100, 1, 'item_standard', 1, 586, 1, '{}', 'nice item', 0.20),
 	('alcohol', 'Álcool', 100, 1, 'item_standard', 1, 588, 1, '{}', 'nice item', 0.50),
 	('alcool', 'Álcool', 100, 1, 'item_standard', 1, 361, 1, '{}', 'nice item', 0.50),
+	('aligators', 'Pele de Jacare', 100, 1, 'item_standard', 1, 1451, 1, '{}', 'nice item', 1.00),
+	('aligatorto', 'Cabeça de Jacare', 100, 1, 'item_standard', 1, 1479, 1, '{}', 'nice item', 2.00),
 	('American_Ginseng', 'Ginseng Americano', 100, 1, 'item_standard', 1, 587, 1, '{}', 'nice item', 0.20),
 	('ammoarrmownormal', 'Munição Flecha Normal', 1000, 1, 'item_standard', 1, 576, 1, '{}', 'nice item', 0.02),
 	('ammoarrowdynamite', 'Flecha Dinamite', 1000, 1, 'item_standard', 1, 634, 1, '{}', 'nice item', 0.03),
@@ -598,6 +600,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('ammovarminttranq', 'Munição Varmint Tranquilizante', 1000, 1, 'item_standard', 1, 638, 1, '{}', 'nice item', 0.02),
 	('ammovoldynamite', 'Dinamite Volátil', 1000, 1, 'item_standard', 1, 646, 1, '{}', 'nice item', 0.05),
 	('ammovolmolotov', 'Molotov Volátil', 1000, 1, 'item_standard', 1, 648, 1, '{}', 'nice item', 0.50),
+	('animal_crab', 'Caranguejo', 100, 1, 'item_standard', 1, 1511, 1, '{}', 'nice item', 0.30),
 	('animal_crawfish', 'Carangueijo', 100, 1, 'item_standard', 1, 718, 1, '{}', 'nice item', 0.50),
 	('Antilopepronta', 'Carne de Antílope Pronta', 100, 1, 'item_standard', 1, 97, 1, '{}', 'nice item', 0.50),
 	('antipoison', 'Antiveneno', 100, 1, 'item_standard', 1, 289, 1, '{}', 'nice item', 0.30),
@@ -607,7 +610,10 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('apple_barrel', 'Barril de Maçãs', 100, 1, 'item_standard', 1, 176, 1, '{}', 'nice item', 5.00),
 	('apple_basket', 'Cesta de Maçãs', 100, 1, 'item_standard', 1, 177, 1, '{}', 'nice item', 2.00),
 	('aprons', 'Aventais', 100, 1, 'item_standard', 1, 258, 1, '{}', 'nice item', 0.50),
+	('armadilloc', 'Garras de Tatu', 100, 1, 'item_standard', 1, 1486, 1, '{}', 'nice item', 0.20),
+	('armadillos', 'Casco de Tatu', 100, 1, 'item_standard', 1, 1498, 1, '{}', 'nice item', 0.50),
 	('armor', 'Armadura', 100, 1, 'item_standard', 1, 239, 1, '{}', 'nice item', 3.00),
+	('a_c_frogbull_01', 'Sapo', 100, 1, 'item_standard', 1, 1510, 1, '{}', 'nice item', 0.20),
 	('backpack1', 'Mochila Básica', 100, 1, 'item_standard', 1, 296, 1, '{}', 'nice item', 2.00),
 	('backpack_10', 'Mochila +10 Slots', 1, 1, 'item_standard', 1, 60, 1, '{}', 'nice item', 2.00),
 	('backpack_100', 'Mochila +100 Slots', 1, 1, 'item_standard', 1, 70, 1, '{}', 'nice item', 2.00),
@@ -640,7 +646,9 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('bandage', 'Bandagem', 100, 1, 'item_standard', 1, 288, 1, '{}', 'nice item', 0.20),
 	('bandage_medic', 'Bandagem Médica', 100, 1, 'item_standard', 1, 290, 1, '{}', 'nice item', 0.20),
 	('barrel', 'Barril', 100, 1, 'item_standard', 1, 562, 1, '{}', 'nice item', 5.00),
+	('bat_c', 'Morcego', 100, 1, 'item_standard', 1, 1509, 1, '{}', 'nice item', 0.20),
 	('bcandle', 'Vela Grande', 100, 1, 'item_standard', 1, 203, 1, '{}', 'nice item', 0.30),
+	('bearc', 'Garras de Urso', 100, 1, 'item_standard', 1, 1487, 1, '{}', 'nice item', 0.30),
 	('bear_bench', 'Banco de Urso', 100, 1, 'item_standard', 1, 187, 1, '{}', 'nice item', 8.00),
 	('beer', 'Cerveja', 100, 1, 'item_standard', 1, 391, 1, '{}', 'nice item', 0.60),
 	('beerbox', 'Caixa de Cerveja', 100, 1, 'item_standard', 1, 159, 1, '{}', 'nice item', 5.00),
@@ -657,17 +665,20 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('Bicabornato', 'Bicarbonato', 100, 1, 'item_standard', 1, 363, 1, '{}', 'nice item', 0.30),
 	('big_firecracker', 'grande foguete', 100, 1, 'item_standard', 1, 723, 1, '{}', 'nice item', 0.50),
 	('big_fireworks', 'grandes fogos de artifício', 100, 1, 'item_standard', 1, 720, 1, '{}', 'nice item', 0.50),
+	('bird', 'Carne de Ave', 100, 1, 'item_standard', 1, 1449, 1, '{}', 'nice item', 0.50),
 	('Black_Berry', 'Amora Preta', 100, 1, 'item_standard', 1, 583, 1, '{}', 'nice item', 0.20),
 	('black_currant', 'Groselha Preta', 100, 1, 'item_standard', 1, 470, 1, '{}', 'nice item', 0.20),
 	('blanket_box', 'Caixa de Cobertores', 100, 1, 'item_standard', 1, 174, 1, '{}', 'nice item', 3.00),
 	('blooditem', 'Item de Sangue', 100, 1, 'item_standard', 1, 678, 1, '{}', 'nice item', 0.30),
 	('bmdresser', 'Cômoda Marrom', 100, 1, 'item_standard', 1, 194, 1, '{}', 'nice item', 10.00),
+	('boarmusk', 'Presa de Javali', 100, 1, 'item_standard', 1, 1492, 1, '{}', 'nice item', 0.20),
 	('bookcase', 'Estante de Livros', 100, 1, 'item_standard', 1, 115, 1, '{}', 'nice item', 10.00),
 	('bookferr', 'Livro Ferraria', 100, 1, 'item_standard', 1, 713, 1, '{}', 'nice item', 0.50),
 	('boots', 'Botas', 100, 1, 'item_standard', 1, 265, 1, '{}', 'nice item', 1.00),
 	('boot_accessories', 'Acessórios de Bota', 100, 1, 'item_standard', 1, 266, 1, '{}', 'nice item', 0.20),
 	('bread', 'Pão', 100, 1, 'item_standard', 1, 86, 1, '{}', 'nice item', 0.20),
 	('breedpills', 'Pílulas de Reprodução', 100, 1, 'item_standard', 1, 90, 1, '{}', 'nice item', 0.10),
+	('buckantler', 'Chifres de Cervo', 100, 1, 'item_standard', 1, 1482, 1, '{}', 'nice item', 0.50),
 	('bunkbed', 'Beliche', 100, 1, 'item_standard', 1, 205, 1, '{}', 'nice item', 20.00),
 	('butchertable1', 'Mesa de Açougueiro 1', 100, 1, 'item_standard', 1, 156, 1, '{}', 'nice item', 15.00),
 	('butchertable2', 'Mesa de Açougueiro 2', 100, 1, 'item_standard', 1, 155, 1, '{}', 'nice item', 15.00),
@@ -683,7 +694,9 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('cannedevieux', 'Enlatado Velho', 100, 1, 'item_standard', 1, 530, 1, '{}', 'nice item', 0.50),
 	('canteen', 'Cantil', 100, 1, 'item_standard', 1, 507, 1, '{}', 'nice item', 0.50),
 	('canteenempty', 'Cantil Vazio', 100, 1, 'item_standard', 1, 506, 1, '{}', 'nice item', 0.50),
+	('carne', 'Carne de caça', 100, 1, 'item_standard', 1, 1439, 1, '{}', 'nice item', 0.50),
 	('carnepronta', 'Carne Pronta', 100, 1, 'item_standard', 1, 98, 1, '{}', 'nice item', 0.50),
+	('carne_carneiro', 'Carne de Carneiro', 100, 1, 'item_standard', 1, 1444, 1, '{}', 'nice item', 0.50),
 	('carriage_parts', 'Peças de Carruagem', 100, 1, 'item_standard', 1, 350, 1, '{}', 'nice item', 3.00),
 	('carrots', 'Cenouras', 100, 1, 'item_standard', 1, 471, 1, '{}', 'nice item', 0.30),
 	('cebola', 'Cebola', 100, 1, 'item_standard', 1, 465, 1, '{}', 'nice item', 0.20),
@@ -742,7 +755,11 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('consumable_coffee_filter', 'Filtro de Café', 100, 1, 'item_standard', 1, 310, 1, '{}', 'nice item', 0.10),
 	('consumable_haycube', 'Cubo de Feno', 100, 1, 'item_standard', 1, 523, 1, '{}', 'nice item', 1.00),
 	('consumable_horse_meal', 'Ração de Cavalo', 100, 1, 'item_standard', 1, 294, 1, '{}', 'nice item', 1.00),
+	('consumable_meat_alligator', 'Carne de Jacare', 100, 1, 'item_standard', 1, 1445, 1, '{}', 'nice item', 0.50),
+	('consumable_meat_fish_flakey', 'Carne de Peixe', 100, 1, 'item_standard', 1, 1448, 1, '{}', 'nice item', 0.50),
 	('consumable_meat_mutton_cooked', 'Carne de Carneiro Cozida', 100, 1, 'item_standard', 1, 286, 1, '{}', 'nice item', 0.50),
+	('consumable_meat_rabbit', 'Carne de Coelho', 100, 1, 'item_standard', 1, 1446, 1, '{}', 'nice item', 0.50),
+	('consumable_meat_snake', 'Carne de Cobra', 100, 1, 'item_standard', 1, 1447, 1, '{}', 'nice item', 0.50),
 	('consumable_medicine', 'Remédio', 100, 1, 'item_standard', 1, 674, 1, '{}', 'nice item', 0.30),
 	('consumable_milk_bucket', 'Balde de Leite', 100, 1, 'item_standard', 1, 528, 1, '{}', 'nice item', 1.50),
 	('consumable_orange_chicken', 'Frango Laranja', 100, 1, 'item_standard', 1, 282, 1, '{}', 'nice item', 0.50),
@@ -753,10 +770,13 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('consumable_tea_chamomile', 'Chá de Camomila', 100, 1, 'item_standard', 1, 281, 1, '{}', 'nice item', 0.30),
 	('copper', 'Cobre', 100, 1, 'item_standard', 1, 353, 1, '{}', 'nice item', 1.00),
 	('corn', 'Milho', 100, 1, 'item_standard', 1, 454, 1, '{}', 'nice item', 0.30),
+	('cougars', 'Pele de Puma', 100, 1, 'item_standard', 1, 1458, 1, '{}', 'nice item', 1.00),
 	('cougar_taxidermy', 'Taxidermia de Puma', 100, 1, 'item_standard', 1, 185, 1, '{}', 'nice item', 10.00),
 	('coverbook', 'Livro de Capa', 100, 1, 'item_standard', 1, 92, 1, '{}', 'nice item', 0.50),
+	('coyotef', 'Dente de Coiote', 100, 1, 'item_standard', 1, 1493, 1, '{}', 'nice item', 0.10),
 	('coyote_pelt', 'Pele de Coiote', 100, 1, 'item_standard', 1, 173, 1, '{}', 'nice item', 1.50),
 	('coyote_taxidermy', 'Taxidermia de Coiote', 100, 1, 'item_standard', 1, 182, 1, '{}', 'nice item', 5.00),
+	('crablegs', 'Pernas de Caranguejo', 100, 1, 'item_standard', 1, 1503, 1, '{}', 'nice item', 0.20),
 	('crafting_fire', 'Fogo de Crafting', 100, 1, 'item_standard', 1, 168, 1, '{}', 'nice item', 2.00),
 	('Creekplum', 'Ameixa do Riacho', 100, 1, 'item_standard', 1, 585, 1, '{}', 'nice item', 0.20),
 	('cure', 'Cura', 100, 1, 'item_standard', 1, 681, 1, '{}', 'nice item', 0.30),
@@ -764,8 +784,9 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('decortent1', 'Decoração Tenda 1', 100, 1, 'item_standard', 1, 134, 1, '{}', 'nice item', 2.00),
 	('decortent2', 'Decoração Tenda 2', 100, 1, 'item_standard', 1, 135, 1, '{}', 'nice item', 2.00),
 	('decortent3', 'Decoração Tenda 3', 100, 1, 'item_standard', 1, 136, 1, '{}', 'nice item', 2.00),
+	('deerheart', 'Coração de Veado', 100, 1, 'item_standard', 1, 1473, 1, '{}', 'nice item', 0.30),
 	('deernativetent', 'Tenda Cervo Nativa', 100, 1, 'item_standard', 1, 214, 1, '{}', 'nice item', 12.00),
-	('deer_pelt', 'Pele de Cervo', 100, 1, 'item_standard', 1, 172, 1, '{}', 'nice item', 2.00),
+	('deer_pelt', 'Pele de Veado', 100, 1, 'item_standard', 1, 172, 1, '{}', 'nice item', 1.00),
 	('deer_taxidermy', 'Taxidermia de Cervo', 100, 1, 'item_standard', 1, 184, 1, '{}', 'nice item', 8.00),
 	('desativado', 'Item desativado', 100, 1, 'item_standard', 1, 712, 1, '{}', 'nice item', 0.50),
 	('detectiveverify', 'Verificação Detetive', 100, 1, 'item_standard', 1, 673, 1, '{}', 'nice item', 0.30),
@@ -776,16 +797,18 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('dresses', 'Vestidos', 100, 1, 'item_standard', 1, 237, 1, '{}', 'nice item', 1.00),
 	('dynamite', 'Dinamite', 100, 1, 'item_standard', 1, 379, 1, '{}', 'nice item', 0.50),
 	('eggs', 'Ovos', 100, 1, 'item_standard', 1, 500, 1, '{}', 'nice item', 0.30),
+	('elktrophy', 'Chifre de Alce', 100, 1, 'item_standard', 1, 1484, 1, '{}', 'nice item', 0.50),
 	('embalagem', 'Embalagem', 100, 1, 'item_standard', 1, 307, 1, '{}', 'nice item', 0.20),
 	('empty_can', 'Lata Vazia', 100, 1, 'item_standard', 1, 299, 1, '{}', 'nice item', 0.20),
 	('enxofre', 'Enxofre', 100, 1, 'item_standard', 1, 399, 1, '{}', 'nice item', 0.50),
 	('expensiveclothes', 'Roupas Caras', 100, 1, 'item_standard', 1, 226, 1, '{}', 'nice item', 1.00),
 	('eyewear', 'Óculos', 100, 1, 'item_standard', 1, 236, 1, '{}', 'nice item', 0.20),
 	('fancydouble', 'Cama de Casal Luxo', 100, 1, 'item_standard', 1, 207, 1, '{}', 'nice item', 25.00),
-	('Fat', 'Gordura', 100, 1, 'item_standard', 1, 101, 1, '{}', 'nice item', 0.30),
+	('Fat', 'Gordura Animal', 100, 1, 'item_standard', 1, 101, 1, '{}', 'nice item', 0.50),
 	('fazenda19', 'Livro Fazenda 19', 100, 1, 'item_standard', 1, 716, 1, '{}', 'nice item', 0.50),
 	('fazenda20', 'Livro Fazenda 20', 100, 1, 'item_standard', 1, 714, 1, '{}', 'nice item', 0.50),
 	('fazenda36', 'Livro Fazenda 36', 100, 1, 'item_standard', 1, 717, 1, '{}', 'nice item', 0.50),
+	('feather', 'Pena', 100, 1, 'item_standard', 1, 1500, 1, '{}', 'nice item', 0.10),
 	('Feather1', 'Pena 1', 100, 1, 'item_standard', 1, 3, 1, '{}', 'nice item', 0.10),
 	('Feather2', 'Pena 2', 100, 1, 'item_standard', 1, 4, 1, '{}', 'nice item', 0.10),
 	('Feather3', 'Pena 3', 100, 1, 'item_standard', 1, 5, 1, '{}', 'nice item', 0.10),
@@ -812,11 +835,15 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('formula_normal', 'Formula Tamanho Normal', 100, 1, 'item_standard', 1, 739, 1, '{}', 'nice item', 0.50),
 	('formula_titan', 'Formula de Titan', 100, 1, 'item_standard', 1, 742, 1, '{}', 'nice item', 0.50),
 	('fosforo', 'Fósforo', 100, 1, 'item_standard', 1, 552, 1, '{}', 'nice item', 0.10),
+	('foxtrophy', 'Cabeça de Raposa', 100, 1, 'item_standard', 1, 1480, 1, '{}', 'nice item', 1.50),
+	('fox_meat', 'Carne de Raposa', 100, 1, 'item_standard', 1, 1441, 1, '{}', 'nice item', 0.50),
 	('game', 'Caça', 100, 1, 'item_standard', 1, 100, 1, '{}', 'nice item', 1.00),
 	('gauntlets', 'Manoplas', 100, 1, 'item_standard', 1, 240, 1, '{}', 'nice item', 0.50),
+	('gbears', 'Pele de Urso', 100, 1, 'item_standard', 1, 1453, 1, '{}', 'nice item', 1.50),
 	('glassbottle', 'Garrafa de Vidro', 100, 1, 'item_standard', 1, 89, 1, '{}', 'nice item', 0.30),
 	('glasseye', 'Olho de Vidro', 100, 1, 'item_standard', 1, 517, 1, '{}', 'nice item', 0.10),
 	('gloves', 'Luvas', 100, 1, 'item_standard', 1, 235, 1, '{}', 'nice item', 0.20),
+	('goat_meat', 'Carne de Cabra', 100, 1, 'item_standard', 1, 1440, 1, '{}', 'nice item', 0.50),
 	('Goat_Milk', 'Leite de Cabra', 100, 1, 'item_standard', 1, 502, 1, '{}', 'nice item', 0.50),
 	('goldnugget', 'Pepita de Ouro', 100, 1, 'item_standard', 1, 402, 1, '{}', 'nice item', 0.30),
 	('goldring', 'Anel de Ouro', 100, 1, 'item_standard', 1, 510, 1, '{}', 'nice item', 0.10),
@@ -851,6 +878,10 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('Headdress6', 'Cocar 6', 100, 1, 'item_standard', 1, 30, 1, '{}', 'nice item', 0.50),
 	('healingitemPoison', 'Item Cura Veneno', 100, 1, 'item_standard', 1, 688, 1, '{}', 'nice item', 0.30),
 	('Health_For_Dog', 'Saúde para Cachorro', 100, 1, 'item_standard', 1, 498, 1, '{}', 'nice item', 0.30),
+	('heart_chicken', 'Coração de Galinha', 100, 1, 'item_standard', 1, 1475, 1, '{}', 'nice item', 0.10),
+	('heart_panther', 'Coração de Pantera', 100, 1, 'item_standard', 1, 1476, 1, '{}', 'nice item', 0.30),
+	('heart_pig_boar', 'Coração de Javali', 100, 1, 'item_standard', 1, 1474, 1, '{}', 'nice item', 0.30),
+	('heart_wolf', 'Coração de Lobo', 100, 1, 'item_standard', 1, 1477, 1, '{}', 'nice item', 0.30),
 	('hemp', 'Cânhamo', 100, 1, 'item_standard', 1, 619, 1, '{}', 'nice item', 0.30),
 	('herb_agarita', 'Agarita', 100, 1, 'item_standard', 1, 451, 1, '{}', 'nice item', 0.20),
 	('herb_alaskan_ginseng', 'Ginseng do Alaska', 100, 1, 'item_standard', 1, 460, 1, '{}', 'nice item', 0.20),
@@ -879,8 +910,11 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('iceitem', 'Item de Gelo', 100, 1, 'item_standard', 1, 686, 1, '{}', 'nice item', 0.50),
 	('icemagic', 'Magia de Gelo', 100, 1, 'item_standard', 1, 684, 1, '{}', 'nice item', 0.50),
 	('identitycard', 'Documento de Identidade', 1, 1, 'item_standard', 1, 396, 1, '{}', 'nice item', 0.10),
+	('iguanabits', 'Pedaços de Iguana', 100, 1, 'item_standard', 1, 1504, 1, '{}', 'nice item', 0.20),
+	('iguana_meat', 'Carne de Iguana', 100, 1, 'item_standard', 1, 1442, 1, '{}', 'nice item', 0.50),
 	('inelargintsmarald', 'Anel de Esmeralda', 100, 1, 'item_standard', 1, 518, 1, '{}', 'nice item', 0.10),
 	('inelmagic', 'Anel Mágico', 100, 1, 'item_standard', 1, 519, 1, '{}', 'nice item', 0.10),
+	('Ingredient_Pig_Meat', 'Carne de porco', 100, 1, 'item_standard', 1, 1443, 1, '{}', 'nice item', 0.50),
 	('ironbar', 'Barra de Ferro', 100, 1, 'item_standard', 1, 612, 1, '{}', 'nice item', 2.00),
 	('ironhammer', 'Martelo de Ferro', 100, 1, 'item_standard', 1, 614, 1, '{}', 'nice item', 1.50),
 	('jewelry_bracelets', 'Pulseiras', 100, 1, 'item_standard', 1, 257, 1, '{}', 'nice item', 0.20),
@@ -945,6 +979,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('mountainmen', 'Homens da Montanha', 100, 1, 'item_standard', 1, 142, 1, '{}', 'nice item', 0.50),
 	('mushroom_chanterelles', 'Cogumelo Chanterelle', 100, 1, 'item_standard', 1, 469, 1, '{}', 'nice item', 0.20),
 	('mushroom_parasol_mushroom', 'Cogumelo Guarda-Sol', 100, 1, 'item_standard', 1, 457, 1, '{}', 'nice item', 0.20),
+	('muskrats', 'Pele de Rato Almiscarado', 100, 1, 'item_standard', 1, 1465, 1, '{}', 'nice item', 0.50),
 	('Na1', 'Item Nativo 1', 100, 1, 'item_standard', 1, 11, 1, '{}', 'nice item', 0.50),
 	('Na2', 'Item Nativo 2', 100, 1, 'item_standard', 1, 12, 1, '{}', 'nice item', 0.50),
 	('Na3', 'Item Nativo 3', 100, 1, 'item_standard', 1, 13, 1, '{}', 'nice item', 0.50),
@@ -998,11 +1033,14 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('obed', 'Cama Simples', 100, 1, 'item_standard', 1, 204, 1, '{}', 'nice item', 15.00),
 	('oldwatch', 'Relógio Velho', 100, 1, 'item_standard', 1, 512, 1, '{}', 'nice item', 0.30),
 	('opium', 'Ópio', 100, 1, 'item_standard', 1, 383, 1, '{}', 'nice item', 0.30),
+	('opossumc', 'Garras de Gamba', 100, 1, 'item_standard', 1, 1488, 1, '{}', 'nice item', 0.10),
+	('opossums', 'Pele de Gamba', 100, 1, 'item_standard', 1, 1468, 1, '{}', 'nice item', 0.50),
 	('orange', 'Laranja', 100, 1, 'item_standard', 1, 479, 1, '{}', 'nice item', 0.20),
 	('outfit', 'Roupa Completa', 100, 1, 'item_standard', 1, 272, 1, '{}', 'nice item', 2.00),
 	('Ovelhapronta', 'Carne de Ovelha Pronta', 100, 1, 'item_standard', 1, 96, 1, '{}', 'nice item', 0.50),
 	('panfleto', 'Panfleto', 100, 1, 'item_standard', 1, 488, 1, '{}', 'nice item', 0.10),
 	('panquecas', 'Panquecas', 100, 1, 'item_standard', 1, 276, 1, '{}', 'nice item', 0.40),
+	('panthere', 'Olhos de Pantera', 100, 1, 'item_standard', 1, 1507, 1, '{}', 'nice item', 0.10),
 	('pants', 'Calças', 100, 1, 'item_standard', 1, 259, 1, '{}', 'nice item', 0.50),
 	('papersign', 'Papel de Assinatura', 100, 1, 'item_standard', 1, 85, 1, '{}', 'nice item', 0.10),
 	('papoula', 'Papoula', 100, 1, 'item_standard', 1, 364, 1, '{}', 'nice item', 0.20),
@@ -1012,6 +1050,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('pheasant_taxidermy', 'Taxidermia de Faisão', 100, 1, 'item_standard', 1, 183, 1, '{}', 'nice item', 3.00),
 	('phonograph', 'Fonógrafo', 100, 1, 'item_standard', 1, 406, 1, '{}', 'nice item', 5.00),
 	('pickaxe', 'Picareta', 100, 1, 'item_standard', 1, 332, 1, '{}', 'nice item', 2.50),
+	('pigs_feet', 'Patas de Porco', 100, 1, 'item_standard', 1, 1505, 1, '{}', 'nice item', 0.30),
 	('pimenta', 'Pimenta', 100, 1, 'item_standard', 1, 466, 1, '{}', 'nice item', 0.20),
 	('pipe', 'Cachimbo', 100, 1, 'item_standard', 1, 551, 1, '{}', 'nice item', 0.30),
 	('pipecopper', 'Tubo de Cobre', 100, 1, 'item_standard', 1, 355, 1, '{}', 'nice item', 1.50),
@@ -1040,6 +1079,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('potion6', 'Poção 6', 100, 1, 'item_standard', 1, 494, 1, '{}', 'nice item', 0.30),
 	('prancheta', 'Prancheta', 100, 1, 'item_standard', 1, 677, 1, '{}', 'nice item', 0.50),
 	('Pripronta', 'Carne de Peru Pronta', 100, 1, 'item_standard', 1, 94, 1, '{}', 'nice item', 0.50),
+	('provision_feather_owl', 'Pena de Coruja', 100, 1, 'item_standard', 1, 1501, 1, '{}', 'nice item', 0.10),
 	('pumpkin', 'Abóbora', 100, 1, 'item_standard', 1, 485, 1, '{}', 'nice item', 0.50),
 	('punchitem', 'Item de Soco', 100, 1, 'item_standard', 1, 691, 1, '{}', 'nice item', 0.50),
 	('p_baitBread01x', 'Isca de Pão', 100, 1, 'item_standard', 1, 542, 1, '{}', 'nice item', 0.10),
@@ -1056,6 +1096,10 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('p_finishedragonflylegendary01x', 'Libélula Lendária', 100, 1, 'item_standard', 1, 539, 1, '{}', 'nice item', 0.10),
 	('p_lgoc_spinner_v4', 'Spinner V4', 100, 1, 'item_standard', 1, 540, 1, '{}', 'nice item', 0.10),
 	('p_lgoc_spinner_v6', 'Spinner V6', 100, 1, 'item_standard', 1, 541, 1, '{}', 'nice item', 0.10),
+	('rabbitpaw', 'Pata de Coelho', 100, 1, 'item_standard', 1, 1506, 1, '{}', 'nice item', 0.10),
+	('raccoons', 'Pele de Guaxinim', 100, 1, 'item_standard', 1, 1470, 1, '{}', 'nice item', 0.50),
+	('raccoont', 'Dente de Guaxinim', 100, 1, 'item_standard', 1, 1494, 1, '{}', 'nice item', 0.10),
+	('rat_c', 'Rato', 100, 1, 'item_standard', 1, 1512, 1, '{}', 'nice item', 0.10),
 	('raw_peanuts', 'Amendoim Cru', 100, 1, 'item_standard', 1, 486, 1, '{}', 'nice item', 0.20),
 	('rcboat_remote', 'Controle de Barco', 100, 1, 'item_standard', 1, 505, 1, '{}', 'nice item', 0.30),
 	('rectangle_table', 'Mesa Retangular', 100, 1, 'item_standard', 1, 166, 1, '{}', 'nice item', 8.00),
@@ -1067,11 +1111,38 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('repeaterreceiver', 'Receptor de Repetidora', 100, 1, 'item_standard', 1, 347, 1, '{}', 'nice item', 0.80),
 	('repeaterrecmold', 'Molde Receptor Repetidora', 100, 1, 'item_standard', 1, 368, 1, '{}', 'nice item', 1.00),
 	('repeaterstock', 'Coronha de Repetidora', 100, 1, 'item_standard', 1, 303, 1, '{}', 'nice item', 1.00),
+	('resource_antler_moose', 'Chifres de Alce Grande', 100, 1, 'item_standard', 1, 1485, 1, '{}', 'nice item', 0.50),
+	('resource_claw_owl', 'Garra de Coruja', 100, 1, 'item_standard', 1, 1490, 1, '{}', 'nice item', 0.10),
+	('resource_claw_panther', 'Garras de Pantera', 100, 1, 'item_standard', 1, 1489, 1, '{}', 'nice item', 0.20),
 	('resource_coal', 'Carvão', 100, 1, 'item_standard', 1, 58, 1, '{}', 'nice item', 0.80),
 	('resource_empty_jar', 'Pote Vazio', 100, 1, 'item_standard', 1, 309, 1, '{}', 'nice item', 0.30),
+	('resource_head_goat', 'Cabeça de Cabra', 100, 1, 'item_standard', 1, 1478, 1, '{}', 'nice item', 2.00),
+	('resource_head_sheep', 'Cabeça de Ovelha', 100, 1, 'item_standard', 1, 1481, 1, '{}', 'nice item', 2.00),
+	('resource_hide_cow_bull', 'Pele de Gado', 100, 1, 'item_standard', 1, 1457, 1, '{}', 'nice item', 1.00),
+	('resource_horn_buffalo', 'Chifres de Búfalo', 100, 1, 'item_standard', 1, 1483, 1, '{}', 'nice item', 0.50),
 	('resource_iron', 'Minério de Ferro', 100, 1, 'item_standard', 1, 55, 1, '{}', 'nice item', 1.00),
 	('resource_iron_bar', 'Barra de Ferro', 100, 1, 'item_standard', 1, 331, 1, '{}', 'nice item', 2.00),
 	('resource_nails', 'Pregos', 100, 1, 'item_standard', 1, 338, 1, '{}', 'nice item', 0.50),
+	('resource_pelt_badger', 'Pele de Texugo', 100, 1, 'item_standard', 1, 1452, 1, '{}', 'nice item', 1.00),
+	('resource_pelt_beaver', 'Pele de Castor', 100, 1, 'item_standard', 1, 1454, 1, '{}', 'nice item', 1.00),
+	('resource_pelt_coyote', 'Pele de Coiote', 100, 1, 'item_standard', 1, 1459, 1, '{}', 'nice item', 1.00),
+	('resource_pelt_fox', 'Pele de Raposa', 100, 1, 'item_standard', 1, 1461, 1, '{}', 'nice item', 1.00),
+	('resource_pelt_rabbit', 'Pele de Coelho', 100, 1, 'item_standard', 1, 1469, 1, '{}', 'nice item', 0.30),
+	('resource_pelt_wolf', 'Pele de Lobo', 100, 1, 'item_standard', 1, 1472, 1, '{}', 'nice item', 1.00),
+	('resource_shell_turtle', 'Casco de Tartaruga', 100, 1, 'item_standard', 1, 1499, 1, '{}', 'nice item', 0.50),
+	('resource_skin_buffalo', 'Pele de Bisão', 100, 1, 'item_standard', 1, 1456, 1, '{}', 'nice item', 1.50),
+	('resource_skin_desert_iguana', 'Pele de Iguana do Deserto', 100, 1, 'item_standard', 1, 1463, 1, '{}', 'nice item', 0.50),
+	('resource_skin_elk', 'Pele de Alce', 100, 1, 'item_standard', 1, 1460, 1, '{}', 'nice item', 1.00),
+	('resource_skin_goat', 'Pele de Cabra', 100, 1, 'item_standard', 1, 1450, 1, '{}', 'nice item', 1.00),
+	('resource_skin_iguana_green', 'Pele de Iguana Verde', 100, 1, 'item_standard', 1, 1462, 1, '{}', 'nice item', 0.50),
+	('resource_skin_javelina_boar', 'Pele de Javali', 100, 1, 'item_standard', 1, 1455, 1, '{}', 'nice item', 1.00),
+	('resource_skin_moose', 'Pele de Alce Grande', 100, 1, 'item_standard', 1, 1464, 1, '{}', 'nice item', 1.50),
+	('resource_skin_panther', 'Pele de Pantera', 100, 1, 'item_standard', 1, 1466, 1, '{}', 'nice item', 1.00),
+	('resource_skin_pig', 'Pele de Porco', 100, 1, 'item_standard', 1, 1467, 1, '{}', 'nice item', 1.00),
+	('resource_skin_snake_blacktail_rattlesnake', 'Pele de Cobra', 100, 1, 'item_standard', 1, 1471, 1, '{}', 'nice item', 0.30),
+	('resource_tail_beaver', 'Cauda de Castor', 100, 1, 'item_standard', 1, 1502, 1, '{}', 'nice item', 0.30),
+	('resource_tooth_alligator', 'Dente de Jacare', 100, 1, 'item_standard', 1, 1491, 1, '{}', 'nice item', 0.20),
+	('resource_wool', 'Lã', 100, 1, 'item_standard', 1, 1508, 1, '{}', 'nice item', 0.50),
 	('revolverbarrel', 'Cano de Revólver', 100, 1, 'item_standard', 1, 342, 1, '{}', 'nice item', 0.50),
 	('revolvercylinder', 'Cilindro de Revólver', 100, 1, 'item_standard', 1, 306, 1, '{}', 'nice item', 0.30),
 	('revolverhandle', 'Cabo de Revólver', 100, 1, 'item_standard', 1, 305, 1, '{}', 'nice item', 0.30),
@@ -1165,10 +1236,13 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('small_firecracker', 'pequeno foguete', 100, 1, 'item_standard', 1, 722, 1, '{}', 'nice item', 0.50),
 	('small_fireworks', 'pequenos fogos de artifício', 100, 1, 'item_standard', 1, 721, 1, '{}', 'nice item', 0.50),
 	('smoke_campfire', 'fogueira de fumaça', 100, 1, 'item_standard', 1, 724, 1, '{}', 'nice item', 0.50),
+	('snaket', 'Dente de Cobra', 100, 1, 'item_standard', 1, 1495, 1, '{}', 'nice item', 0.10),
+	('Snake_Poison', 'Veneno de Cobra', 100, 1, 'item_standard', 1, 1514, 1, '{}', 'nice item', 0.10),
 	('soap', 'Sabão', 100, 1, 'item_standard', 1, 393, 1, '{}', 'nice item', 0.30),
 	('societytoken', 'Licença de loja Sociedade', 100, 1, 'item_standard', 1, 731, 1, '{}', 'nice item', 0.50),
 	('spats', 'Polainas', 100, 1, 'item_standard', 1, 267, 1, '{}', 'nice item', 0.30),
 	('speeditem', 'Item de Velocidade', 100, 1, 'item_standard', 1, 689, 1, '{}', 'nice item', 0.50),
+	('squirrel_grey_c', 'Esquilo Cinza', 100, 1, 'item_standard', 1, 1513, 1, '{}', 'nice item', 0.20),
 	('standard_table', 'Mesa Padrão', 100, 1, 'item_standard', 1, 165, 1, '{}', 'nice item', 8.00),
 	('standingtorch', 'Tocha em Pé', 100, 1, 'item_standard', 1, 146, 1, '{}', 'nice item', 3.00),
 	('stillkit', 'Kit de Destilaria', 100, 1, 'item_standard', 1, 609, 1, '{}', 'nice item', 5.00),
@@ -1198,6 +1272,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('trainkey', 'Chave do Trem', 100, 1, 'item_standard', 1, 580, 1, '{}', 'nice item', 0.20),
 	('trayoffood', 'Bandeja de Comida', 100, 1, 'item_standard', 1, 148, 1, '{}', 'nice item', 1.00),
 	('tronco2', 'Tronco', 100, 1, 'item_standard', 1, 387, 1, '{}', 'nice item', 5.00),
+	('turtlet', 'Dente de Tartaruga', 100, 1, 'item_standard', 1, 1496, 1, '{}', 'nice item', 0.10),
 	('undertaker1', 'Coveiro 1', 100, 1, 'item_standard', 1, 143, 1, '{}', 'nice item', 5.00),
 	('undertaker2', 'Coveiro 2', 100, 1, 'item_standard', 1, 144, 1, '{}', 'nice item', 5.00),
 	('unique_medicinal_cocaine', 'Cocaína Medicinal', 100, 1, 'item_standard', 1, 385, 1, '{}', 'nice item', 0.30),
@@ -1279,6 +1354,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('wicker_bench', 'Banco de Vime', 100, 1, 'item_standard', 1, 192, 1, '{}', 'nice item', 4.00),
 	('Wild_Carrot', 'Cenoura Selvagem', 100, 1, 'item_standard', 1, 497, 1, '{}', 'nice item', 0.20),
 	('wolfnativetent', 'Tenda Lobo Nativa', 100, 1, 'item_standard', 1, 215, 1, '{}', 'nice item', 12.00),
+	('wolftooth', 'Dente de Lobo', 100, 1, 'item_standard', 1, 1497, 1, '{}', 'nice item', 0.10),
 	('wood', 'Madeira', 100, 1, 'item_standard', 1, 103, 1, '{}', 'nice item', 1.00),
 	('wooden_bench', 'Banco de Madeira', 100, 1, 'item_standard', 1, 191, 1, '{}', 'nice item', 5.00),
 	('wooden_boards', 'Tábuas de Madeira', 100, 1, 'item_standard', 1, 555, 1, '{}', 'nice item', 1.00),
@@ -1290,7 +1366,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('xmaspole', 'Poste de Natal', 100, 1, 'item_standard', 1, 113, 1, '{}', 'nice item', 5.00),
 	('xmastree', 'Árvore de Natal', 100, 1, 'item_standard', 1, 120, 1, '{}', 'nice item', 8.00);
 
--- Copiando estrutura para tabela new_ultimate.items_crafted
+-- Copiando estrutura para tabela mdg_ultimate.items_crafted
 CREATE TABLE IF NOT EXISTS `items_crafted` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `character_id` int(11) NOT NULL,
@@ -1303,16 +1379,16 @@ CREATE TABLE IF NOT EXISTS `items_crafted` (
   KEY `crafted_item_idx` (`character_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.items_crafted: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.items_crafted: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.item_group
+-- Copiando estrutura para tabela mdg_ultimate.item_group
 CREATE TABLE IF NOT EXISTS `item_group` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL COMMENT 'Description of Item Group',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.item_group: ~11 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.item_group: ~11 rows (aproximadamente)
 INSERT IGNORE INTO `item_group` (`id`, `description`) VALUES
 	(1, 'default'),
 	(2, 'medical'),
@@ -1326,7 +1402,7 @@ INSERT IGNORE INTO `item_group` (`id`, `description`) VALUES
 	(10, 'horse'),
 	(11, 'herbs');
 
--- Copiando estrutura para tabela new_ultimate.jail
+-- Copiando estrutura para tabela mdg_ultimate.jail
 CREATE TABLE IF NOT EXISTS `jail` (
   `identifier` varchar(100) NOT NULL DEFAULT '0',
   `name` varchar(100) NOT NULL DEFAULT '0',
@@ -1336,9 +1412,9 @@ CREATE TABLE IF NOT EXISTS `jail` (
   `jaillocation` varchar(100) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela new_ultimate.jail: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.jail: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.loadout
+-- Copiando estrutura para tabela mdg_ultimate.loadout
 CREATE TABLE IF NOT EXISTS `loadout` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
@@ -1363,18 +1439,18 @@ CREATE TABLE IF NOT EXISTS `loadout` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.loadout: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.loadout: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mail
+-- Copiando estrutura para tabela mdg_ultimate.mail
 CREATE TABLE IF NOT EXISTS `mail` (
   `address` int(11) NOT NULL AUTO_INCREMENT,
   `charidentifier` int(11) DEFAULT NULL,
   PRIMARY KEY (`address`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mail: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mail: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mailbox_mails
+-- Copiando estrutura para tabela mdg_ultimate.mailbox_mails
 CREATE TABLE IF NOT EXISTS `mailbox_mails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sender_id` varchar(50) DEFAULT NULL,
@@ -1389,9 +1465,9 @@ CREATE TABLE IF NOT EXISTS `mailbox_mails` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mailbox_mails: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mailbox_mails: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mails
+-- Copiando estrutura para tabela mdg_ultimate.mails
 CREATE TABLE IF NOT EXISTS `mails` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `anon` tinyint(1) DEFAULT NULL,
@@ -1409,9 +1485,9 @@ CREATE TABLE IF NOT EXISTS `mails` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mails: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mails: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mail_addressbook
+-- Copiando estrutura para tabela mdg_ultimate.mail_addressbook
 CREATE TABLE IF NOT EXISTS `mail_addressbook` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `address` int(11) DEFAULT NULL,
@@ -1423,9 +1499,9 @@ CREATE TABLE IF NOT EXISTS `mail_addressbook` (
   CONSTRAINT `mail_addressbook_ibfk_1` FOREIGN KEY (`address`) REFERENCES `mail` (`address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mail_addressbook: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mail_addressbook: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mail_editablefolders
+-- Copiando estrutura para tabela mdg_ultimate.mail_editablefolders
 CREATE TABLE IF NOT EXISTS `mail_editablefolders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `address` int(11) DEFAULT NULL,
@@ -1435,18 +1511,18 @@ CREATE TABLE IF NOT EXISTS `mail_editablefolders` (
   CONSTRAINT `mail_editablefolders_ibfk_1` FOREIGN KEY (`address`) REFERENCES `mail` (`address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mail_editablefolders: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mail_editablefolders: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdgfarmsdex
+-- Copiando estrutura para tabela mdg_ultimate.mdgfarmsdex
 CREATE TABLE IF NOT EXISTS `mdgfarmsdex` (
   `dex` longtext DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdgfarmsdex: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdgfarmsdex: ~1 rows (aproximadamente)
 INSERT IGNORE INTO `mdgfarmsdex` (`dex`) VALUES
 	('3');
 
--- Copiando estrutura para tabela new_ultimate.mdg_bank
+-- Copiando estrutura para tabela mdg_ultimate.mdg_bank
 CREATE TABLE IF NOT EXISTS `mdg_bank` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
@@ -1460,9 +1536,9 @@ CREATE TABLE IF NOT EXISTS `mdg_bank` (
   KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_bank: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_bank: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_barber
+-- Copiando estrutura para tabela mdg_ultimate.mdg_barber
 CREATE TABLE IF NOT EXISTS `mdg_barber` (
   `id` int(3) NOT NULL,
   `identifier` varchar(60) NOT NULL,
@@ -1476,13 +1552,13 @@ CREATE TABLE IF NOT EXISTS `mdg_barber` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_barber: ~3 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_barber: ~3 rows (aproximadamente)
 INSERT IGNORE INTO `mdg_barber` (`id`, `identifier`, `charid`, `ownername`, `money`, `name`, `price`, `blipsprite`, `blipmodif`) VALUES
 	(1, '0', 0, '', 4, 'Blackwater Barber', 2500, -2090472724, 0),
 	(2, '0', 0, '', 3, 'Valentine Barber', 2000, -2090472724, 0),
 	(3, '0', 0, '', 4, 'Saint Denis Barber', 3000, -2090472724, 0);
 
--- Copiando estrutura para tabela new_ultimate.mdg_clothes_state
+-- Copiando estrutura para tabela mdg_ultimate.mdg_clothes_state
 CREATE TABLE IF NOT EXISTS `mdg_clothes_state` (
   `identifier` varchar(50) NOT NULL,
   `charid` int(11) NOT NULL,
@@ -1491,9 +1567,9 @@ CREATE TABLE IF NOT EXISTS `mdg_clothes_state` (
   PRIMARY KEY (`identifier`,`charid`,`category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_clothes_state: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_clothes_state: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_coaches_system
+-- Copiando estrutura para tabela mdg_ultimate.mdg_coaches_system
 CREATE TABLE IF NOT EXISTS `mdg_coaches_system` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(60) NOT NULL,
@@ -1506,9 +1582,9 @@ CREATE TABLE IF NOT EXISTS `mdg_coaches_system` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_coaches_system: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_coaches_system: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_collect_quests
+-- Copiando estrutura para tabela mdg_ultimate.mdg_collect_quests
 CREATE TABLE IF NOT EXISTS `mdg_collect_quests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -1518,18 +1594,18 @@ CREATE TABLE IF NOT EXISTS `mdg_collect_quests` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_collect_quests: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_collect_quests: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_farms
+-- Copiando estrutura para tabela mdg_ultimate.mdg_farms
 CREATE TABLE IF NOT EXISTS `mdg_farms` (
   `charid` int(11) NOT NULL,
   `farm` longtext NOT NULL DEFAULT '[]',
   PRIMARY KEY (`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_farms: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_farms: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_gang_members
+-- Copiando estrutura para tabela mdg_ultimate.mdg_gang_members
 CREATE TABLE IF NOT EXISTS `mdg_gang_members` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(255) NOT NULL,
@@ -1539,9 +1615,9 @@ CREATE TABLE IF NOT EXISTS `mdg_gang_members` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_gang_members: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_gang_members: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_gang_props
+-- Copiando estrutura para tabela mdg_ultimate.mdg_gang_props
 CREATE TABLE IF NOT EXISTS `mdg_gang_props` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `area_name` varchar(50) DEFAULT NULL,
@@ -1554,18 +1630,18 @@ CREATE TABLE IF NOT EXISTS `mdg_gang_props` (
   UNIQUE KEY `area_name` (`area_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_gang_props: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_gang_props: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_gang_territories
+-- Copiando estrutura para tabela mdg_ultimate.mdg_gang_territories
 CREATE TABLE IF NOT EXISTS `mdg_gang_territories` (
   `area_name` varchar(50) NOT NULL,
   `gang_name` varchar(50) NOT NULL,
   PRIMARY KEY (`area_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_gang_territories: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_gang_territories: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_horses
+-- Copiando estrutura para tabela mdg_ultimate.mdg_horses
 CREATE TABLE IF NOT EXISTS `mdg_horses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -1585,9 +1661,9 @@ CREATE TABLE IF NOT EXISTS `mdg_horses` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_horses: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_horses: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_horses_stats
+-- Copiando estrutura para tabela mdg_ultimate.mdg_horses_stats
 CREATE TABLE IF NOT EXISTS `mdg_horses_stats` (
   `horseid` int(11) NOT NULL,
   `distance` int(11) NOT NULL DEFAULT 0,
@@ -1601,9 +1677,9 @@ CREATE TABLE IF NOT EXISTS `mdg_horses_stats` (
   PRIMARY KEY (`horseid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_horses_stats: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_horses_stats: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_identidade_advanced
+-- Copiando estrutura para tabela mdg_ultimate.mdg_identidade_advanced
 CREATE TABLE IF NOT EXISTS `mdg_identidade_advanced` (
   `identifier` varchar(60) NOT NULL,
   `firstname` varchar(50) DEFAULT NULL,
@@ -1614,27 +1690,27 @@ CREATE TABLE IF NOT EXISTS `mdg_identidade_advanced` (
   PRIMARY KEY (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_identidade_advanced: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_identidade_advanced: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_jornalista
+-- Copiando estrutura para tabela mdg_ultimate.mdg_jornalista
 CREATE TABLE IF NOT EXISTS `mdg_jornalista` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `news` longtext DEFAULT '[]',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_jornalista: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_jornalista: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_madame_nazar
+-- Copiando estrutura para tabela mdg_ultimate.mdg_madame_nazar
 CREATE TABLE IF NOT EXISTS `mdg_madame_nazar` (
   `charid` int(11) DEFAULT NULL,
   `identifier` varchar(100) DEFAULT NULL,
   `mdg_madame_nazar` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_madame_nazar: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_madame_nazar: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_matabolism_v2
+-- Copiando estrutura para tabela mdg_ultimate.mdg_matabolism_v2
 CREATE TABLE IF NOT EXISTS `mdg_matabolism_v2` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `personaId` int(11) DEFAULT NULL,
@@ -1649,9 +1725,9 @@ CREATE TABLE IF NOT EXISTS `mdg_matabolism_v2` (
   UNIQUE KEY `personaId` (`personaId`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_matabolism_v2: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_matabolism_v2: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_outfits
+-- Copiando estrutura para tabela mdg_ultimate.mdg_outfits
 CREATE TABLE IF NOT EXISTS `mdg_outfits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(100) NOT NULL,
@@ -1662,9 +1738,9 @@ CREATE TABLE IF NOT EXISTS `mdg_outfits` (
   KEY `identifier` (`identifier`,`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_outfits: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_outfits: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_ped_system
+-- Copiando estrutura para tabela mdg_ultimate.mdg_ped_system
 CREATE TABLE IF NOT EXISTS `mdg_ped_system` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -1678,9 +1754,9 @@ CREATE TABLE IF NOT EXISTS `mdg_ped_system` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_ped_system: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_ped_system: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_quests
+-- Copiando estrutura para tabela mdg_ultimate.mdg_quests
 CREATE TABLE IF NOT EXISTS `mdg_quests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -1690,9 +1766,9 @@ CREATE TABLE IF NOT EXISTS `mdg_quests` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_quests: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_quests: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_stable_bought
+-- Copiando estrutura para tabela mdg_ultimate.mdg_stable_bought
 CREATE TABLE IF NOT EXISTS `mdg_stable_bought` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -1704,9 +1780,9 @@ CREATE TABLE IF NOT EXISTS `mdg_stable_bought` (
   KEY `identifier` (`identifier`,`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_stable_bought: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_stable_bought: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_stable_color
+-- Copiando estrutura para tabela mdg_ultimate.mdg_stable_color
 CREATE TABLE IF NOT EXISTS `mdg_stable_color` (
   `id` int(11) NOT NULL,
   `drawable` int(11) DEFAULT NULL,
@@ -1720,9 +1796,9 @@ CREATE TABLE IF NOT EXISTS `mdg_stable_color` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_stable_color: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_stable_color: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_traficante_drogas
+-- Copiando estrutura para tabela mdg_ultimate.mdg_traficante_drogas
 CREATE TABLE IF NOT EXISTS `mdg_traficante_drogas` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL DEFAULT '0',
@@ -1731,9 +1807,9 @@ CREATE TABLE IF NOT EXISTS `mdg_traficante_drogas` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_traficante_drogas: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_traficante_drogas: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_vip
+-- Copiando estrutura para tabela mdg_ultimate.mdg_vip
 CREATE TABLE IF NOT EXISTS `mdg_vip` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` text DEFAULT NULL,
@@ -1744,9 +1820,9 @@ CREATE TABLE IF NOT EXISTS `mdg_vip` (
   UNIQUE KEY `charid` (`charid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_vip: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_vip: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.mdg_wagons
+-- Copiando estrutura para tabela mdg_ultimate.mdg_wagons
 CREATE TABLE IF NOT EXISTS `mdg_wagons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -1763,9 +1839,9 @@ CREATE TABLE IF NOT EXISTS `mdg_wagons` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.mdg_wagons: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.mdg_wagons: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.outfits
+-- Copiando estrutura para tabela mdg_ultimate.outfits
 CREATE TABLE IF NOT EXISTS `outfits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(45) NOT NULL,
@@ -1776,9 +1852,9 @@ CREATE TABLE IF NOT EXISTS `outfits` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela new_ultimate.outfits: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.outfits: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.pets
+-- Copiando estrutura para tabela mdg_ultimate.pets
 CREATE TABLE IF NOT EXISTS `pets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(500) DEFAULT NULL,
@@ -1791,9 +1867,9 @@ CREATE TABLE IF NOT EXISTS `pets` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Copiando dados para a tabela new_ultimate.pets: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.pets: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.playerhousing
+-- Copiando estrutura para tabela mdg_ultimate.playerhousing
 CREATE TABLE IF NOT EXISTS `playerhousing` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` int(11) NOT NULL DEFAULT 0,
@@ -1823,9 +1899,9 @@ CREATE TABLE IF NOT EXISTS `playerhousing` (
   KEY `primarydoor` (`primarydoor`(768))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.playerhousing: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.playerhousing: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.playerhousing_sold_home_ledger
+-- Copiando estrutura para tabela mdg_ultimate.playerhousing_sold_home_ledger
 CREATE TABLE IF NOT EXISTS `playerhousing_sold_home_ledger` (
   `id` int(11) NOT NULL DEFAULT 0,
   `identifier` varchar(50) DEFAULT NULL,
@@ -1833,9 +1909,9 @@ CREATE TABLE IF NOT EXISTS `playerhousing_sold_home_ledger` (
   `amount` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.playerhousing_sold_home_ledger: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.playerhousing_sold_home_ledger: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.playershops
+-- Copiando estrutura para tabela mdg_ultimate.playershops
 CREATE TABLE IF NOT EXISTS `playershops` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL DEFAULT '0',
@@ -1859,9 +1935,9 @@ CREATE TABLE IF NOT EXISTS `playershops` (
   KEY `weapons` (`weapons`(768))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.playershops: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.playershops: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.playershops2
+-- Copiando estrutura para tabela mdg_ultimate.playershops2
 CREATE TABLE IF NOT EXISTS `playershops2` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `society` varchar(50) NOT NULL DEFAULT '0',
@@ -1879,9 +1955,9 @@ CREATE TABLE IF NOT EXISTS `playershops2` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.playershops2: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.playershops2: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.player_trains
+-- Copiando estrutura para tabela mdg_ultimate.player_trains
 CREATE TABLE IF NOT EXISTS `player_trains` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '0',
@@ -1899,9 +1975,9 @@ CREATE TABLE IF NOT EXISTS `player_trains` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.player_trains: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.player_trains: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.player_transformations
+-- Copiando estrutura para tabela mdg_ultimate.player_transformations
 CREATE TABLE IF NOT EXISTS `player_transformations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(255) NOT NULL,
@@ -1917,9 +1993,9 @@ CREATE TABLE IF NOT EXISTS `player_transformations` (
   KEY `idx_transform_end` (`transform_end`)
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.player_transformations: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.player_transformations: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.posters
+-- Copiando estrutura para tabela mdg_ultimate.posters
 CREATE TABLE IF NOT EXISTS `posters` (
   `poster_link` varchar(255) DEFAULT NULL,
   `city` varchar(255) DEFAULT '',
@@ -1928,9 +2004,9 @@ CREATE TABLE IF NOT EXISTS `posters` (
   KEY `poster_link` (`poster_link`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.posters: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.posters: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.ranch
+-- Copiando estrutura para tabela mdg_ultimate.ranch
 CREATE TABLE IF NOT EXISTS `ranch` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `steam` varchar(100) DEFAULT NULL,
@@ -1952,36 +2028,36 @@ CREATE TABLE IF NOT EXISTS `ranch` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela new_ultimate.ranch: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.ranch: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.real_logic_horses
+-- Copiando estrutura para tabela mdg_ultimate.real_logic_horses
 CREATE TABLE IF NOT EXISTS `real_logic_horses` (
   `update_time` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.real_logic_horses: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.real_logic_horses: ~1 rows (aproximadamente)
 INSERT IGNORE INTO `real_logic_horses` (`update_time`) VALUES
 	(8);
 
--- Copiando estrutura para tabela new_ultimate.real_logic_pets
+-- Copiando estrutura para tabela mdg_ultimate.real_logic_pets
 CREATE TABLE IF NOT EXISTS `real_logic_pets` (
   `update_time` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.real_logic_pets: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.real_logic_pets: ~1 rows (aproximadamente)
 INSERT IGNORE INTO `real_logic_pets` (`update_time`) VALUES
 	(0);
 
--- Copiando estrutura para tabela new_ultimate.real_logic_ranch
+-- Copiando estrutura para tabela mdg_ultimate.real_logic_ranch
 CREATE TABLE IF NOT EXISTS `real_logic_ranch` (
   `update_time` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.real_logic_ranch: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.real_logic_ranch: ~1 rows (aproximadamente)
 INSERT IGNORE INTO `real_logic_ranch` (`update_time`) VALUES
 	(0);
 
--- Copiando estrutura para tabela new_ultimate.rooms
+-- Copiando estrutura para tabela mdg_ultimate.rooms
 CREATE TABLE IF NOT EXISTS `rooms` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
@@ -1991,16 +2067,16 @@ CREATE TABLE IF NOT EXISTS `rooms` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela new_ultimate.rooms: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.rooms: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.society
+-- Copiando estrutura para tabela mdg_ultimate.society
 CREATE TABLE IF NOT EXISTS `society` (
   `job` longtext DEFAULT NULL,
   `jobgrade` int(11) DEFAULT NULL,
   `salary` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.society: ~42 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.society: ~42 rows (aproximadamente)
 INSERT IGNORE INTO `society` (`job`, `jobgrade`, `salary`) VALUES
 	('police', 0, 0),
 	('police', 1, 0),
@@ -2045,13 +2121,13 @@ INSERT IGNORE INTO `society` (`job`, `jobgrade`, `salary`) VALUES
 	('horsetrainer', 3, 0),
 	('horsetrainer', 4, 0);
 
--- Copiando estrutura para tabela new_ultimate.society_ledger
+-- Copiando estrutura para tabela mdg_ultimate.society_ledger
 CREATE TABLE IF NOT EXISTS `society_ledger` (
   `job` longtext DEFAULT NULL,
   `ledger` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.society_ledger: ~90 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.society_ledger: ~90 rows (aproximadamente)
 INSERT IGNORE INTO `society_ledger` (`job`, `ledger`) VALUES
 	('police', 150),
 	('miner', 0),
@@ -2144,7 +2220,7 @@ INSERT IGNORE INTO `society_ledger` (`job`, `ledger`) VALUES
 	('TreinadorSD', 0),
 	('TreinadorSW', 0);
 
--- Copiando estrutura para tabela new_ultimate.society_shops
+-- Copiando estrutura para tabela mdg_ultimate.society_shops
 CREATE TABLE IF NOT EXISTS `society_shops` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `society` varchar(50) NOT NULL DEFAULT '0',
@@ -2156,9 +2232,9 @@ CREATE TABLE IF NOT EXISTS `society_shops` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.society_shops: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.society_shops: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.stables
+-- Copiando estrutura para tabela mdg_ultimate.stables
 CREATE TABLE IF NOT EXISTS `stables` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -2175,9 +2251,9 @@ CREATE TABLE IF NOT EXISTS `stables` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela new_ultimate.stables: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.stables: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.stagecoaches
+-- Copiando estrutura para tabela mdg_ultimate.stagecoaches
 CREATE TABLE IF NOT EXISTS `stagecoaches` (
   `identifier` varchar(40) NOT NULL,
   `charid` int(11) NOT NULL,
@@ -2185,9 +2261,9 @@ CREATE TABLE IF NOT EXISTS `stagecoaches` (
   `stagecoach` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.stagecoaches: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.stagecoaches: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.underground
+-- Copiando estrutura para tabela mdg_ultimate.underground
 CREATE TABLE IF NOT EXISTS `underground` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -2216,9 +2292,9 @@ CREATE TABLE IF NOT EXISTS `underground` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.underground: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.underground: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.users
+-- Copiando estrutura para tabela mdg_ultimate.users
 CREATE TABLE IF NOT EXISTS `users` (
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `group` varchar(50) DEFAULT 'user',
@@ -2230,18 +2306,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `identifier` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.users: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.users: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vltfarmsdex
+-- Copiando estrutura para tabela mdg_ultimate.vltfarmsdex
 CREATE TABLE IF NOT EXISTS `vltfarmsdex` (
   `dex` longtext DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vltfarmsdex: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vltfarmsdex: ~1 rows (aproximadamente)
 INSERT IGNORE INTO `vltfarmsdex` (`dex`) VALUES
 	('0');
 
--- Copiando estrutura para tabela new_ultimate.vlt_admin_adv
+-- Copiando estrutura para tabela mdg_ultimate.vlt_admin_adv
 CREATE TABLE IF NOT EXISTS `vlt_admin_adv` (
   `identifier` varchar(50) NOT NULL DEFAULT '',
   `discord` varchar(50) DEFAULT NULL,
@@ -2259,9 +2335,9 @@ CREATE TABLE IF NOT EXISTS `vlt_admin_adv` (
   UNIQUE KEY `identifier` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_admin_adv: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_admin_adv: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_balloons
+-- Copiando estrutura para tabela mdg_ultimate.vlt_balloons
 CREATE TABLE IF NOT EXISTS `vlt_balloons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2277,9 +2353,9 @@ CREATE TABLE IF NOT EXISTS `vlt_balloons` (
   KEY `charid` (`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_balloons: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_balloons: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_bank
+-- Copiando estrutura para tabela mdg_ultimate.vlt_bank
 CREATE TABLE IF NOT EXISTS `vlt_bank` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
@@ -2295,9 +2371,9 @@ CREATE TABLE IF NOT EXISTS `vlt_bank` (
   CONSTRAINT `bankusers` FOREIGN KEY (`identifier`) REFERENCES `users` (`identifier`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_bank: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_bank: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_barber_system
+-- Copiando estrutura para tabela mdg_ultimate.vlt_barber_system
 CREATE TABLE IF NOT EXISTS `vlt_barber_system` (
   `id` int(3) NOT NULL,
   `identifier` varchar(60) NOT NULL,
@@ -2311,9 +2387,9 @@ CREATE TABLE IF NOT EXISTS `vlt_barber_system` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_barber_system: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_barber_system: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_boats_system
+-- Copiando estrutura para tabela mdg_ultimate.vlt_boats_system
 CREATE TABLE IF NOT EXISTS `vlt_boats_system` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(60) NOT NULL,
@@ -2325,9 +2401,9 @@ CREATE TABLE IF NOT EXISTS `vlt_boats_system` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_boats_system: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_boats_system: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_domination_members
+-- Copiando estrutura para tabela mdg_ultimate.vlt_domination_members
 CREATE TABLE IF NOT EXISTS `vlt_domination_members` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(255) NOT NULL,
@@ -2337,9 +2413,9 @@ CREATE TABLE IF NOT EXISTS `vlt_domination_members` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_domination_members: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_domination_members: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_domination_props
+-- Copiando estrutura para tabela mdg_ultimate.vlt_domination_props
 CREATE TABLE IF NOT EXISTS `vlt_domination_props` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `area_name` varchar(50) DEFAULT NULL,
@@ -2352,18 +2428,18 @@ CREATE TABLE IF NOT EXISTS `vlt_domination_props` (
   UNIQUE KEY `area_name` (`area_name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=508 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_domination_props: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_domination_props: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_domination_territories
+-- Copiando estrutura para tabela mdg_ultimate.vlt_domination_territories
 CREATE TABLE IF NOT EXISTS `vlt_domination_territories` (
   `area_name` varchar(50) NOT NULL,
   `gang_name` varchar(50) NOT NULL,
   PRIMARY KEY (`area_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_domination_territories: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_domination_territories: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_horses
+-- Copiando estrutura para tabela mdg_ultimate.vlt_horses
 CREATE TABLE IF NOT EXISTS `vlt_horses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2381,9 +2457,9 @@ CREATE TABLE IF NOT EXISTS `vlt_horses` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_horses: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_horses: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_horses_stats
+-- Copiando estrutura para tabela mdg_ultimate.vlt_horses_stats
 CREATE TABLE IF NOT EXISTS `vlt_horses_stats` (
   `horseid` int(11) NOT NULL,
   `distance` int(11) NOT NULL DEFAULT 0,
@@ -2397,9 +2473,9 @@ CREATE TABLE IF NOT EXISTS `vlt_horses_stats` (
   PRIMARY KEY (`horseid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_horses_stats: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_horses_stats: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_identity
+-- Copiando estrutura para tabela mdg_ultimate.vlt_identity
 CREATE TABLE IF NOT EXISTS `vlt_identity` (
   `identifier` varchar(60) NOT NULL,
   `firstname` varchar(50) DEFAULT NULL,
@@ -2410,29 +2486,29 @@ CREATE TABLE IF NOT EXISTS `vlt_identity` (
   PRIMARY KEY (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_identity: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_identity: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_journalist
+-- Copiando estrutura para tabela mdg_ultimate.vlt_journalist
 CREATE TABLE IF NOT EXISTS `vlt_journalist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `news` longtext DEFAULT '[]',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_journalist: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_journalist: ~1 rows (aproximadamente)
 INSERT IGNORE INTO `vlt_journalist` (`id`, `news`) VALUES
 	(1, '[]');
 
--- Copiando estrutura para tabela new_ultimate.vlt_madame_nazar
+-- Copiando estrutura para tabela mdg_ultimate.vlt_madame_nazar
 CREATE TABLE IF NOT EXISTS `vlt_madame_nazar` (
   `charid` int(11) DEFAULT NULL,
   `identifier` varchar(100) DEFAULT NULL,
   `VLT_madame_nazar` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_madame_nazar: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_madame_nazar: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_matabolism
+-- Copiando estrutura para tabela mdg_ultimate.vlt_matabolism
 CREATE TABLE IF NOT EXISTS `vlt_matabolism` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `personaId` int(11) DEFAULT NULL,
@@ -2447,9 +2523,9 @@ CREATE TABLE IF NOT EXISTS `vlt_matabolism` (
   UNIQUE KEY `personaId` (`personaId`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_matabolism: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_matabolism: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_ped_menu
+-- Copiando estrutura para tabela mdg_ultimate.vlt_ped_menu
 CREATE TABLE IF NOT EXISTS `vlt_ped_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -2463,18 +2539,18 @@ CREATE TABLE IF NOT EXISTS `vlt_ped_menu` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_ped_menu: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_ped_menu: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_plantation
+-- Copiando estrutura para tabela mdg_ultimate.vlt_plantation
 CREATE TABLE IF NOT EXISTS `vlt_plantation` (
   `charid` int(11) NOT NULL,
   `farm` longtext NOT NULL DEFAULT '[]',
   PRIMARY KEY (`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_plantation: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_plantation: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_posters
+-- Copiando estrutura para tabela mdg_ultimate.vlt_posters
 CREATE TABLE IF NOT EXISTS `vlt_posters` (
   `id` varchar(50) NOT NULL DEFAULT '0',
   `identifier` varchar(50) DEFAULT NULL,
@@ -2486,9 +2562,9 @@ CREATE TABLE IF NOT EXISTS `vlt_posters` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_posters: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_posters: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_quests
+-- Copiando estrutura para tabela mdg_ultimate.vlt_quests
 CREATE TABLE IF NOT EXISTS `vlt_quests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2498,9 +2574,9 @@ CREATE TABLE IF NOT EXISTS `vlt_quests` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_quests: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_quests: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_stable_bought
+-- Copiando estrutura para tabela mdg_ultimate.vlt_stable_bought
 CREATE TABLE IF NOT EXISTS `vlt_stable_bought` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2512,9 +2588,9 @@ CREATE TABLE IF NOT EXISTS `vlt_stable_bought` (
   KEY `identifier` (`identifier`,`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_stable_bought: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_stable_bought: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_stable_color
+-- Copiando estrutura para tabela mdg_ultimate.vlt_stable_color
 CREATE TABLE IF NOT EXISTS `vlt_stable_color` (
   `id` int(11) NOT NULL,
   `drawable` int(11) DEFAULT NULL,
@@ -2528,9 +2604,9 @@ CREATE TABLE IF NOT EXISTS `vlt_stable_color` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_stable_color: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_stable_color: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.vlt_wagons
+-- Copiando estrutura para tabela mdg_ultimate.vlt_wagons
 CREATE TABLE IF NOT EXISTS `vlt_wagons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2547,9 +2623,9 @@ CREATE TABLE IF NOT EXISTS `vlt_wagons` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.vlt_wagons: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.vlt_wagons: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.wagons
+-- Copiando estrutura para tabela mdg_ultimate.wagons
 CREATE TABLE IF NOT EXISTS `wagons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(600) NOT NULL,
@@ -2578,9 +2654,9 @@ CREATE TABLE IF NOT EXISTS `wagons` (
   KEY `model` (`model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela new_ultimate.wagons: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.wagons: ~0 rows (aproximadamente)
 
--- Copiando estrutura para tabela new_ultimate.whitelist
+-- Copiando estrutura para tabela mdg_ultimate.whitelist
 CREATE TABLE IF NOT EXISTS `whitelist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
@@ -2591,58 +2667,58 @@ CREATE TABLE IF NOT EXISTS `whitelist` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela new_ultimate.whitelist: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela mdg_ultimate.whitelist: ~0 rows (aproximadamente)
 
--- Copiando estrutura para trigger new_ultimate.add_mdg_horses_stats
+-- Copiando estrutura para trigger mdg_ultimate.add_mdg_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `add_mdg_horses_stats` AFTER INSERT ON `mdg_horses` FOR EACH ROW INSERT INTO mdg_horses_stats (horseid) VALUES (NEW.id)//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Copiando estrutura para trigger new_ultimate.add_VLT_horses_stats
+-- Copiando estrutura para trigger mdg_ultimate.add_VLT_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `add_VLT_horses_stats` AFTER INSERT ON `VLT_horses` FOR EACH ROW INSERT INTO VLT_horses_stats (horseid) VALUES (NEW.id)//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Copiando estrutura para trigger new_ultimate.delete_mdg_horses_stats
+-- Copiando estrutura para trigger mdg_ultimate.delete_mdg_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_mdg_horses_stats` AFTER DELETE ON `mdg_horses` FOR EACH ROW DELETE FROM mdg_horses_stats WHERE horseid = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Copiando estrutura para trigger new_ultimate.delete_mdg_stable_color
+-- Copiando estrutura para trigger mdg_ultimate.delete_mdg_stable_color
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_mdg_stable_color` AFTER DELETE ON `mdg_stable_bought` FOR EACH ROW DELETE FROM `mdg_stable_color` WHERE id = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Copiando estrutura para trigger new_ultimate.delete_VLT_horses_stats
+-- Copiando estrutura para trigger mdg_ultimate.delete_VLT_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_VLT_horses_stats` AFTER DELETE ON `VLT_horses` FOR EACH ROW DELETE FROM VLT_horses_stats WHERE horseid = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Copiando estrutura para trigger new_ultimate.delete_VLT_stable_color
+-- Copiando estrutura para trigger mdg_ultimate.delete_VLT_stable_color
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_VLT_stable_color` AFTER DELETE ON `VLT_stable_bought` FOR EACH ROW DELETE FROM `VLT_stable_color` WHERE id = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Copiando estrutura para trigger new_ultimate.update_mdg_stable_equiped_component
+-- Copiando estrutura para trigger mdg_ultimate.update_mdg_stable_equiped_component
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `update_mdg_stable_equiped_component` AFTER DELETE ON `mdg_horses` FOR EACH ROW UPDATE `mdg_stable_bought` SET equiped_on = 0 WHERE equiped_on = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Copiando estrutura para trigger new_ultimate.update_VLT_stable_equiped_component
+-- Copiando estrutura para trigger mdg_ultimate.update_VLT_stable_equiped_component
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `update_VLT_stable_equiped_component` AFTER DELETE ON `VLT_horses` FOR EACH ROW UPDATE `VLT_stable_bought` SET equiped_on = 0 WHERE equiped_on = OLD.id//
