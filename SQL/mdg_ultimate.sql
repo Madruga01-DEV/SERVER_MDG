@@ -268,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `container` (
 ) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.container: ~86 rows (aproximadamente)
-INSERT IGNORE INTO `container` (`id`, `name`, `items`, `invslots`) VALUES
+INSERT INTO `container` (`id`, `name`, `items`, `invslots`) VALUES
 	(1, 'police', '[]', 0),
 	(2, 'miner', '[]', 0),
 	(3, 'horsetrainer', '[]', 0),
@@ -545,10 +545,10 @@ CREATE TABLE IF NOT EXISTS `items` (
   KEY `FK_items_item_group` (`groupId`) USING BTREE,
   CONSTRAINT `FK_items_item_group` FOREIGN KEY (`groupId`) REFERENCES `item_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `metadata` CHECK (json_valid(`metadata`))
-) ENGINE=InnoDB AUTO_INCREMENT=1517 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=1567 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela mdg_ultimate.items: ~740 rows (aproximadamente)
-INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `id`, `groupId`, `metadata`, `desc`, `weight`) VALUES
+-- Copiando dados para a tabela mdg_ultimate.items: ~819 rows (aproximadamente)
+INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `id`, `groupId`, `metadata`, `desc`, `weight`) VALUES
 	('accessories', 'Acessórios', 100, 1, 'item_standard', 1, 252, 1, '{}', 'nice item', 0.20),
 	('Alaskan_Ginseng', 'Ginseng do Alaska', 100, 1, 'item_standard', 1, 586, 1, '{}', 'nice item', 0.20),
 	('alcohol', 'Álcool', 100, 1, 'item_standard', 1, 588, 1, '{}', 'nice item', 0.50),
@@ -604,7 +604,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('animal_crawfish', 'Carangueijo', 100, 1, 'item_standard', 1, 718, 1, '{}', 'nice item', 0.50),
 	('Antilopepronta', 'Carne de Antílope Pronta', 100, 1, 'item_standard', 1, 97, 1, '{}', 'nice item', 0.50),
 	('antipoison', 'Antiveneno', 100, 1, 'item_standard', 1, 289, 1, '{}', 'nice item', 0.30),
-	('antipoison2', 'Antiveneno', 100, 1, 'item_standard', 1, 112, 1, '{}', 'nice item', 0.30),
+	('antipoison2', 'Antídoto Forte', 30, 1, 'item_standard', 1, 112, 1, '{}', 'nice item', 0.20),
 	('apito', 'Apito de Passaros', 100, 1, 'item_standard', 1, 725, 1, '{}', 'nice item', 0.50),
 	('apple', 'Maçã', 100, 1, 'item_standard', 1, 524, 1, '{}', 'nice item', 0.20),
 	('apple_barrel', 'Barril de Maçãs', 100, 1, 'item_standard', 1, 176, 1, '{}', 'nice item', 5.00),
@@ -636,13 +636,13 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('bacon', 'Bacon', 100, 1, 'item_standard', 1, 273, 1, '{}', 'nice item', 0.30),
 	('badge', 'Distintivo', 100, 1, 'item_standard', 1, 676, 1, '{}', 'nice item', 0.20),
 	('badges', 'Distintivos', 100, 1, 'item_standard', 1, 269, 1, '{}', 'nice item', 0.20),
-	('badge_deputy', 'Distintivo de Delegado', 1, 1, 'item_standard', 1, 77, 1, '{}', 'nice item', 0.20),
-	('badge_deputyy', 'Distintivo de Vice', 1, 1, 'item_standard', 1, 83, 1, '{}', 'nice item', 0.20),
-	('badge_marshal', 'Distintivo de Marshal', 1, 1, 'item_standard', 1, 82, 1, '{}', 'nice item', 0.20),
-	('badge_officer', 'Distintivo de Oficial', 1, 1, 'item_standard', 1, 78, 1, '{}', 'nice item', 0.20),
-	('badge_police', 'Distintivo de Policia', 1, 1, 'item_standard', 1, 80, 1, '{}', 'nice item', 0.20),
-	('badge_sheriff', 'Distintivo de Xerife', 1, 1, 'item_standard', 1, 79, 1, '{}', 'nice item', 0.20),
-	('badge_texas_ranger', 'Distintivo Texas Ranger', 1, 1, 'item_standard', 1, 81, 1, '{}', 'nice item', 0.20),
+	('badge_deputy', 'Distintivo de Delegado Adjunto', 1, 1, 'item_standard', 1, 77, 1, '{}', 'nice item', 0.10),
+	('badge_deputyy', 'Distintivo de Deputado', 1, 1, 'item_standard', 1, 83, 1, '{}', 'nice item', 0.10),
+	('badge_marshal', 'Distintivo de Marshal', 1, 1, 'item_standard', 1, 82, 1, '{}', 'nice item', 0.10),
+	('badge_officer', 'Distintivo de Oficial', 1, 1, 'item_standard', 1, 78, 1, '{}', 'nice item', 0.10),
+	('badge_police', 'Distintivo de Polícia', 1, 1, 'item_standard', 1, 80, 1, '{}', 'nice item', 0.10),
+	('badge_sheriff', 'Distintivo de Xerife', 1, 1, 'item_standard', 1, 79, 1, '{}', 'nice item', 0.10),
+	('badge_texas_ranger', 'Distintivo de Texas Ranger', 1, 1, 'item_standard', 1, 81, 1, '{}', 'nice item', 0.10),
 	('bandage', 'Bandagem', 100, 1, 'item_standard', 1, 288, 1, '{}', 'nice item', 0.20),
 	('bandage_medic', 'Bandagem Médica', 100, 1, 'item_standard', 1, 290, 1, '{}', 'nice item', 0.20),
 	('barrel', 'Barril', 100, 1, 'item_standard', 1, 562, 1, '{}', 'nice item', 5.00),
@@ -657,7 +657,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('bee_house_gk_3', 'Casa de Abelha 3', 100, 1, 'item_standard', 1, 559, 1, '{}', 'nice item', 5.00),
 	('bee_house_gk_4', 'Casa de Abelha 4', 100, 1, 'item_standard', 1, 560, 1, '{}', 'nice item', 5.00),
 	('bee_house_gk_6', 'Casa de Abelha 6', 100, 1, 'item_standard', 1, 561, 1, '{}', 'nice item', 5.00),
-	('beggarhat', 'mendigo', 100, 1, 'item_standard', 1, 698, 1, '{}', 'nice item', 0.50),
+	('beggarhat', 'Chapéu de Mendigo', 5, 1, 'item_standard', 1, 698, 1, '{}', 'nice item', 0.20),
 	('bell_pepper_assorted', 'Pimentão Sortido', 100, 1, 'item_standard', 1, 483, 1, '{}', 'nice item', 0.20),
 	('bell_pepper_green', 'Pimentão Verde', 100, 1, 'item_standard', 1, 482, 1, '{}', 'nice item', 0.20),
 	('belts', 'Cintos', 100, 1, 'item_standard', 1, 261, 1, '{}', 'nice item', 0.30),
@@ -705,35 +705,35 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('chesta', 'Baú A', 100, 1, 'item_standard', 1, 149, 1, '{}', 'nice item', 10.00),
 	('chestb', 'Baú B', 100, 1, 'item_standard', 1, 150, 1, '{}', 'nice item', 10.00),
 	('chestc', 'Baú C', 100, 1, 'item_standard', 1, 151, 1, '{}', 'nice item', 10.00),
-	('chewingtobacco', 'Tabaco de Mascar', 100, 1, 'item_standard', 1, 109, 1, '{}', 'nice item', 0.20),
-	('chewingtobacco2', 'Tabaco de Mascar', 100, 1, 'item_standard', 1, 708, 1, '{}', 'nice item', 0.50),
-	('chewingtobacco3', 'Tabaco de Mascar', 100, 1, 'item_standard', 1, 709, 1, '{}', 'nice item', 0.50),
-	('chewingtobacco4', 'Tabaco de Mascar', 100, 1, 'item_standard', 1, 710, 1, '{}', 'nice item', 0.50),
-	('chewingtobacco5', 'Tabaco de Mascar', 100, 1, 'item_standard', 1, 711, 1, '{}', 'nice item', 0.50),
-	('cigar', 'Charuto', 100, 1, 'item_standard', 1, 548, 1, '{}', 'nice item', 0.20),
-	('cigarcard1', 'Carta de Cigarro 1', 100, 1, 'item_standard', 1, 547, 1, '{}', 'nice item', 0.10),
-	('cigarcard2', 'Carta de Cigarro 2', 100, 1, 'item_standard', 1, 107, 1, '{}', 'nice item', 0.10),
+	('chewingtobacco', 'Tabaco de Mascar', 50, 1, 'item_standard', 1, 109, 1, '{}', 'nice item', 0.10),
+	('chewingtobacco2', 'Tabaco de Mascar Suave', 50, 1, 'item_standard', 1, 708, 1, '{}', 'nice item', 0.10),
+	('chewingtobacco3', 'Tabaco de Mascar Forte', 50, 1, 'item_standard', 1, 709, 1, '{}', 'nice item', 0.10),
+	('chewingtobacco4', 'Tabaco de Mascar Premium', 50, 1, 'item_standard', 1, 710, 1, '{}', 'nice item', 0.10),
+	('chewingtobacco5', 'Tabaco de Mascar Especial', 50, 1, 'item_standard', 1, 711, 1, '{}', 'nice item', 0.10),
+	('cigar', 'Charuto', 50, 1, 'item_standard', 1, 548, 1, '{}', 'nice item', 0.10),
+	('cigarcard1', 'Card de Cigarro Vol.1', 100, 1, 'item_standard', 1, 547, 1, '{}', 'nice item', 0.05),
+	('cigarcard2', 'Card de Cigarro Vol.2', 100, 1, 'item_standard', 1, 107, 1, '{}', 'nice item', 0.05),
 	('cigarcard3', 'Carta de Cigarro 3', 100, 1, 'item_standard', 1, 108, 1, '{}', 'nice item', 0.10),
-	('cigaret', 'Cigarro', 100, 1, 'item_standard', 1, 106, 1, '{}', 'nice item', 0.10),
-	('cigaret10', 'Cigarro', 100, 1, 'item_standard', 1, 707, 1, '{}', 'nice item', 0.50),
-	('cigaret2', 'Cigarro', 100, 1, 'item_standard', 1, 699, 1, '{}', 'nice item', 0.50),
-	('cigaret3', 'Cigarro', 100, 1, 'item_standard', 1, 700, 1, '{}', 'nice item', 0.50),
-	('cigaret4', 'Cigarro', 100, 1, 'item_standard', 1, 701, 1, '{}', 'nice item', 0.50),
-	('cigaret5', 'Cigarro', 100, 1, 'item_standard', 1, 702, 1, '{}', 'nice item', 0.50),
-	('cigaret6', 'Cigarro', 100, 1, 'item_standard', 1, 703, 1, '{}', 'nice item', 0.50),
-	('cigaret7', 'Cigarro', 100, 1, 'item_standard', 1, 704, 1, '{}', 'nice item', 0.50),
-	('cigaret8', 'Cigarro', 100, 1, 'item_standard', 1, 705, 1, '{}', 'nice item', 0.50),
-	('cigaret9', 'Cigarro', 100, 1, 'item_standard', 1, 706, 1, '{}', 'nice item', 0.50),
+	('cigaret', 'Cigarro Premium', 100, 1, 'item_standard', 1, 106, 1, '{}', 'nice item', 0.10),
+	('cigaret10', 'Cigarro Forte', 100, 1, 'item_standard', 1, 707, 1, '{}', 'nice item', 0.10),
+	('cigaret2', 'Cigarro Comum', 100, 1, 'item_standard', 1, 699, 1, '{}', 'nice item', 0.10),
+	('cigaret3', 'Cigarro Importado', 100, 1, 'item_standard', 1, 700, 1, '{}', 'nice item', 0.10),
+	('cigaret4', 'Cigarro de Palha', 100, 1, 'item_standard', 1, 701, 1, '{}', 'nice item', 0.10),
+	('cigaret5', 'Cigarro Artesanal', 100, 1, 'item_standard', 1, 702, 1, '{}', 'nice item', 0.10),
+	('cigaret6', 'Cigarro Fino', 100, 1, 'item_standard', 1, 703, 1, '{}', 'nice item', 0.10),
+	('cigaret7', 'Cigarro Grosso', 100, 1, 'item_standard', 1, 704, 1, '{}', 'nice item', 0.10),
+	('cigaret8', 'Cigarro Mentolado', 100, 1, 'item_standard', 1, 705, 1, '{}', 'nice item', 0.10),
+	('cigaret9', 'Cigarro Suave', 100, 1, 'item_standard', 1, 706, 1, '{}', 'nice item', 0.10),
 	('cigarette', 'Cigarro', 100, 1, 'item_standard', 1, 392, 1, '{}', 'nice item', 0.10),
 	('clean_water', 'Água Limpa', 100, 1, 'item_standard', 1, 394, 1, '{}', 'nice item', 0.50),
 	('cloaks', 'Capas', 100, 1, 'item_standard', 1, 247, 1, '{}', 'nice item', 1.00),
-	('clothepolice1', 'Roupa Policial 1', 100, 1, 'item_standard', 1, 228, 1, '{}', 'nice item', 1.00),
-	('clothepolice2', 'Roupa Policial 2', 100, 1, 'item_standard', 1, 229, 1, '{}', 'nice item', 1.00),
-	('clothepolice3', 'Roupa Policial 3', 100, 1, 'item_standard', 1, 230, 1, '{}', 'nice item', 1.00),
-	('clothepolice4', 'Roupa Policial 4', 100, 1, 'item_standard', 1, 231, 1, '{}', 'nice item', 1.00),
-	('clothepolice5', 'Roupa Policial 5', 100, 1, 'item_standard', 1, 232, 1, '{}', 'nice item', 1.00),
-	('clothepolice6', 'Roupa Policial 6', 100, 1, 'item_standard', 1, 233, 1, '{}', 'nice item', 1.00),
-	('clothepolice7', 'Roupa Policial 7', 100, 1, 'item_standard', 1, 234, 1, '{}', 'nice item', 1.00),
+	('clothepolice1', 'Uniforme Policial 1', 5, 1, 'item_standard', 1, 228, 1, '{}', 'nice item', 1.50),
+	('clothepolice2', 'Uniforme Policial 2', 5, 1, 'item_standard', 1, 229, 1, '{}', 'nice item', 1.50),
+	('clothepolice3', 'Uniforme Policial 3', 5, 1, 'item_standard', 1, 230, 1, '{}', 'nice item', 1.50),
+	('clothepolice4', 'Uniforme Policial 4', 5, 1, 'item_standard', 1, 231, 1, '{}', 'nice item', 1.50),
+	('clothepolice5', 'Uniforme Policial 5', 5, 1, 'item_standard', 1, 232, 1, '{}', 'nice item', 1.50),
+	('clothepolice6', 'Uniforme Policial 6', 5, 1, 'item_standard', 1, 233, 1, '{}', 'nice item', 1.50),
+	('clothepolice7', 'Uniforme Policial 7', 5, 1, 'item_standard', 1, 234, 1, '{}', 'nice item', 1.50),
 	('clothes_line', 'Varal de Roupas', 100, 1, 'item_standard', 1, 180, 1, '{}', 'nice item', 2.00),
 	('cloth_bench', 'Banco de Tecido', 100, 1, 'item_standard', 1, 190, 1, '{}', 'nice item', 4.00),
 	('coats', 'Casacos', 100, 1, 'item_standard', 1, 245, 1, '{}', 'nice item', 1.00),
@@ -789,7 +789,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('deer_pelt', 'Pele de Veado', 100, 1, 'item_standard', 1, 172, 1, '{}', 'nice item', 1.00),
 	('deer_taxidermy', 'Taxidermia de Cervo', 100, 1, 'item_standard', 1, 184, 1, '{}', 'nice item', 8.00),
 	('desativado', 'Item desativado', 100, 1, 'item_standard', 1, 712, 1, '{}', 'nice item', 0.50),
-	('detectiveverify', 'Verificação Detetive', 100, 1, 'item_standard', 1, 673, 1, '{}', 'nice item', 0.30),
+	('detectiveverify', 'Credencial de Detetive', 1, 1, 'item_standard', 1, 673, 1, '{}', 'nice item', 0.10),
 	('diamond', 'Diamante', 100, 1, 'item_standard', 1, 57, 1, '{}', 'nice item', 0.20),
 	('diario', 'Diário', 100, 1, 'item_standard', 1, 404, 1, '{}', 'nice item', 0.30),
 	('domination', 'Item dominação', 100, 1, 'item_standard', 1, 719, 1, '{}', 'nice item', 0.50),
@@ -823,7 +823,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('fireitem', 'Item de Fogo', 100, 1, 'item_standard', 1, 682, 1, '{}', 'nice item', 0.50),
 	('fireportal', 'Portal de Fogo', 100, 1, 'item_standard', 1, 683, 1, '{}', 'nice item', 1.00),
 	('fivela', 'Fivela', 100, 1, 'item_standard', 1, 508, 1, '{}', 'nice item', 0.20),
-	('flag', 'Bandeira', 100, 1, 'item_standard', 1, 110, 1, '{}', 'nice item', 1.00),
+	('flag', 'Bandeira', 10, 1, 'item_standard', 1, 110, 1, '{}', 'nice item', 0.50),
 	('flowerboxes', 'Caixas de Flores', 100, 1, 'item_standard', 1, 171, 1, '{}', 'nice item', 2.00),
 	('folha_cocain', 'Folha de Cocaína', 100, 1, 'item_standard', 1, 362, 1, '{}', 'nice item', 0.20),
 	('food_barrel', 'Barril de Comida', 100, 1, 'item_standard', 1, 178, 1, '{}', 'nice item', 5.00),
@@ -840,7 +840,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('game', 'Caça', 100, 1, 'item_standard', 1, 100, 1, '{}', 'nice item', 1.00),
 	('gauntlets', 'Manoplas', 100, 1, 'item_standard', 1, 240, 1, '{}', 'nice item', 0.50),
 	('gbears', 'Pele de Urso', 100, 1, 'item_standard', 1, 1453, 1, '{}', 'nice item', 1.50),
-	('glassbottle', 'Garrafa de Vidro', 100, 1, 'item_standard', 1, 89, 1, '{}', 'nice item', 0.30),
+	('glassbottle', 'Garrafa de Vidro', 50, 1, 'item_standard', 1, 89, 1, '{}', 'nice item', 0.30),
 	('glasseye', 'Olho de Vidro', 100, 1, 'item_standard', 1, 517, 1, '{}', 'nice item', 0.10),
 	('gloves', 'Luvas', 100, 1, 'item_standard', 1, 235, 1, '{}', 'nice item', 0.20),
 	('goat_meat', 'Carne de Cabra', 100, 1, 'item_standard', 1, 1440, 1, '{}', 'nice item', 0.50),
@@ -923,7 +923,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('journal', 'Jornal Pessoal', 100, 1, 'item_standard', 1, 405, 1, '{}', 'nice item', 0.30),
 	('jumpitem', 'Item de Pulo', 100, 1, 'item_standard', 1, 690, 1, '{}', 'nice item', 0.50),
 	('kitchencounter', 'Balcão de Cozinha', 100, 1, 'item_standard', 1, 145, 1, '{}', 'nice item', 15.00),
-	('kitmedico', 'Kit Médico', 100, 1, 'item_standard', 1, 675, 1, '{}', 'nice item', 1.00),
+	('kitmedico', 'Kit Médico', 20, 1, 'item_standard', 1, 675, 1, '{}', 'nice item', 1.00),
 	('kit_bandana', 'Kit Bandana', 100, 1, 'item_standard', 1, 84, 1, '{}', 'nice item', 0.50),
 	('lamppost1', 'Poste de Luz 1', 100, 1, 'item_standard', 1, 140, 1, '{}', 'nice item', 8.00),
 	('lamppost2', 'Poste de Luz 2', 100, 1, 'item_standard', 1, 141, 1, '{}', 'nice item', 8.00),
@@ -946,6 +946,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('madeira_cerno', 'Madeira de Cerne', 100, 1, 'item_standard', 1, 554, 1, '{}', 'nice item', 1.50),
 	('magicitem', 'Item Mágico', 100, 1, 'item_standard', 1, 679, 1, '{}', 'nice item', 0.50),
 	('magicitem2', 'Item Mágico 2', 100, 1, 'item_standard', 1, 680, 1, '{}', 'nice item', 0.50),
+	('mapa', 'Mapa', 10, 1, 'item_standard', 1, 1566, 1, '{}', 'nice item', 0.10),
 	('Mariuhana', 'Maconha', 100, 1, 'item_standard', 1, 384, 1, '{}', 'nice item', 0.30),
 	('mashalaskan', 'Mosto de Alaska', 100, 1, 'item_standard', 1, 594, 1, '{}', 'nice item', 0.50),
 	('mashamerican', 'Mosto Americano', 100, 1, 'item_standard', 1, 595, 1, '{}', 'nice item', 0.50),
@@ -1042,7 +1043,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('panquecas', 'Panquecas', 100, 1, 'item_standard', 1, 276, 1, '{}', 'nice item', 0.40),
 	('panthere', 'Olhos de Pantera', 100, 1, 'item_standard', 1, 1507, 1, '{}', 'nice item', 0.10),
 	('pants', 'Calças', 100, 1, 'item_standard', 1, 259, 1, '{}', 'nice item', 0.50),
-	('papersign', 'Papel de Assinatura', 100, 1, 'item_standard', 1, 85, 1, '{}', 'nice item', 0.10),
+	('papersign', 'Documento Assinado', 50, 1, 'item_standard', 1, 85, 1, '{}', 'nice item', 0.10),
 	('papoula', 'Papoula', 100, 1, 'item_standard', 1, 364, 1, '{}', 'nice item', 0.20),
 	('peach', 'Pêssego', 100, 1, 'item_standard', 1, 473, 1, '{}', 'nice item', 0.20),
 	('pear', 'Pera', 100, 1, 'item_standard', 1, 480, 1, '{}', 'nice item', 0.20),
@@ -1052,7 +1053,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('pickaxe', 'Picareta', 100, 1, 'item_standard', 1, 332, 1, '{}', 'nice item', 2.50),
 	('pigs_feet', 'Patas de Porco', 100, 1, 'item_standard', 1, 1505, 1, '{}', 'nice item', 0.30),
 	('pimenta', 'Pimenta', 100, 1, 'item_standard', 1, 466, 1, '{}', 'nice item', 0.20),
-	('pipe', 'Cachimbo', 100, 1, 'item_standard', 1, 551, 1, '{}', 'nice item', 0.30),
+	('pipe', 'Cachimbo', 5, 1, 'item_standard', 1, 551, 1, '{}', 'nice item', 0.20),
 	('pipecopper', 'Tubo de Cobre', 100, 1, 'item_standard', 1, 355, 1, '{}', 'nice item', 1.50),
 	('piratecoin', 'Moeda Pirata', 100, 1, 'item_standard', 1, 514, 1, '{}', 'nice item', 0.10),
 	('pistolbarrel', 'Cano de Pistola', 100, 1, 'item_standard', 1, 339, 1, '{}', 'nice item', 0.50),
@@ -1060,6 +1061,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('pistolmold', 'Molde de Pistola', 100, 1, 'item_standard', 1, 345, 1, '{}', 'nice item', 1.00),
 	('pistolreceiver', 'Receptor de Pistola', 100, 1, 'item_standard', 1, 344, 1, '{}', 'nice item', 0.50),
 	('planttrimmer', 'Tesoura de Poda', 100, 1, 'item_standard', 1, 352, 1, '{}', 'nice item', 1.00),
+	('pocket_compass', 'Bússola de Bolso', 1, 1, 'item_standard', 1, 1564, 1, '{}', 'nice item', 0.20),
 	('poisonItem', 'Item de Veneno', 100, 1, 'item_standard', 1, 687, 1, '{}', 'nice item', 0.30),
 	('pokerset', 'Kit de Poker', 100, 1, 'item_standard', 1, 152, 1, '{}', 'nice item', 1.00),
 	('polvora', 'Pólvora', 100, 1, 'item_standard', 1, 358, 1, '{}', 'nice item', 0.50),
@@ -1070,6 +1072,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('pot', 'Panela', 100, 1, 'item_standard', 1, 354, 1, '{}', 'nice item', 2.00),
 	('pota', 'Pote', 100, 1, 'item_standard', 1, 169, 1, '{}', 'nice item', 1.00),
 	('potato', 'Batata', 100, 1, 'item_standard', 1, 463, 1, '{}', 'nice item', 0.30),
+	('potion', 'Poção', 50, 1, 'item_standard', 1, 1565, 1, '{}', 'nice item', 0.30),
 	('potion1', 'Poção 1', 100, 1, 'item_standard', 1, 489, 1, '{}', 'nice item', 0.30),
 	('potion10', 'Poção 10', 100, 1, 'item_standard', 1, 495, 1, '{}', 'nice item', 0.30),
 	('potion2', 'Poção 2', 100, 1, 'item_standard', 1, 490, 1, '{}', 'nice item', 0.30),
@@ -1154,7 +1157,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('riflestock', 'Coronha de Rifle', 100, 1, 'item_standard', 1, 302, 1, '{}', 'nice item', 1.00),
 	('robberyplanning', 'Planejamento de Roubo', 100, 1, 'item_standard', 1, 138, 1, '{}', 'nice item', 1.00),
 	('rock', 'Pedra', 100, 1, 'item_standard', 1, 102, 1, '{}', 'nice item', 1.50),
-	('rollingpaper', 'Papel de Enrolar', 100, 1, 'item_standard', 1, 527, 1, '{}', 'nice item', 0.10),
+	('rollingpaper', 'Papel de Enrolar', 100, 1, 'item_standard', 1, 527, 1, '{}', 'nice item', 0.05),
 	('round_table', 'Mesa Redonda', 100, 1, 'item_standard', 1, 164, 1, '{}', 'nice item', 8.00),
 	('rubber', 'Borracha', 100, 1, 'item_standard', 1, 297, 1, '{}', 'nice item', 0.30),
 	('rubbertube', 'Tubo de Borracha', 100, 1, 'item_standard', 1, 529, 1, '{}', 'nice item', 0.50),
@@ -1251,8 +1254,8 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('sugar', 'Açúcar', 100, 1, 'item_standard', 1, 582, 1, '{}', 'nice item', 0.30),
 	('suspenders', 'Suspensórios', 100, 1, 'item_standard', 1, 241, 1, '{}', 'nice item', 0.20),
 	('syn', 'Sintético', 100, 1, 'item_standard', 1, 616, 1, '{}', 'nice item', 0.30),
-	('syringe', 'Seringa', 100, 1, 'item_standard', 1, 87, 1, '{}', 'nice item', 0.10),
-	('tabacodemascar', 'Tabaco de Mascar', 100, 1, 'item_standard', 1, 549, 1, '{}', 'nice item', 0.20),
+	('syringe', 'Seringa', 50, 1, 'item_standard', 1, 87, 1, '{}', 'nice item', 0.10),
+	('tabacodemascar', 'Tabaco de Mascar Brasileiro', 50, 1, 'item_standard', 1, 549, 1, '{}', 'nice item', 0.10),
 	('Teapot_Can', 'Lata de Chá', 100, 1, 'item_standard', 1, 532, 1, '{}', 'nice item', 0.50),
 	('tecido', 'Tecido', 100, 1, 'item_standard', 1, 295, 1, '{}', 'nice item', 0.50),
 	('teleitem', 'Item de Teleporte', 100, 1, 'item_standard', 1, 692, 1, '{}', 'nice item', 0.50),
@@ -1266,7 +1269,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('tobaccopipe', 'Cachimbo de Tabaco', 100, 1, 'item_standard', 1, 553, 1, '{}', 'nice item', 0.30),
 	('tobacco_leaf', 'Folha de Tabaco', 100, 1, 'item_standard', 1, 474, 1, '{}', 'nice item', 0.20),
 	('tomato', 'Tomate', 100, 1, 'item_standard', 1, 464, 1, '{}', 'nice item', 0.20),
-	('tonico_medicina', 'Tonico de Medicina', 100, 1, 'item_standard', 1, 697, 1, '{}', 'nice item', 0.50),
+	('tonico_medicina', 'Tônico Medicinal', 50, 1, 'item_standard', 1, 697, 1, '{}', 'nice item', 0.30),
 	('tool_barrel', 'Barril de Ferramentas', 100, 1, 'item_standard', 1, 181, 1, '{}', 'nice item', 8.00),
 	('towel', 'Toalha', 100, 1, 'item_standard', 1, 395, 1, '{}', 'nice item', 0.50),
 	('trainkey', 'Chave do Trem', 100, 1, 'item_standard', 1, 580, 1, '{}', 'nice item', 0.20),
@@ -1347,7 +1350,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('WEAPON_THROWN_THROWING_KNIVES', 'Facas de Arremesso', 1, 1, 'item_weapon', 1, 661, 1, '{}', 'nice item', 0.80),
 	('WEAPON_THROWN_TOMAHAWK', 'Tomahawk', 1, 1, 'item_weapon', 1, 567, 1, '{}', 'nice item', 1.00),
 	('weed', 'Maconha', 100, 1, 'item_standard', 1, 365, 1, '{}', 'nice item', 0.30),
-	('weedpack', 'Pacote de Maconha', 100, 1, 'item_standard', 1, 550, 1, '{}', 'nice item', 0.30),
+	('weedpack', 'Pacote de Ervas', 50, 1, 'item_standard', 1, 550, 1, '{}', 'nice item', 0.20),
 	('weedseed', 'Semente de Erva', 100, 1, 'item_standard', 1, 410, 1, '{}', 'nice item', 0.10),
 	('wheat', 'Trigo', 100, 1, 'item_standard', 1, 496, 1, '{}', 'nice item', 0.30),
 	('whisky', 'Whisky', 100, 1, 'item_standard', 1, 285, 1, '{}', 'nice item', 0.80),
@@ -1389,7 +1392,7 @@ CREATE TABLE IF NOT EXISTS `item_group` (
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.item_group: ~11 rows (aproximadamente)
-INSERT IGNORE INTO `item_group` (`id`, `description`) VALUES
+INSERT INTO `item_group` (`id`, `description`) VALUES
 	(1, 'default'),
 	(2, 'medical'),
 	(3, 'foods'),
@@ -1519,7 +1522,7 @@ CREATE TABLE IF NOT EXISTS `mdgfarmsdex` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.mdgfarmsdex: ~1 rows (aproximadamente)
-INSERT IGNORE INTO `mdgfarmsdex` (`dex`) VALUES
+INSERT INTO `mdgfarmsdex` (`dex`) VALUES
 	('3');
 
 -- Copiando estrutura para tabela mdg_ultimate.mdg_bank
@@ -1553,7 +1556,7 @@ CREATE TABLE IF NOT EXISTS `mdg_barber` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.mdg_barber: ~3 rows (aproximadamente)
-INSERT IGNORE INTO `mdg_barber` (`id`, `identifier`, `charid`, `ownername`, `money`, `name`, `price`, `blipsprite`, `blipmodif`) VALUES
+INSERT INTO `mdg_barber` (`id`, `identifier`, `charid`, `ownername`, `money`, `name`, `price`, `blipsprite`, `blipmodif`) VALUES
 	(1, '0', 0, '', 4, 'Blackwater Barber', 2500, -2090472724, 0),
 	(2, '0', 0, '', 3, 'Valentine Barber', 2000, -2090472724, 0),
 	(3, '0', 0, '', 4, 'Saint Denis Barber', 3000, -2090472724, 0);
@@ -2036,7 +2039,7 @@ CREATE TABLE IF NOT EXISTS `real_logic_horses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.real_logic_horses: ~1 rows (aproximadamente)
-INSERT IGNORE INTO `real_logic_horses` (`update_time`) VALUES
+INSERT INTO `real_logic_horses` (`update_time`) VALUES
 	(8);
 
 -- Copiando estrutura para tabela mdg_ultimate.real_logic_pets
@@ -2045,7 +2048,7 @@ CREATE TABLE IF NOT EXISTS `real_logic_pets` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.real_logic_pets: ~1 rows (aproximadamente)
-INSERT IGNORE INTO `real_logic_pets` (`update_time`) VALUES
+INSERT INTO `real_logic_pets` (`update_time`) VALUES
 	(0);
 
 -- Copiando estrutura para tabela mdg_ultimate.real_logic_ranch
@@ -2054,7 +2057,7 @@ CREATE TABLE IF NOT EXISTS `real_logic_ranch` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.real_logic_ranch: ~1 rows (aproximadamente)
-INSERT IGNORE INTO `real_logic_ranch` (`update_time`) VALUES
+INSERT INTO `real_logic_ranch` (`update_time`) VALUES
 	(0);
 
 -- Copiando estrutura para tabela mdg_ultimate.rooms
@@ -2077,7 +2080,7 @@ CREATE TABLE IF NOT EXISTS `society` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.society: ~42 rows (aproximadamente)
-INSERT IGNORE INTO `society` (`job`, `jobgrade`, `salary`) VALUES
+INSERT INTO `society` (`job`, `jobgrade`, `salary`) VALUES
 	('police', 0, 0),
 	('police', 1, 0),
 	('police', 2, 0),
@@ -2128,7 +2131,7 @@ CREATE TABLE IF NOT EXISTS `society_ledger` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.society_ledger: ~90 rows (aproximadamente)
-INSERT IGNORE INTO `society_ledger` (`job`, `ledger`) VALUES
+INSERT INTO `society_ledger` (`job`, `ledger`) VALUES
 	('police', 150),
 	('miner', 0),
 	('doctor', 1050),
@@ -2314,7 +2317,7 @@ CREATE TABLE IF NOT EXISTS `vltfarmsdex` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.vltfarmsdex: ~1 rows (aproximadamente)
-INSERT IGNORE INTO `vltfarmsdex` (`dex`) VALUES
+INSERT INTO `vltfarmsdex` (`dex`) VALUES
 	('0');
 
 -- Copiando estrutura para tabela mdg_ultimate.vlt_admin_adv
@@ -2496,7 +2499,7 @@ CREATE TABLE IF NOT EXISTS `vlt_journalist` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.vlt_journalist: ~1 rows (aproximadamente)
-INSERT IGNORE INTO `vlt_journalist` (`id`, `news`) VALUES
+INSERT INTO `vlt_journalist` (`id`, `news`) VALUES
 	(1, '[]');
 
 -- Copiando estrutura para tabela mdg_ultimate.vlt_madame_nazar

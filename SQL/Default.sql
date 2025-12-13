@@ -77,6 +77,14 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `ammo` longtext DEFAULT '{}',
   `discordid` varchar(255) DEFAULT '0',
   `lastjoined` longtext DEFAULT '[]',
+  `motel` longtext DEFAULT '0',
+  `moonshineenty` longtext DEFAULT '{}',
+  `clan` int(11) DEFAULT 0,
+  `info` longtext DEFAULT '{}',
+  `mdg_faxina` int(11) DEFAULT 0,
+  `trust` int(11) DEFAULT 0,
+  `hud_positions` text DEFAULT NULL,
+  `VLT_sweep` int(11) DEFAULT 0,
   UNIQUE KEY `identifier_charidentifier` (`identifier`,`charidentifier`) USING BTREE,
   KEY `charidentifier` (`charidentifier`) USING BTREE,
   KEY `identifier` (`identifier`),
@@ -86,6 +94,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   KEY `money` (`money`),
   KEY `meta` (`meta`),
   KEY `steamname` (`steamname`),
+  KEY `info` (`info`(768)),
   CONSTRAINT `FK_characters_users` FOREIGN KEY (`identifier`) REFERENCES `users` (`identifier`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
 
