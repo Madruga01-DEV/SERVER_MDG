@@ -7039,6 +7039,7 @@
                 *   3323
                 *   3407
                 *   3570
+                *   3717
             *   RedM
                 *   1311
                 *   1355
@@ -7205,6 +7206,11 @@
         <member name="F:CitizenFX.Core.Native.Hash.GET_LAST_PED_IN_VEHICLE_SEAT">
             <summary>
             GET_LAST_PED_IN_VEHICLE_SEAT
+            </summary>
+        </member>
+        <member name="F:CitizenFX.Core.Native.Hash.GET_MOUNT">
+            <summary>
+            GET_MOUNT
             </summary>
         </member>
         <member name="F:CitizenFX.Core.Native.Hash.GET_NET_TYPE_FROM_ENTITY">
@@ -7617,6 +7623,11 @@
             Returns the current state of the specified resource.
             </summary>
         </member>
+        <member name="F:CitizenFX.Core.Native.Hash.GET_SEAT_PED_IS_USING">
+            <summary>
+            GET_SEAT_PED_IS_USING
+            </summary>
+        </member>
         <member name="F:CitizenFX.Core.Native.Hash.GET_SELECTED_PED_WEAPON">
             <summary>
             An alias of [GET_CURRENT_PED_WEAPON](#\_0xB0237302).
@@ -7982,6 +7993,21 @@
             IS_PED_HANDCUFFED
             </summary>
         </member>
+        <member name="F:CitizenFX.Core.Native.Hash.IS_PED_IN_ANY_VEHICLE">
+            <summary>
+            IS_PED_IN_ANY_VEHICLE
+            </summary>
+        </member>
+        <member name="F:CitizenFX.Core.Native.Hash.IS_PED_IN_VEHICLE">
+            <summary>
+            IS_PED_IN_VEHICLE
+            </summary>
+        </member>
+        <member name="F:CitizenFX.Core.Native.Hash.IS_PED_ON_MOUNT">
+            <summary>
+            IS_PED_ON_MOUNT
+            </summary>
+        </member>
         <member name="F:CitizenFX.Core.Native.Hash.IS_PED_RAGDOLL">
             <summary>
             IS_PED_RAGDOLL
@@ -8216,7 +8242,7 @@
             <summary>
             Removes the blip from your map.
             
-            **Note:** This function only works on the script that created the blip, if you wish to remove blips created by other scripts, see [`SET_THIS_SCRIPT_CAN_REMOVE_BLIPS_CREATED_BY_ANY_SCRIPT`](#\_0x86A652570E5F25DD).
+            **Note:** This function only works on the script that created the blip, if you wish to remove blips created by other scripts, see [`SET_THIS_SCRIPT_CAN_REMOVE_BLIPS_CREATED_BY_ANY_SCRIPT`](#\_0xB98236CAAECEF897).
             </summary>
         </member>
         <member name="F:CitizenFX.Core.Native.Hash.REMOVE_CONVAR_CHANGE_LISTENER">
@@ -8971,11 +8997,11 @@
         </member>
         <member name="F:CitizenFX.Core.Native.Hash.SET_PED_HEAD_BLEND_DATA">
             <summary>
-            For more info please refer to [this](https://gtaforums.com/topic/858970-all-gtao-face-ids-pedset-ped-head-blend-data-explained) topic.
+            For more info and the list of faceIDs please refer to [this](https://gtaforums.com/topic/858970-all-gtao-face-ids-pedset-ped-head-blend-data-explained) topic. Note that the Skin and Shape IDs are shared. This native will use this same list for both Skin and Shape IDs.
             
             **Other information:**
             
-            IDs start at zero and go Male Non-DLC, Female Non-DLC, Male DLC, and Female DLC.&lt;/br&gt;
+            IDs start at zero and go Male Non-DLC, Female Non-DLC, Male DLC, and Female DLC.
             
             This native function is often called prior to calling natives such as:
             
@@ -10739,6 +10765,7 @@
             *   3323
             *   3407
             *   3570
+            *   3717
             *   RedM
             *   1311
             *   1355
@@ -11020,6 +11047,17 @@
             </param>
             <returns>
             The last ped in the specified seat of the passed vehicle. Returns 0 if the specified seat was never occupied or the last ped does not exist anymore.
+            </returns>
+        </member>
+        <member name="M:CitizenFX.Core.Native.API.GetMount(System.Int32)">
+            <summary>
+            GET_MOUNT
+            </summary>
+            <param name="ped">
+            the ped id
+            </param>
+            <returns>
+            Returns the entity the `ped` is currently on, or `0` if they're not on a mount.
             </returns>
         </member>
         <member name="M:CitizenFX.Core.Native.API.GetNetTypeFromEntity(System.Int32)">
@@ -11683,6 +11721,17 @@
             The resource state. One of `"missing", "started", "starting", "stopped", "stopping", "uninitialized" or "unknown"`.
             </returns>
         </member>
+        <member name="M:CitizenFX.Core.Native.API.GetSeatPedIsUsing(System.Int32)">
+            <summary>
+            GET_SEAT_PED_IS_USING
+            </summary>
+            <param name="ped">
+            the ped id
+            </param>
+            <returns>
+            Returns the seat index for specified `ped`, if the ped is not sitting in a vehicle it will return -3.
+            </returns>
+        </member>
         <member name="M:CitizenFX.Core.Native.API.GetSelectedPedWeapon(System.Int32)">
             <summary>
             An alias of [GET_CURRENT_PED_WEAPON](#\_0xB0237302).
@@ -12278,6 +12327,42 @@
             Whether or not the ped is handcuffed.
             </returns>
         </member>
+        <member name="M:CitizenFX.Core.Native.API.IsPedInAnyVehicle(System.Int32)">
+            <summary>
+            IS_PED_IN_ANY_VEHICLE
+            </summary>
+            <param name="ped">
+            the ped id
+            </param>
+            <returns>
+            Returns `true` if the specified `ped` is in any vehicle
+            </returns>
+        </member>
+        <member name="M:CitizenFX.Core.Native.API.IsPedInVehicle(System.Int32,System.Int32)">
+            <summary>
+            IS_PED_IN_VEHICLE
+            </summary>
+            <param name="ped">
+            the ped id
+            </param>
+            <param name="vehicle">
+            the vehicle id
+            </param>
+            <returns>
+            Returns `true` if the specified `ped` is in the specified `vehicle`
+            </returns>
+        </member>
+        <member name="M:CitizenFX.Core.Native.API.IsPedOnMount(System.Int32)">
+            <summary>
+            IS_PED_ON_MOUNT
+            </summary>
+            <param name="ped">
+            the ped id
+            </param>
+            <returns>
+            Returns `true` if the specified `ped` is on a mount.
+            </returns>
+        </member>
         <member name="M:CitizenFX.Core.Native.API.IsPedRagdoll(System.Int32)">
             <summary>
             IS_PED_RAGDOLL
@@ -12647,7 +12732,7 @@
         <member name="M:CitizenFX.Core.Native.API.RemoveBlip(System.Int32@)">
             <summary>
             Removes the blip from your map.
-            **Note:** This function only works on the script that created the blip, if you wish to remove blips created by other scripts, see [`SET_THIS_SCRIPT_CAN_REMOVE_BLIPS_CREATED_BY_ANY_SCRIPT`](#\_0x86A652570E5F25DD).
+            **Note:** This function only works on the script that created the blip, if you wish to remove blips created by other scripts, see [`SET_THIS_SCRIPT_CAN_REMOVE_BLIPS_CREATED_BY_ANY_SCRIPT`](#\_0xB98236CAAECEF897).
             </summary>
             <param name="blip">
             Blip handle to remove.
@@ -13631,9 +13716,9 @@
         </member>
         <member name="M:CitizenFX.Core.Native.API.SetPedHeadBlendData(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Single,System.Single,System.Single,System.Boolean)">
             <summary>
-            For more info please refer to [this](https://gtaforums.com/topic/858970-all-gtao-face-ids-pedset-ped-head-blend-data-explained) topic.
+            For more info and the list of faceIDs please refer to [this](https://gtaforums.com/topic/858970-all-gtao-face-ids-pedset-ped-head-blend-data-explained) topic. Note that the Skin and Shape IDs are shared. This native will use this same list for both Skin and Shape IDs.
             **Other information:**
-            IDs start at zero and go Male Non-DLC, Female Non-DLC, Male DLC, and Female DLC.&lt;/br&gt;
+            IDs start at zero and go Male Non-DLC, Female Non-DLC, Male DLC, and Female DLC.
             This native function is often called prior to calling natives such as:
             *   [`SetPedHairColor`](#\_0xA23FE32C)
             *   [`SetPedHeadOverlayColor`](#\_0x78935A27)
