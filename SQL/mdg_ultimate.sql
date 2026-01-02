@@ -268,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `container` (
 ) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.container: ~86 rows (aproximadamente)
-INSERT INTO `container` (`id`, `name`, `items`, `invslots`) VALUES
+INSERT IGNORE INTO `container` (`id`, `name`, `items`, `invslots`) VALUES
 	(1, 'police', '[]', 0),
 	(2, 'miner', '[]', 0),
 	(3, 'horsetrainer', '[]', 0),
@@ -548,7 +548,7 @@ CREATE TABLE IF NOT EXISTS `items` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1567 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- Copiando dados para a tabela mdg_ultimate.items: ~819 rows (aproximadamente)
-INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `id`, `groupId`, `metadata`, `desc`, `weight`) VALUES
+INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `id`, `groupId`, `metadata`, `desc`, `weight`) VALUES
 	('accessories', 'Acessórios', 100, 1, 'item_standard', 1, 252, 1, '{}', 'nice item', 0.20),
 	('Alaskan_Ginseng', 'Ginseng do Alaska', 100, 1, 'item_standard', 1, 586, 1, '{}', 'nice item', 0.20),
 	('alcohol', 'Álcool', 100, 1, 'item_standard', 1, 588, 1, '{}', 'nice item', 0.50),
@@ -1392,7 +1392,7 @@ CREATE TABLE IF NOT EXISTS `item_group` (
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.item_group: ~11 rows (aproximadamente)
-INSERT INTO `item_group` (`id`, `description`) VALUES
+INSERT IGNORE INTO `item_group` (`id`, `description`) VALUES
 	(1, 'default'),
 	(2, 'medical'),
 	(3, 'foods'),
@@ -1522,7 +1522,7 @@ CREATE TABLE IF NOT EXISTS `mdgfarmsdex` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.mdgfarmsdex: ~1 rows (aproximadamente)
-INSERT INTO `mdgfarmsdex` (`dex`) VALUES
+INSERT IGNORE INTO `mdgfarmsdex` (`dex`) VALUES
 	('3');
 
 -- Copiando estrutura para tabela mdg_ultimate.mdg_bank
@@ -1556,7 +1556,7 @@ CREATE TABLE IF NOT EXISTS `mdg_barber` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.mdg_barber: ~3 rows (aproximadamente)
-INSERT INTO `mdg_barber` (`id`, `identifier`, `charid`, `ownername`, `money`, `name`, `price`, `blipsprite`, `blipmodif`) VALUES
+INSERT IGNORE INTO `mdg_barber` (`id`, `identifier`, `charid`, `ownername`, `money`, `name`, `price`, `blipsprite`, `blipmodif`) VALUES
 	(1, '0', 0, '', 4, 'Blackwater Barber', 2500, -2090472724, 0),
 	(2, '0', 0, '', 3, 'Valentine Barber', 2000, -2090472724, 0),
 	(3, '0', 0, '', 4, 'Saint Denis Barber', 3000, -2090472724, 0);
@@ -1975,8 +1975,9 @@ CREATE TABLE IF NOT EXISTS `player_trains` (
   `img` varchar(50) DEFAULT NULL,
   `coalup` int(11) DEFAULT 0,
   `speedup` int(11) DEFAULT 0,
+  `inventory_capacity` int(11) DEFAULT 500,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.player_trains: ~0 rows (aproximadamente)
 
@@ -2039,7 +2040,7 @@ CREATE TABLE IF NOT EXISTS `real_logic_horses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.real_logic_horses: ~1 rows (aproximadamente)
-INSERT INTO `real_logic_horses` (`update_time`) VALUES
+INSERT IGNORE INTO `real_logic_horses` (`update_time`) VALUES
 	(8);
 
 -- Copiando estrutura para tabela mdg_ultimate.real_logic_pets
@@ -2048,7 +2049,7 @@ CREATE TABLE IF NOT EXISTS `real_logic_pets` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.real_logic_pets: ~1 rows (aproximadamente)
-INSERT INTO `real_logic_pets` (`update_time`) VALUES
+INSERT IGNORE INTO `real_logic_pets` (`update_time`) VALUES
 	(0);
 
 -- Copiando estrutura para tabela mdg_ultimate.real_logic_ranch
@@ -2057,7 +2058,7 @@ CREATE TABLE IF NOT EXISTS `real_logic_ranch` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.real_logic_ranch: ~1 rows (aproximadamente)
-INSERT INTO `real_logic_ranch` (`update_time`) VALUES
+INSERT IGNORE INTO `real_logic_ranch` (`update_time`) VALUES
 	(0);
 
 -- Copiando estrutura para tabela mdg_ultimate.rooms
@@ -2080,7 +2081,7 @@ CREATE TABLE IF NOT EXISTS `society` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.society: ~42 rows (aproximadamente)
-INSERT INTO `society` (`job`, `jobgrade`, `salary`) VALUES
+INSERT IGNORE INTO `society` (`job`, `jobgrade`, `salary`) VALUES
 	('police', 0, 0),
 	('police', 1, 0),
 	('police', 2, 0),
@@ -2131,7 +2132,7 @@ CREATE TABLE IF NOT EXISTS `society_ledger` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.society_ledger: ~90 rows (aproximadamente)
-INSERT INTO `society_ledger` (`job`, `ledger`) VALUES
+INSERT IGNORE INTO `society_ledger` (`job`, `ledger`) VALUES
 	('police', 150),
 	('miner', 0),
 	('doctor', 1050),
@@ -2317,7 +2318,7 @@ CREATE TABLE IF NOT EXISTS `vltfarmsdex` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.vltfarmsdex: ~1 rows (aproximadamente)
-INSERT INTO `vltfarmsdex` (`dex`) VALUES
+INSERT IGNORE INTO `vltfarmsdex` (`dex`) VALUES
 	('0');
 
 -- Copiando estrutura para tabela mdg_ultimate.vlt_admin_adv
@@ -2499,7 +2500,7 @@ CREATE TABLE IF NOT EXISTS `vlt_journalist` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela mdg_ultimate.vlt_journalist: ~1 rows (aproximadamente)
-INSERT INTO `vlt_journalist` (`id`, `news`) VALUES
+INSERT IGNORE INTO `vlt_journalist` (`id`, `news`) VALUES
 	(1, '[]');
 
 -- Copiando estrutura para tabela mdg_ultimate.vlt_madame_nazar
