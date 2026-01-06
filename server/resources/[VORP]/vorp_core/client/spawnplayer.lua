@@ -25,10 +25,12 @@ function CoreAction.Utils.setPVP()
 end
 
 function CoreAction.Player.TeleportToCoords(coords, heading)
-    StartPlayerTeleport(PlayerId(), coords.x, coords.y, coords.z, heading, true, true, true, false)
-    repeat Wait(0) until not IsPlayerTeleportActive()
+    SetEntityCoordsAndHeading(PlayerPedId(), coords.x, coords.y, coords.z, heading or 0.0, false, false, false)
     RequestCollisionAtCoord(coords.x, coords.y, coords.z)
-    repeat Wait(0) until HasCollisionLoadedAroundEntity(PlayerPedId())
+    LoadSceneStart(coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 40.0, 0)
+    local timer = GetGameTimer()
+    repeat Wait(0) until IsLoadSceneLoaded() ~= 0 or GetGameTimer() - timer > 6000
+    LoadSceneStop()
 end
 
 function CoreAction.Player.MapCheck()
@@ -49,17 +51,20 @@ end
 AddEventHandler('playerSpawned', function()
     exports.spawnmanager:setAutoSpawn(false)
     DoScreenFadeOut(0)
-    Citizen.InvokeNative(0x1E5B70E53DB661E5, 0, 0, 0, T.Hold, T.Load, T.Almost) --_DISPLAY_LOADING_SCREENS
+    if Config.UseInnitialLoadingScreen then
+        Citizen.InvokeNative(0x1E5B70E53DB661E5, 0, 0, 0, T.Hold, T.Load, T.Almost) --_DISPLAY_LOADING_SCREENS
+    end
     DisplayRadar(false)
     SetMinimapHideFow(false)
     SetEntityCanBeDamaged(PlayerPedId(), false)
     TriggerServerEvent("vorp:playerSpawn")
 
     Wait(2000)
-    SetTimeout(7000, function()
-        ShutdownLoadingScreen()
-    end)
-
+    if Config.UseInnitialLoadingScreen then
+        SetTimeout(7000, function()
+            ShutdownLoadingScreen()
+        end)
+    end
     local isInSession = false
     CreateThread(function()
         while not isInSession do
@@ -73,9 +78,14 @@ AddEventHandler('playerSpawned', function()
     isInSession = true
 end)
 
+
 --EVENTS character Innitialize
 RegisterNetEvent('vorp:initCharacter')
 AddEventHandler('vorp:initCharacter', function(coords, heading, isdead)
+    if not IsScreenFadedOut() then
+        DoScreenFadeOut(0)
+    end
+
     CoreAction.Player.TeleportToCoords(coords, heading)
     if isdead then
         if not Config.CombatLogDeath then
@@ -98,7 +108,9 @@ AddEventHandler('vorp:initCharacter', function(coords, heading, isdead)
             SetEntityCanBeDamaged(PlayerPedId(), true)
             SetEntityHealth(PlayerPedId(), 0, 0)
             Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, -1)
-            ShutdownLoadingScreen()
+            if Config.Loadinscreen then
+                ShutdownLoadingScreen()
+            end
         end
     else
         local PlayerId = PlayerId()
@@ -109,7 +121,6 @@ AddEventHandler('vorp:initCharacter', function(coords, heading, isdead)
                 Citizen.InvokeNative(0x1E5B70E53DB661E5, 0, 0, 0, T.Hold, T.Load, T.Almost)
             end
             Wait(Config.LoadinScreenTimer)
-            Wait(1000)
             ShutdownLoadingScreen()
         end
 
@@ -124,27 +135,43 @@ AddEventHandler('vorp:initCharacter', function(coords, heading, isdead)
         SetEntityCanBeDamaged(PlayerPedId(), true)
 
         if Config.SavePlayersStatus then
+            HealthData = nil
             TriggerServerEvent("vorp:GetValues")
-            Wait(200)
+            repeat Wait(0) until HealthData
             if HealthData then
                 local player = PlayerPedId()
-                Citizen.InvokeNative(0xC6258F41D86676E0, player, 0, HealthData.hInner or 600)
-                SetEntityHealth(player, (HealthData.hOuter and HealthData.hOuter > 0 and HealthData.hOuter or 600) + (HealthData.hInner and HealthData.hInner > 0 and HealthData.hInner or 600), 0)
-                Citizen.InvokeNative(0xC6258F41D86676E0, player, 1, HealthData.sInner or 600)
-                Citizen.InvokeNative(0x675680D089BFA21F, player, (HealthData.sOuter or (1065353215 * 100)) / 1065353215 * 100)
+                if HealthData.hInner and HealthData.hInner >= 100 then
+                    HealthData.hInner = 100
+                else
+                    HealthData.hInner = 10
+                end
+                if HealthData.sInner and HealthData.sInner >= 100 then
+                    HealthData.sInner = 100
+                else
+                    HealthData.sInner = 10
+                end
+
+                local newHealth = 600
+                if HealthData.hInner and HealthData.hInner >= 100 then
+                    newHealth = HealthData.hOuter or 10
+                end
+
+                SetAttributeCoreValue(player, 0, HealthData.hInner) -- inner health
+                SetEntityHealth(player, newHealth, 0)
+                SetAttributeCoreValue(player, 1, HealthData.sInner)
+                local maxStamina = GetPedMaxStamina(player)
+                local amount = maxStamina - HealthData.sInner
+                ChangePedStamina(player, amount + 0.0)
+                HealthData = {}
             end
-            HealthData = {}
         else
             CoreAction.Admin.HealPlayer()
         end
     end
 
+    DoScreenFadeIn(3000)
+    repeat Wait(500) until IsScreenFadedIn()
     TriggerEvent("vorp_core:Client:OnPlayerSpawned")
-
-    SetTimeout(2000, function()
-        DoScreenFadeIn(4000)
-        repeat Wait(500) until IsScreenFadedIn()
-    end)
 end)
 
 
@@ -177,16 +204,14 @@ RegisterNetEvent("vorp:SelectedCharacter", function()
     CreateThread(CoreAction.Player.MapCheck)
 end)
 
-RegisterNetEvent("vorp:GetHealthFromCore")
-AddEventHandler("vorp:GetHealthFromCore", function(healthData)
-    HealthData = healthData
+RegisterNetEvent("vorp:GetHealthFromCore", function(healthData)
+    HealthData = healthData or {}
 end)
 
 -- THREADS
 CreateThread(function()
     repeat Wait(5000) until LocalPlayer.state.IsInSession
     while true do
-
         local pped = PlayerPedId()
         local sleep = 0
 
@@ -219,11 +244,11 @@ end)
 CreateThread(function()
     while true do
         Wait(0)
-        DisableControlAction(0, 0x580C4473, true) -- Disable hud
-        DisableControlAction(0, 0xCF8A4ECA, true) -- Disable hud
-        DisableControlAction(0, 0x9CC7A1A4, true) -- disable special ability when open hud
-        DisableControlAction(0, 0x1F6D95E5, true) -- diable f4 key that contains HUD
-        if IsUiappActiveByHash(`MAP`) == 1 then -- only when map is open incase someone needs to use the X key
+        DisableControlAction(0, 0x580C4473, true)              -- Disable hud
+        DisableControlAction(0, 0xCF8A4ECA, true)              -- Disable hud
+        DisableControlAction(0, 0x9CC7A1A4, true)              -- disable special ability when open hud
+        DisableControlAction(0, 0x1F6D95E5, true)              -- diable f4 key that contains HUD
+        if IsUiappActiveByHash(`MAP`) == 1 then                -- only when map is open incase someone needs to use the X key
             DisableControlAction(0, `INPUT_FRONTEND_RS`, true) -- disables the x button that freezes players when in the big map
         end
     end
@@ -274,7 +299,7 @@ CreateThread(function()
             if Config.HealthRecharge.enable then
                 local NewRechargeMultiplier = GetAttributeCoreValue(PlayerPed, 0, Citizen.ResultAsInteger()) / 100 * Config.HealthRecharge.multiplier
                 local RechargeMultiplier = GetPlayerHealthRechargeMultiplier(PlayerId, Citizen.ResultAsFloat())
-                
+
                 if math.abs(NewRechargeMultiplier - RechargeMultiplier) > 0.01 then
                     SetPlayerHealthRechargeMultiplier(PlayerId, NewRechargeMultiplier)
                 end

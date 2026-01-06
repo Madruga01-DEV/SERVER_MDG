@@ -180,6 +180,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `trust` int(11) DEFAULT 0,
   `hud_positions` text DEFAULT NULL,
   `VLT_sweep` int(11) DEFAULT 0,
+  `multijobs` longtext DEFAULT '{}',
   UNIQUE KEY `identifier_charidentifier` (`identifier`,`charidentifier`) USING BTREE,
   KEY `charidentifier` (`charidentifier`) USING BTREE,
   KEY `identifier` (`identifier`),
@@ -2306,6 +2307,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `banned` tinyint(1) DEFAULT NULL,
   `banneduntil` int(10) DEFAULT 0,
   `char` int(11) DEFAULT 5,
+  `max_jobs` int(11) DEFAULT 3,
   PRIMARY KEY (`identifier`),
   UNIQUE KEY `identifier` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

@@ -7,13 +7,14 @@ GlobalState.PlayersInSession = 0
 ---@param license string
 ---@param char number
 ---@return User
-function User(source, identifier, group, playerwarnings, license, char)
+function User(source, identifier, group, playerwarnings, license, char, max_jobs)
     local self = {}
     self._identifier = identifier
     self._license = license
     self._group = group
     self._playerwarnings = playerwarnings
     self._charperm = char
+    self._max_jobs = max_jobs
     self._usercharacters = {}
     self._numofcharacters = 0
     self.usedCharacterId = -1
@@ -106,6 +107,16 @@ function User(source, identifier, group, playerwarnings, license, char)
         return self._charperm
     end
 
+    --set max jobs
+    self.SetMaxJobs = function(value)
+        if value then
+            self._max_jobs = value
+            MySQL.update("UPDATE users SET `max_jobs` = ? WHERE `identifier` = ?", { self._max_jobs, self.Identifier() })
+        end
+        return self._max_jobs
+    end
+
+
     self.GetUser = function()
         local userData = {}
         userData.getCharperm = self.Charperm()
@@ -113,6 +124,7 @@ function User(source, identifier, group, playerwarnings, license, char)
         userData.getGroup = self.Group()
         userData.getUsedCharacter = self.UsedCharacter()
         userData.getUserCharacters = self.UserCharacters()
+        userData.maxJobsAllowed = tonumber(self._max_jobs)
 
         userData.getIdentifier = function()
             return self.Identifier()
@@ -122,16 +134,20 @@ function User(source, identifier, group, playerwarnings, license, char)
             return self.Playerwarnings()
         end
 
-        userData.setPlayerWarnings = function(warnings)
-            self.Playerwarnings(warnings)
+        userData.setPlayerWarnings = function(value)
+            self.Playerwarnings(value)
         end
 
-        userData.setGroup = function(group)
-            self.Group(group)
+        userData.setGroup = function(value)
+            self.Group(value)
         end
 
-        userData.setCharperm = function(char)
-            self.Charperm(char)
+        userData.setCharperm = function(value)
+            self.Charperm(value)
+        end
+
+        userData.setMaxJobsAllowed = function(value)
+            self.SetMaxJobs(value)
         end
 
         userData.getNumOfCharacters = function()
@@ -167,14 +183,14 @@ function User(source, identifier, group, playerwarnings, license, char)
 
     self.UserCharacters = function()
         local userCharacters = {}
-        for k, v in pairs(self._usercharacters) do
+        for _, v in pairs(self._usercharacters) do
             table.insert(userCharacters, v.getCharacter())
         end
         return userCharacters
     end
 
     self.LoadCharacters = function()
-        MySQL.query("SELECT identifier, charidentifier, `group`, job, jobgrade, joblabel, firstname, lastname, inventory, status, coords, money, gold, rol, healthouter, healthinner, staminaouter, staminainner, xp, isdead, skinPlayer, compPlayer, compTints, age,gender, character_desc, nickname, slots,skills FROM characters WHERE identifier = @identifier", { identifier = self._identifier }, function(usercharacters)
+        MySQL.query("SELECT identifier, charidentifier, `group`, job, jobgrade, joblabel, firstname, lastname, inventory, status, coords, money, gold, rol, healthouter, healthinner, staminaouter, staminainner, xp, isdead, skinPlayer, compPlayer, compTints, age,gender, character_desc, nickname, slots,skills,multijobs FROM characters WHERE identifier = @identifier", { identifier = self._identifier }, function(usercharacters)
             self.Numofcharacters(#usercharacters)
             if #usercharacters > 0 then
                 for _, character in ipairs(usercharacters) do
@@ -211,6 +227,7 @@ function User(source, identifier, group, playerwarnings, license, char)
                             steamname = self.steamname,
                             slots = character.slots or 200,
                             skills = character.skills and json.decode(character.skills) or {},
+                            multiJobs = character.multijobs and json.decode(character.multijobs) or {},
                         }
                         local newCharacter = Character(data)
                         self._usercharacters[newCharacter.CharIdentifier()] = newCharacter
@@ -253,6 +270,7 @@ function User(source, identifier, group, playerwarnings, license, char)
             steamname = self.steamname,
             slots = Config.initInvCapacity or 200,
             skills = {},
+            multiJobs = {},
         }
 
         local newChar = Character(info)

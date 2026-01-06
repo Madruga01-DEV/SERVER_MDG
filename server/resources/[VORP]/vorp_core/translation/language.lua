@@ -43,6 +43,20 @@ Translation = {
                 icon = "five_finger_burnout",
                 color = "COLOR_RED",
             },
+            MultiJob = {
+                MaxMJob            = "You have set the maximum number of jobs allowed to %s",
+                MaxMJobSet         = "You have been set the maximum number of jobs allowed to %s",
+                ReachedMaxMJob     = "User have reached the maximum number of jobs allowed",
+                YouAddedMJob       = "You have added %s to %s",
+                YouGiveMJob        = "You have been given %s",
+                InvalidMJob        = "User dont have this job to be removed",
+                YouRemovedMJob     = "You have removed %s from %s",
+                YouLostMJob        = "You have lost %s",
+                DontHaveMJob       = "You dont have any mutijob",
+                DontHaveThisMJob   = "You dont have this job",
+                CoolDownMJob       = "You are on cool down, please wait ",
+                YouSwitchedMjob    = "You have switched to ",
+            },
         },
         Commands        = {
             webHookMessage = "**Steam name: **`%s`**\nIdentifier**`%s` \n**Discord:** <@%s>**\nIP: **`%s`", -- only translate
@@ -212,8 +226,7 @@ Translation = {
             charCreateAdd = {
                 custom = "\n**PlayerID** `%d`\n **Action:** `used charcreateadd`",
                 title = "📋` /addchar command` ",
-                label = "VORPcore command to set player can create more than one character default is: " ..
-                    Config.MaxCharacters,
+                label = "VORPcore command to set player can create more than one character default is: " .. Config.MaxCharacters,
                 name = "playerId",
                 name1 = "amount",
                 help = "server id player must be in game",
@@ -242,7 +255,6 @@ Translation = {
                 help = "skill category like Crafting",
                 name = "Skill",
             },
-
         },
         addWebhook      = {
             whitelistid = "**Steam name: **`%s`**\nIdentifier:** `%s`\n**Discord:** <@%s>\n**User-Id:** `%s`",
@@ -252,6 +264,7 @@ Translation = {
             victimSteamName = "Victim Steam Name: ",
             victimSteamId = "Victim Steam ID: ",
             victimServerId = "Victim Server ID: ",
+            cause = "Cause: ",
             killerSteamName = "Killer Steam Name: ",
             killerSteamId = "Killer Steam ID: ",
             killerServerId = "Killer Server ID: "
@@ -370,6 +383,20 @@ Translation = {
                 dict = "minigames_hud",
                 icon = "five_finger_burnout",
                 color = "COLOR_RED",
+            },
+            MultiJob = {
+                MaxMJob            = "Definiste o número máximo de empregos permitidos para %s",
+                MaxMJobSet         = "O teu número máximo de empregos permitidos foi definido para %s",
+                ReachedMaxMJob     = "O utilizador atingiu o número máximo de empregos permitidos",
+                YouAddedMJob       = "Adicionaste %s a %s",
+                YouGiveMJob        = "Recebeste %s",
+                InvalidMJob        = "O utilizador não tem este emprego para ser removido",
+                YouRemovedMJob     = "Removeste %s de %s",
+                YouLostMJob        = "Perdeste %s",
+                DontHaveMJob       = "Não tens nenhum multiemprego",
+                DontHaveThisMJob   = "Não tens este emprego",
+                CoolDownMJob       = "Estás em tempo de espera, por favor aguarda",
+                YouSwitchedMjob    = "Mudaste para ",
             },
         },
         Commands        = {
@@ -538,8 +565,7 @@ Translation = {
                 custom = "\n**ID do Jogador:** `%d`\n **Ação:** `utilizou charcreateadd`",
                 title = "📋` Comando /addchar`",
                 label =
-                    "Comando VORPcore para permitir que um jogador crie mais de um personagem (será permitido criar: " ..
-                    Config.MaxCharacters .. ")",
+                    "Comando VORPcore para permitir que um jogador crie mais de um personagem (será permitido criar: " .. Config.MaxCharacters .. ")",
                 name = "ID",
                 name1 = "quantidade",
                 help = "ID do jogador",
@@ -576,6 +602,7 @@ Translation = {
             victimSteamName = "Nome Steam da Vítima: ",
             victimSteamId = "Steam ID da Vítima: ",
             victimServerId = "ID do Servidor da Vítima: ",
+            cause = "Causa: ",
             killerSteamName = "Nome Steam do Assassino: ",
             killerSteamId = "Steam ID do Assassino: ",
             killerServerId = "ID do Servidor do Assassino: "
@@ -695,6 +722,20 @@ Translation = {
                 dict = "minigames_hud",
                 icon = "five_finger_burnout",
                 color = "COLOR_RED",
+            },
+            MultiJob = {
+                MaxMJob            = "Você definiu o número máximo de empregos permitidos para %s",
+                MaxMJobSet         = "O número máximo de empregos permitidos para você foi definido como %s",
+                ReachedMaxMJob     = "O jogador atingiu o número máximo de empregos permitidos",
+                YouAddedMJob       = "Você adicionou %s a %s",
+                YouGiveMJob        = "Você recebeu %s",
+                InvalidMJob        = "O jogador não tem esse emprego para ser removido",
+                YouRemovedMJob     = "Você removeu %s de %s",
+                YouLostMJob        = "Você perdeu %s",
+                DontHaveMJob       = "Você não tem nenhum multiemprego",
+                DontHaveThisMJob   = "Você não tem esse emprego",
+                CoolDownMJob       = "Você está em tempo de espera, por favor aguarde",
+                YouSwitchedMjob    = "Você mudou para ",
             },
         },
         Commands        = {
@@ -862,8 +903,7 @@ Translation = {
             charCreateAdd = {
                 custom = "\n**ID do Jogador:** `%d`\n **Ação:** `habilitou a criação de mais personagens`",
                 title = "📋` Comando /addchar` ",
-                label = "Comando VORPcore para permitir que o jogador crie mais de um personagem (quantidade permitida: " ..
-                    Config.MaxCharacters .. ")",
+                label = "Comando VORPcore para permitir que o jogador crie mais de um personagem (quantidade permitida: " .. Config.MaxCharacters .. ")",
                 name = "ID",
                 name1 = "quantidade",
                 help = "ID do jogador",
@@ -1021,6 +1061,20 @@ Translation = {
                 dict = "minigames_hud",
                 icon = "five_finger_burnout",
                 color = "COLOR_RED",
+            },
+            MultiJob = {
+                MaxMJob            = "Hai impostato il numero massimo di lavori consentiti a %s",
+                MaxMJobSet         = "Il tuo numero massimo di lavori consentiti è stato impostato a %s",
+                ReachedMaxMJob     = "L'utente ha raggiunto il numero massimo di lavori consentiti",
+                YouAddedMJob       = "Hai aggiunto %s a %s",
+                YouGiveMJob        = "Hai ricevuto %s",
+                InvalidMJob        = "L'utente non ha questo lavoro da rimuovere",
+                YouRemovedMJob     = "Hai rimosso %s da %s",
+                YouLostMJob        = "Hai perso %s",
+                DontHaveMJob       = "Non hai nessun multi-lavoro",
+                DontHaveThisMJob   = "Non hai questo lavoro",
+                CoolDownMJob       = "Sei in tempo di attesa, per favore aspetta",
+                YouSwitchedMjob    = "Sei passato a ",
             },
         },
         Commands        = {
@@ -1228,6 +1282,7 @@ Translation = {
             victimSteamName = "Nome Steam Vittima: ",
             victimSteamId = "Steam ID Vittima: ",
             victimServerId = "ID Server Vittima: ",
+            cause = "Causa: ",
             killerSteamName = "Nome Steam Assassino: ",
             killerSteamId = "Steam ID Assassino: ",
             killerServerId = "ID Server Assassino: "
@@ -1347,6 +1402,20 @@ Translation = {
                 dict = "minigames_hud",
                 icon = "five_finger_burnout",
                 color = "COLOR_RED",
+            },
+            MultiJob = {
+                MaxMJob            = "Has establecido el número máximo de trabajos permitidos en %s",
+                MaxMJobSet         = "Tu número máximo de trabajos permitidos ha sido establecido en %s",
+                ReachedMaxMJob     = "El usuario ha alcanzado el número máximo de trabajos permitidos",
+                YouAddedMJob       = "Has añadido %s a %s",
+                YouGiveMJob        = "Has recibido %s",
+                InvalidMJob        = "El usuario no tiene este trabajo para ser eliminado",
+                YouRemovedMJob     = "Has eliminado %s de %s",
+                YouLostMJob        = "Has perdido %s",
+                DontHaveMJob       = "No tienes ningún multitrabajo",
+                DontHaveThisMJob   = "No tienes este trabajo",
+                CoolDownMJob       = "Estás en tiempo de espera, por favor espera",
+                YouSwitchedMjob    = "Has cambiado a ",
             },
         },
         Commands        = {
@@ -1515,8 +1584,7 @@ Translation = {
             charCreateAdd = {
                 custom = "\n**ID de jugador** `%d`\n **Acción:** `usó charcreateadd`",
                 title = "📋` Comando /addchar` ",
-                label = "Comando VORPcore para permitir que un jugador cree más de un personaje. Se permitirá crear: " ..
-                    Config.MaxCharacters,
+                label = "Comando VORPcore para permitir que un jugador cree más de un personaje. Se permitirá crear: " .. Config.MaxCharacters,
                 name = "ID",
                 name1 = "cantidad",
                 help = "ID del jugador",
@@ -1550,11 +1618,12 @@ Translation = {
         addWebhook      = {
             whitelistid = "**Nombre Steam: **`%s`**\nIdentificador:** `%s`\n**Discord:** <@%s>\n**User-Id:** `%s`",
             whitelistid1 = "📋` Nuevo jugador se unió al servidor` ",
-            deathLogTitle = "Registro de Muerte del Jugador",
-            playerDied = "Jugador Murió",
+            DeathLogTitle = "Registro de Muerte del Jugador",
+            PlayerDied = "Jugador Murió",
             victimSteamName = "Nombre Steam Víctima: ",
             victimSteamId = "Steam ID Víctima: ",
             victimServerId = "ID del Servidor Víctima: ",
+            cause = "Causa: ",
             killerSteamName = "Nombre Steam Asesino: ",
             killerSteamId = "Steam ID Asesino: ",
             killerServerId = "ID del Servidor Asesino: "
@@ -1677,6 +1746,20 @@ Translation = {
                 dict = "minigames_hud",
                 icon = "five_finger_burnout",
                 color = "COLOR_RED",
+            },
+            MultiJob = {
+                MaxMJob            = "Vous avez défini le nombre maximum d'emplois autorisés à %s",
+                MaxMJobSet         = "Votre nombre maximum d'emplois autorisés a été défini à %s",
+                ReachedMaxMJob     = "L'utilisateur a atteint le nombre maximum d'emplois autorisés",
+                YouAddedMJob       = "Vous avez ajouté %s à %s",
+                YouGiveMJob        = "Vous avez reçu %s",
+                InvalidMJob        = "L'utilisateur n'a pas cet emploi à supprimer",
+                YouRemovedMJob     = "Vous avez supprimé %s de %s",
+                YouLostMJob        = "Vous avez perdu %s",
+                DontHaveMJob       = "Vous n'avez aucun multi-emploi",
+                DontHaveThisMJob   = "Vous n'avez pas cet emploi",
+                CoolDownMJob       = "Vous êtes en temps d'attente, veuillez patienter",
+                YouSwitchedMjob    = "Vous avez changé pour ",
             },
         },
         Commands        = {
@@ -1845,8 +1928,7 @@ Translation = {
             charCreateAdd = {
                 custom = "\n**ID Joueur** `%d`\n **Action :** `utilisé charcreateadd`",
                 title = "📋` Commande /addchar`",
-                label = "Commande VORPcore pour autoriser un joueur à créer plusieurs personnages (maximum : " ..
-                    Config.MaxCharacters .. ")",
+                label = "Commande VORPcore pour autoriser un joueur à créer plusieurs personnages (maximum : " .. Config.MaxCharacters .. ")",
                 name = "ID",
                 name1 = "quantité",
                 help = "ID du joueur",
@@ -2007,6 +2089,20 @@ Translation = {
                 dict = "minigames_hud",
                 icon = "five_finger_burnout",
                 color = "COLOR_RED",
+            },
+            MultiJob = {
+                MaxMJob            = "Du hast die maximale Anzahl erlaubter Jobs auf %s festgelegt",
+                MaxMJobSet         = "Deine maximale Anzahl erlaubter Jobs wurde auf %s festgelegt",
+                ReachedMaxMJob     = "Der Spieler hat die maximale Anzahl erlaubter Jobs erreicht",
+                YouAddedMJob       = "Du hast %s zu %s hinzugefügt",
+                YouGiveMJob        = "Du hast %s erhalten",
+                InvalidMJob        = "Der Spieler hat diesen Job nicht, um ihn zu entfernen",
+                YouRemovedMJob     = "Du hast %s von %s entfernt",
+                YouLostMJob        = "Du hast %s verloren",
+                DontHaveMJob       = "Du hast keinen Multi-Job",
+                DontHaveThisMJob   = "Du hast diesen Job nicht",
+                CoolDownMJob       = "Du bist in der Abkühlphase, bitte warte",
+                YouSwitchedMjob    = "Du hast zu folgendem Job gewechselt: ",
             },
         },
         Commands        = {
@@ -2175,8 +2271,7 @@ Translation = {
             charCreateAdd = {
                 custom = "\n**PlayerID** `%d`\n **Aktion:** `charcreateadd verwendet`",
                 title = "📋` /addchar Befehl` ",
-                label = "VORPcore-Befehl, um festzulegen, ob ein Spieler mehr als einen Charakter erstellen darf: " ..
-                    Config.MaxCharacters,
+                label = "VORPcore-Befehl, um festzulegen, ob ein Spieler mehr als einen Charakter erstellen darf: " .. Config.MaxCharacters,
                 name = "ID",
                 name1 = "Menge",
                 help = "Spieler-ID",
@@ -2216,6 +2311,7 @@ Translation = {
             victimSteamName = "Steam Name Opfer: ",
             victimSteamId = "Steam ID Opfer: ",
             victimServerId = "Server ID Opfer: ",
+            cause = "Ursache: ",
             killerSteamName = "Steam Name Mörder: ",
             killerSteamId = "Steam ID Mörder: ",
             killerServerId = "Server ID Mörder: "
@@ -2341,6 +2437,20 @@ Translation = {
                 dict = "minigames_hud",
                 icon = "five_finger_burnout",
                 color = "COLOR_RED",
+            },
+            MultiJob = {
+                MaxMJob            = "Ai setat numărul maxim de joburi permise la %s",
+                MaxMJobSet         = "Numărul maxim de joburi permise pentru tine a fost setat la %s",
+                ReachedMaxMJob     = "Jucătorul a atins numărul maxim de joburi permise",
+                YouAddedMJob       = "Ai adăugat %s la %s",
+                YouGiveMJob        = "Ai primit %s",
+                InvalidMJob        = "Jucătorul nu are acest job pentru a fi eliminat",
+                YouRemovedMJob     = "Ai eliminat %s de la %s",
+                YouLostMJob        = "Ai pierdut %s",
+                DontHaveMJob       = "Nu ai niciun multi-job",
+                DontHaveThisMJob   = "Nu ai acest job",
+                CoolDownMJob       = "Ești în perioadă de așteptare, te rog așteaptă",
+                YouSwitchedMjob    = "Ai schimbat jobul în ",
             },
         },
         Commands        = {
@@ -2511,8 +2621,7 @@ Translation = {
             charCreateAdd = {
                 custom = "\n**ID jucator** `%d`\n **Actiune:** `a folosit comanda charcreateadd`",
                 title = "📋` Comanda /addchar` ",
-                label = "Comanda VORPcore pentru a permite unui jucator sa creeze mai multe caractere, implicit este: " ..
-                    Config.MaxCharacters,
+                label = "Comanda VORPcore pentru a permite unui jucator sa creeze mai multe caractere, implicit este: " .. Config.MaxCharacters,
                 name = "Id jucator",
                 name1 = "cantitate",
                 help = "id server jucatorul trebuie sa fie in joc",
@@ -2550,6 +2659,7 @@ Translation = {
             victimSteamName = "Nume Steam Victimă: ",
             victimSteamId = "ID Steam Victimă: ",
             victimServerId = "ID Server Victimă: ",
+            cause = "Cauza: ",
             killerSteamName = "Nume Steam Ucigaș: ",
             killerSteamId = "ID Steam Ucigaș: ",
             killerServerId = "ID Server Ucigaș: "

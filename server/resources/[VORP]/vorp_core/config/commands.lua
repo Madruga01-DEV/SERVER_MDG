@@ -125,6 +125,76 @@ Commands = {
             AddJob(...)
         end
     },
+    switchMultiJob = {
+        webhook = "",
+        custom = "\n**PlayerID:** `%d` \n**Job switched** `%s`\n**Grade:** `%d`",
+        title = "📋 `/switchMultiJob command`",
+        commandName = "switchMultiJob",
+        label = "VORPcore command to switch your job",
+        suggestion = {
+            { name = "Id",  help = "your ID" },
+            { name = "Job", help = "job name to switch to" },
+        },
+        userCheck = false,
+        groupAllowed = {},
+        aceAllowed = nil,
+        callFunction = function(...)
+            SwitchMultiJob(...)
+        end
+    },
+    setMaxJobsAllowed = {
+        webhook = "",
+        custom = "\n**PlayerID:** `%d` \n**Max jobs allowed** `%d`",
+        title = "📋 `/setMaxJobsAllowed command`",
+        commandName = "setMaxJobsAllowed",
+        label = "VORPcore command to set the maximum number of jobs allowed for a user",
+        suggestion = {
+            { name = "Id",       help = "your ID" },
+            { name = "Max jobs", help = "maximum number of jobs allowed for a user" },
+        },
+        userCheck = true,
+        groupAllowed = { "admin" },
+        aceAllowed = "",
+        callFunction = function(...)
+            SetMultiJobMaxAllowed(...)
+        end
+    },
+    addMultiJob = {
+        webhook = "",
+        custom = "\n**PlayerID:** `%d` \n**Job added** `%s`\n**Grade:** `%d`",
+        title = "📋 `/addMultiJob command`",
+        commandName = "addMultiJob",
+        label = "VORPcore command to add a multi job to a user",
+        suggestion = {
+            { name = "Id",    help = "your ID" },
+            { name = "Job",   help = "job name to add" },
+            { name = "Grade", help = "job grade to add" },
+            { name = "Label", help = "job label to add" },
+        },
+        userCheck = true,
+        groupAllowed = { "admin" },
+        aceAllowed = "",
+        callFunction = function(...)
+            AddMultiJob(...)
+        end
+    },
+    removeMultiJob = {
+        webhook = "",
+        custom = "\n**PlayerID:** `%d` \n**Job removed** `%s`",
+        title = "📋 `/removeMultiJob command`",
+        commandName = "removeMultiJob",
+        label = "VORPcore command to remove a multi job from a user",
+        suggestion = {
+            { name = "Id",  help = "your ID" },
+            { name = "Job", help = "job name to remove" },
+        },
+        userCheck = true,
+        groupAllowed = { "admin" },
+        aceAllowed = "",
+        callFunction = function(...)
+            RemoveMultiJob(...)
+        end
+    },
     addItem = {
         webhook = "",
         custom = T.addItem.custom,

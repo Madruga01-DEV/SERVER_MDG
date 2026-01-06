@@ -83,6 +83,7 @@ function Character(data)
     self.steamname = data.steamname
     self.slots = data.slots
     self.skills = setSkills(data)
+    self.multiJobs = data.multiJobs or {}
 
     self.Identifier = function()
         return self.identifier
@@ -114,6 +115,14 @@ function Character(data)
             SetState(self.source, "Character", "Job", self.job)
         end
         return self.job
+    end
+
+    self.MultiJobs = function(job, grade, label)
+        self.multiJobs[job] = {
+            grade = grade,
+            label = label
+        }
+        return true
     end
 
     self.Joblabel = function(value)
@@ -302,7 +311,7 @@ function Character(data)
                 self.skills[index].Exp = currentExp - nextLevelExp -- (Rollover the xp eg 102/100 will mean 2 xp into next level)
                 self.skills[index].Label = levelsData[newLevel].Label
                 self.skills[index].NextLevel = levelsData[newLevel].NextLevel
-                
+
                 TriggerClientEvent("vorp_core:Client:OnPlayerLevelUp", self.source, index, self.skills[index].Level, currentLevel)
                 TriggerEvent("vorp_core:Server:OnPlayerLevelUp", self.source, index, self.skills[index].Level, currentLevel)
             end
@@ -384,11 +393,13 @@ function Character(data)
     end
 
     self.addXp = function(quantity)
+        if not quantity then return print("xp quantity is required") end
         self.xp = self.xp + quantity
         self.updateCharUi()
     end
 
     self.removeXp = function(quantity)
+        if not quantity then return print("remove xp quantity is required") end
         self.Xp = self.xp - quantity
         self.updateCharUi()
     end
@@ -402,6 +413,22 @@ function Character(data)
 
     self.setJob = function(newjob)
         self.Job(newjob)
+    end
+
+    self.setMultiJob = function(job, grade, label)
+        return self.MultiJobs(job, grade, label)
+    end
+
+    self.removeMultiJob = function(job)
+        if not self.multiJobs[job] then
+            return false
+        end
+
+        if self.multiJobs[job] then
+            self.multiJobs[job] = nil
+        end
+
+        return true
     end
 
     self.setGroup = function(newgroup)
@@ -420,7 +447,7 @@ function Character(data)
     end
 
     self.SaveNewCharacterInDb = function(cb)
-        MySQL.query("INSERT INTO characters (`identifier`,`group`,`money`,`gold`,`rol`,`xp`,`healthouter`,`healthinner`,`staminaouter`,`staminainner`,`inventory`,`job`,`status`,`firstname`,`lastname`,`skinPlayer`,`compPlayer`,`jobgrade`,`coords`,`isdead`,`joblabel`, `age`,`gender`,`character_desc`,`nickname`,`compTints`,`steamname`,`slots`,`skills`) VALUES (@identifier,@group, @money, @gold, @rol, @xp, @healthouter, @healthinner, @staminaouter, @staminainner, @inventory, @job, @status, @firstname, @lastname, @skinPlayer, @compPlayer, @jobgrade, @coords, @isdead, @joblabel, @age, @gender, @charDescription, @nickname,@compTints,@steamname,@slots,@skills)",
+        MySQL.query("INSERT INTO characters (`identifier`,`group`,`money`,`gold`,`rol`,`xp`,`healthouter`,`healthinner`,`staminaouter`,`staminainner`,`inventory`,`job`,`status`,`firstname`,`lastname`,`skinPlayer`,`compPlayer`,`jobgrade`,`coords`,`isdead`,`joblabel`, `age`,`gender`,`character_desc`,`nickname`,`compTints`,`steamname`,`slots`,`skills`,`multijobs`) VALUES (@identifier,@group, @money, @gold, @rol, @xp, @healthouter, @healthinner, @staminaouter, @staminainner, @inventory, @job, @status, @firstname, @lastname, @skinPlayer, @compPlayer, @jobgrade, @coords, @isdead, @joblabel, @age, @gender, @charDescription, @nickname,@compTints,@steamname,@slots,@skills,@multijobs)",
             {
                 identifier = self.identifier,
                 group = self.group,
@@ -450,7 +477,8 @@ function Character(data)
                 compTints = self.compTints,
                 steamname = self.steamname,
                 slots = self.slots,
-                skills = json.encode(self.skills)
+                skills = json.encode(self.skills),
+                multijobs = json.encode(self.multiJobs)
 
             },
             function(character)
@@ -467,7 +495,7 @@ function Character(data)
     end
 
     self.SaveCharacterInDb = function()
-        MySQL.update("UPDATE characters SET `group` =@group ,`money` =@money ,`gold` =@gold ,`rol` =@rol ,`xp` =@xp ,`healthouter` =@healthouter ,`healthinner` =@healthinner ,`staminaouter` =@staminaouter ,`staminainner` =@staminainner ,`job` =@job , `status` =@status ,`firstname` =@firstname , `lastname` =@lastname , `jobgrade` =@jobgrade , `coords` =@coords , `isdead` =@isdead , `joblabel` =@joblabel, `age` =@age, `gender`=@gender, `character_desc`=@charDescription,`nickname`=@nickname,`steamname`=@steamname, `slots` =@slots, `skills`=@skills  WHERE `identifier` =@identifier AND `charidentifier` =@charidentifier",
+        MySQL.update("UPDATE characters SET `group` =@group ,`money` =@money ,`gold` =@gold ,`rol` =@rol ,`xp` =@xp ,`healthouter` =@healthouter ,`healthinner` =@healthinner ,`staminaouter` =@staminaouter ,`staminainner` =@staminainner ,`job` =@job , `status` =@status ,`firstname` =@firstname , `lastname` =@lastname , `jobgrade` =@jobgrade , `coords` =@coords , `isdead` =@isdead , `joblabel` =@joblabel, `age` =@age, `gender`=@gender, `character_desc`=@charDescription,`nickname`=@nickname,`steamname`=@steamname, `slots` =@slots, `skills`=@skills, `multijobs`=@multijobs  WHERE `identifier` =@identifier AND `charidentifier` =@charidentifier",
             {
                 group = self.group,
                 money = self.money,
@@ -494,7 +522,8 @@ function Character(data)
                 nickname = self.nickname,
                 steamname = self.steamname,
                 slots = self.slots,
-                skills = json.encode(self.skills)
+                skills = json.encode(self.skills),
+                multijobs = json.encode(self.multiJobs)
             })
     end
 
@@ -530,12 +559,21 @@ function Character(data)
         userData.nickname = self.nickname
         userData.invCapacity = tonumber(self.slots)
         userData.skills = self.skills
+        userData.multiJobs = self.multiJobs
 
         userData.updateInvCapacity = function(slots)
             self.setSlots(slots)
         end
         userData.setStatus = function(status)
             self.Status(status)
+        end
+
+        userData.getMultiJobsCount = function()
+            local count = 0
+            for _, _ in pairs(self.multiJobs) do
+                count = count + 1
+            end
+            return count
         end
 
         userData.setJobGrade = function(jobgrade, flag)
@@ -550,6 +588,14 @@ function Character(data)
 
         userData.setJob = function(job, flag)
             self.Job(job, flag)
+        end
+
+        userData.setMultiJob = function(job, grade, label)
+            self.MultiJobs(job, grade, label)
+        end
+
+        userData.removeMultiJob = function(job)
+            return self.removeMultiJob(job)
         end
 
         userData.setMoney = function(money)
