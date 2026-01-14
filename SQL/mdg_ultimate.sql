@@ -1962,6 +1962,7 @@ CREATE TABLE IF NOT EXISTS `playershops2` (
 -- Copiando dados para a tabela mdg_ultimate.playershops2: ~0 rows (aproximadamente)
 
 -- Copiando estrutura para tabela mdg_ultimate.player_trains
+
 CREATE TABLE IF NOT EXISTS `player_trains` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '0',
@@ -1979,6 +1980,8 @@ CREATE TABLE IF NOT EXISTS `player_trains` (
   `inventory_capacity` int(11) DEFAULT 500,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 
 -- Copiando dados para a tabela mdg_ultimate.player_trains: ~0 rows (aproximadamente)
 
