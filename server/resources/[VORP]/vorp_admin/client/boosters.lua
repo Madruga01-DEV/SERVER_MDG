@@ -350,14 +350,14 @@ local PromptGroup = GetRandomIntInRange(0, 0xffffff)
 end)]]--
 
 
-RegisterCommand("noclip", function(source, args, rawCommand)
+ --[[RegisterCommand("noclip", function(source, args, rawCommand)
     NoClipActive = not NoClipActive
     if NoClipActive then
         -- print("NoClip ativado")
     else
       --  print("NoClip desativado")
     end
-end, false)
+end, false)]]
 
 Citizen.CreateThread(function()
     repeat Wait(1000) until LocalPlayer.state.IsInSession
