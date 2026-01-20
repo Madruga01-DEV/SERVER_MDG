@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
--- Servidor:                     127.0.0.1
--- Versão do servidor:           10.4.28-MariaDB - mariadb.org binary distribution
--- OS do Servidor:               Win64
--- HeidiSQL Versão:              12.5.0.6677
+-- Host:                         127.0.0.1
+-- Server version:               10.4.28-MariaDB - mariadb.org binary distribution
+-- Server OS:                    Win64
+-- HeidiSQL Version:             12.5.0.6677
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -15,11 +15,64 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- Copiando estrutura do banco de dados para modelo_m2
+-- Dumping database structure for modelo_m2
 CREATE DATABASE IF NOT EXISTS `modelo_m2` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci */;
 USE `modelo_m2`;
 
--- Copiando estrutura para tabela modelo_m2.bank_users
+-- Dumping structure for procedure modelo_m2.AlterTableMail
+DELIMITER //
+CREATE PROCEDURE `AlterTableMail`()
+BEGIN
+    DECLARE table_exists INT DEFAULT 0;
+    DECLARE adress_exists INT DEFAULT 0;
+    DECLARE adressbook_exists INT DEFAULT 0;
+    DECLARE identifier_exists INT DEFAULT 0;
+
+    -- Check if the table exists
+    SELECT COUNT(*) INTO table_exists
+    FROM information_schema.TABLES
+    WHERE TABLE_NAME = 'mail';
+    
+    -- If table exists, check if columns exist
+    IF table_exists = 1 THEN
+        SELECT COUNT(*) INTO adress_exists
+        FROM information_schema.COLUMNS
+        WHERE TABLE_NAME = 'mail' AND COLUMN_NAME = 'adress';
+
+        SELECT COUNT(*) INTO adressbook_exists
+        FROM information_schema.COLUMNS
+        WHERE TABLE_NAME = 'mail' AND COLUMN_NAME = 'adressbook';
+
+        SELECT COUNT(*) INTO identifier_exists
+        FROM information_schema.COLUMNS
+        WHERE TABLE_NAME = 'mail' AND COLUMN_NAME = 'identifier';
+
+        -- Conditional altering
+        IF adress_exists = 1 THEN
+            SET @sql = 'ALTER TABLE mail CHANGE `adress` `address` int(11) NOT NULL AUTO_INCREMENT;';
+            PREPARE stmt FROM @sql;
+            EXECUTE stmt;
+            DEALLOCATE PREPARE stmt;
+        END IF;
+
+        IF adressbook_exists = 1 THEN
+            SET @sql = 'ALTER TABLE mail DROP COLUMN adressbook;';
+            PREPARE stmt FROM @sql;
+            EXECUTE stmt;
+            DEALLOCATE PREPARE stmt;
+        END IF;
+
+        IF identifier_exists = 1 THEN
+            SET @sql = 'ALTER TABLE mail DROP COLUMN identifier;';
+            PREPARE stmt FROM @sql;
+            EXECUTE stmt;
+            DEALLOCATE PREPARE stmt;
+        END IF;
+    END IF;
+END//
+DELIMITER ;
+
+-- Dumping structure for table modelo_m2.bank_users
 CREATE TABLE IF NOT EXISTS `bank_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
@@ -35,9 +88,9 @@ CREATE TABLE IF NOT EXISTS `bank_users` (
   CONSTRAINT `bankusers` FOREIGN KEY (`identifier`) REFERENCES `users` (`identifier`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela modelo_m2.bank_users: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.bank_users: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.characters
+-- Dumping structure for table modelo_m2.characters
 CREATE TABLE IF NOT EXISTS `characters` (
   `identifier` varchar(50) NOT NULL DEFAULT '',
   `steamname` varchar(50) NOT NULL DEFAULT '',
@@ -92,14 +145,15 @@ CREATE TABLE IF NOT EXISTS `characters` (
   KEY `steamname` (`steamname`),
   KEY `info` (`info`(768)),
   CONSTRAINT `FK_characters_users` FOREIGN KEY (`identifier`) REFERENCES `users` (`identifier`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela modelo_m2.characters: ~2 rows (aproximadamente)
-INSERT IGNORE INTO `characters` (`identifier`, `steamname`, `charidentifier`, `group`, `money`, `gold`, `rol`, `xp`, `healthouter`, `healthinner`, `staminaouter`, `staminainner`, `hours`, `LastLogin`, `inventory`, `slots`, `job`, `joblabel`, `meta`, `firstname`, `lastname`, `character_desc`, `gender`, `age`, `nickname`, `skinPlayer`, `compPlayer`, `compTints`, `jobgrade`, `coords`, `status`, `isdead`, `skills`, `walk`, `gunsmith`, `ammo`, `discordid`, `lastjoined`, `moonshineenty`, `motel`, `info`, `multijobs`) VALUES
+-- Dumping data for table modelo_m2.characters: ~3 rows (approximately)
+INSERT INTO `characters` (`identifier`, `steamname`, `charidentifier`, `group`, `money`, `gold`, `rol`, `xp`, `healthouter`, `healthinner`, `staminaouter`, `staminainner`, `hours`, `LastLogin`, `inventory`, `slots`, `job`, `joblabel`, `meta`, `firstname`, `lastname`, `character_desc`, `gender`, `age`, `nickname`, `skinPlayer`, `compPlayer`, `compTints`, `jobgrade`, `coords`, `status`, `isdead`, `skills`, `walk`, `gunsmith`, `ammo`, `discordid`, `lastjoined`, `moonshineenty`, `motel`, `info`, `multijobs`) VALUES
+	('steam:1100001002d7683', '𝐕𝐚𝐥𝐚𝐤 ✝', 3, 'user', 100.00, 0.00, 0.00, 0, 500, 100, 500, 100, 0, '2026-01-19', '{}', 65.0, 'desempregado', 'desempregado', '{}', 'Madruga', 'Dev', 'none', 'Male', 30, 'none', '{"HipsS":0.0,"CheekBonesH":0.0,"JawD":0.0,"EyeBrowH":0.0,"NoseH":0.0,"HeadSize":0.0,"Eyes":612262189,"lipsticks_visibility":0,"ULiphH":0.0,"JawW":0.0,"paintedmasks_opacity":0,"freckles_tx_id":0,"LLiphH":0.0,"ShouldersS":0.0,"LLiphD":0.0,"MouthCRD":0.0,"acne_tx_id":0,"moles_visibility":0,"WaistW":0.0,"ULiphD":0.0,"complex_visibility":0,"NoseC":0.0,"albedo":317354806,"FaceD":0.0,"MouthX":0.0,"paintedmasks_tx_id":0,"eyeliner_palette_id":0,"ageing_visibility":0,"eyeliner_visibility":0,"disc_tx_id":0,"EarsH":0.0,"blush_palette_id":0,"shadows_palette_color_tertiary":0,"lipsticks_tx_id":0,"foundation_tx_id":0,"EyeD":0.0,"BodyType":-162963160,"LegsS":0.0,"EyeLidW":0.0,"disc_opacity":0,"Torso":0,"MouthCLLD":0.0,"CheekBonesW":0.0,"lipsticks_palette_color_primary":0,"NeckW":0.0,"EyeLidL":0.0,"paintedmasks_palette_color_secondary":0,"EyeBrowD":0.0,"EyeH":0.0,"ChestS":0.0,"ArmsS":0.0,"MouthCRLD":0.0,"ShouldersT":0.0,"JawH":0.0,"scars_tx_id":0,"eyeliner_tx_id":0,"HeadType":-2064391035,"eyebrows_opacity":1.0,"MouthCLW":0.0,"scars_visibility":0,"MouthCRH":0.0,"NeckD":0.0,"paintedmasks_palette_id":0,"eyebrows_visibility":1,"freckles_opacity":0,"acne_visibility":0,"paintedmasks_palette_color_tertiary":0,"ageing_opacity":0,"ULiphW":0.0,"NoseS":0.0,"NoseW":0.0,"EyeLidR":0.0,"moles_opacity":0,"EyeBrowW":0.0,"beardstabble_opacity":0,"paintedmasks_visibility":0,"EarsW":0.0,"CheekBonesD":0.0,"foundation_palette_color_tertiary":0,"EarsA":0.0,"Beard":0,"shadows_palette_color_primary":0,"foundation_palette_color_secondary":0,"freckles_visibility":0,"foundation_palette_color_primary":0,"complex_tx_id":0,"foundation_visibility":0,"EyeDis":0.0,"hair_opacity":0,"EarsD":0.0,"hair_color_primary":0,"hair_visibility":0,"moles_tx_id":0,"hair_tx_id":0,"blush_opacity":0,"CalvesS":0.0,"MouthY":0.0,"blush_palette_color_primary":0,"blush_tx_id":0,"ageing_tx_id":0,"FaceW":0.0,"lipsticks_palette_color_tertiary":0,"MouthW":0.0,"beardstabble_visibility":0,"eyeliner_opacity":0,"disc_visibility":0,"eyeliner_color_primary":0,"shadows_opacity":0,"beardstabble_color_primary":0,"Hair":2112480140,"shadows_palette_color_secondary":0,"shadows_palette_id":0,"shadows_visibility":0,"shadows_tx_id":0,"paintedmasks_palette_color_primary":0,"blush_visibility":0,"NoseAng":0.0,"lipsticks_palette_color_secondary":0,"Scale":0.0,"EyeLidH":0.0,"grime_opacity":0,"grime_tx_id":0,"grime_visibility":0,"acne_opacity":0,"spots_visibility":0,"complex_opacity":0,"foundation_palette_id":0,"spots_opacity":0,"spots_tx_id":0,"scars_opacity":0,"eyebrows_color":1064202495,"eyebrows_tx_id":1,"MouthCLD":0.0,"lipsticks_palette_id":0,"LegsType":174153218,"Waist":0,"Body":-162963160,"beardstabble_tx_id":0,"sex":"mp_male","ChinW":0.0,"ChinD":0.0,"ChinH":0.0,"LLiphW":0.0,"MouthD":0.0,"NoseDis":0.0,"lipsticks_opacity":0,"foundation_opacity":0,"EyeAng":0.0,"MouthCLH":0.0,"FaceS":0.0,"ShouldersM":0.0,"MouthCRW":0.0}', '{"Armor":-1,"Loadouts":-1,"Satchels":-1,"Bow":-1,"RingLh":-1,"Skirt":-1,"Pant":1939930032,"Dress":-1,"Gauntlets":-1,"Badge":-1,"Cloak":-1,"Spats":-1,"CoatClosed":-1,"Coat":-1,"Belt":-1,"Buckle":-1,"Hat":-1,"NeckTies":-1,"Spurs":-1,"RingRh":-1,"Suspender":-1,"Vest":-1,"Teeth":712446626,"Poncho":-1,"Shirt":-1665588256,"Boots":-218859683,"Mask":-1,"GunbeltAccs":-1,"Holster":-1,"Bracelet":-1,"Chap":-1,"EyeWear":-1,"Gunbelt":795591403,"Glove":-1,"Accessories":-1,"NeckWear":-1}', '{"Pant":{"1939930032":{"tint1":0,"palette":0,"tint2":0,"tint0":0}},"Boots":{"-218859683":{"tint1":0,"palette":0,"tint2":0,"tint0":0}},"Shirt":{"-1665588256":{"tint1":0,"palette":0,"tint2":0,"tint0":0}}}', 0, '{"y":-1309.015380859375,"x":1314.4088134765626,"heading":62.36220550537109,"z":76.4256591796875}', '{}', 0, '{"Hunting":{"NextLevel":100,"MaxLevel":5,"Level":1,"Exp":0,"Label":"Beginner"},"Fishing":{"NextLevel":100,"MaxLevel":5,"Level":1,"Exp":0,"Label":"Beginner"},"Crafting":{"NextLevel":100,"MaxLevel":5,"Level":1,"Exp":0,"Label":"Beginner"},"Mining":{"NextLevel":100,"MaxLevel":5,"Level":1,"Exp":0,"Label":"Beginner"}}', 'noanim', 0.00, '{}', '986785126866378762', '[]', '{}', '0', '{}', '[]'),
 	('steam:11000014b7dfbde', 'Danet Games', 2, 'admin', 4802199.25, 30.00, 0.00, 0, 500, 100, 500, 100, 0, '2025-08-09', '{}', 60.0, 'TreinadorBW', 'forasteiros', '{}', 'william', 'walker', 'valente', 'Male', 45, 'britch', '{"EarsA":0.0,"JawW":0.0,"eyebrows_tx_id":4,"acne_visibility":0,"EyeDis":0.0,"MouthCRD":0.0,"Body":-369348190,"sex":"mp_male","HeadSize":0.0,"freckles_visibility":0,"eyebrows_opacity":1.0,"Scale":1.05,"MouthCRH":0.0,"LegsS":0.0,"CheekBonesH":0.0,"Hair":2690487796,"HeadType":2722026837,"EarsD":0.0,"scars_visibility":0,"ULiphW":0.0,"shadows_palette_color_secondary":0,"disc_opacity":0,"Legs":2968922921,"paintedmasks_palette_color_tertiary":0,"EyeBrowD":0.0,"ChinD":0.0,"EarsW":0.0,"Waist":-2045421226,"complex_visibility":0,"freckles_opacity":0,"Torso":2362013313,"MouthX":0.0,"MouthCLH":0.0,"NoseDis":0.0,"spots_opacity":0,"foundation_tx_id":0,"EyeAng":0.0,"JawH":0.0,"MouthD":0.0,"Beard":185164474,"MouthCRW":0.0,"beardstabble_tx_id":1,"CheekBonesW":0.0,"lipsticks_palette_color_primary":0,"blush_visibility":0,"JawD":0.0,"NoseAng":0.0,"HipsS":0.0,"MouthCLW":0.0,"eyebrows_color":1064202495,"ShouldersS":0.0,"WaistW":0.0,"ChinH":0.0,"paintedmasks_tx_id":0,"FaceD":0.0,"foundation_opacity":0,"ageing_visibility":0,"lipsticks_palette_color_tertiary":0,"foundation_palette_color_tertiary":0,"freckles_tx_id":0,"Eyes":642477207,"spots_tx_id":0,"paintedmasks_palette_id":0,"hair_opacity":0,"blush_palette_color_primary":0,"EyeLidH":0.0,"spots_visibility":0,"EyeLidW":0.0,"EyeLidL":0.0,"NeckW":0.0,"paintedmasks_opacity":0,"FaceW":0.0,"MouthCRLD":0.0,"ShouldersT":0.0,"beardstabble_color_primary":1090645383,"NoseC":0.0,"complex_tx_id":0,"EyeLidR":0.0,"ArmsS":0.0,"blush_opacity":0,"BodyType":2196852103,"EyeH":0.0,"MouthCLD":0.0,"paintedmasks_palette_color_secondary":0,"NoseH":0.0,"paintedmasks_palette_color_primary":0,"paintedmasks_visibility":0,"foundation_palette_color_secondary":0,"eyeliner_visibility":0,"NoseS":0.0,"CheekBonesD":0.0,"foundation_visibility":0,"ULiphH":0.0,"hair_color_primary":0,"MouthCLLD":0.0,"shadows_palette_color_primary":0,"hair_visibility":0,"EyeBrowW":0.0,"acne_tx_id":0,"ChestS":0.0,"moles_tx_id":0,"blush_tx_id":0,"ChinW":0.0,"eyeliner_palette_id":0,"moles_visibility":0,"eyeliner_opacity":0,"eyeliner_color_primary":0,"grime_opacity":0,"foundation_palette_color_primary":0,"eyeliner_tx_id":0,"ShouldersM":0.0,"lipsticks_opacity":0,"scars_opacity":0,"beardstabble_visibility":1,"shadows_opacity":0,"shadows_palette_color_tertiary":0,"LLiphW":0.0,"MouthW":0.0,"shadows_palette_id":0,"grime_visibility":0,"shadows_visibility":0,"beardstabble_opacity":1.0,"LLiphD":0.0,"lipsticks_palette_color_secondary":0,"lipsticks_palette_id":0,"lipsticks_tx_id":0,"lipsticks_visibility":0,"disc_visibility":0,"grime_tx_id":0,"shadows_tx_id":0,"foundation_palette_id":0,"blush_palette_id":0,"ageing_opacity":0,"ageing_tx_id":0,"MouthY":0.0,"complex_opacity":0,"acne_opacity":0,"scars_tx_id":0,"eyebrows_visibility":1,"LLiphH":0.0,"ULiphD":0.0,"disc_tx_id":0,"moles_opacity":0,"EyeD":0.0,"NeckD":0.0,"EarsH":0.0,"hair_tx_id":0,"CalvesS":0.0,"EyeBrowH":0.0,"albedo":-343742430,"LegsType":3928485346,"NoseW":0.0,"FaceS":0.0}', '{"Dress":-1,"Loadouts":-1,"Boots":947334631,"Coat":-1,"RingLh":-1,"CoatClosed":1292860071,"RingRh":-1,"Suspender":-1,"Vest":-1,"Glove":808704546,"Belt":-1,"Skirt":-1,"Cloak":-1,"Bracelet":-1,"Poncho":-1,"Gunbelt":1644960709,"Spurs":-202541861,"Chap":-1,"Armor":-1,"Mask":-1,"Holster":-724967739,"Gauntlets":-1,"NeckTies":-1,"bow":-1,"NeckWear":-1,"Shirt":-1995147187,"Hat":-511398545,"EyeWear":442424923,"Spats":-1,"Badge":-1,"Pant":1291746587,"Teeth":712446626,"Satchels":-1,"Accessories":-1,"Buckle":-911098977,"GunbeltAccs":-1}', '{"Vest":{"1262210670":{"tint2":21,"tint0":21,"color":3,"palette":1090645383,"tint1":19,"index":5}},"Holster":{"-724967739":{"tint2":1,"tint0":1,"color":1,"palette":-783849117,"tint1":1,"index":12}},"Gunbelt":{"1644960709":{"tint2":58,"tint0":15,"color":0,"palette":-783849117,"tint1":15,"index":15}},"Spurs":{"-202541861":{"tint2":88,"tint0":14,"color":0,"palette":-783849117,"tint1":26,"index":2}},"Shirt":{"-1995147187":{"tint2":78,"tint0":78,"color":4,"palette":896697531,"tint1":15,"index":30}},"Hat":{"-511398545":{"tint2":20,"tint0":20,"color":0,"palette":-1436165981,"tint1":20,"index":38}},"EyeWear":{"442424923":{"tint2":14,"tint0":45,"color":0,"palette":1090645383,"tint1":20,"index":8}},"Coat":{"-1388239221":{"tint2":20,"tint0":20,"color":4,"palette":1090645383,"tint1":21,"index":7}},"CoatClosed":{"1292860071":{"tint2":90,"tint0":1,"color":0,"palette":-183908539,"tint1":10,"index":25}},"Buckle":{"-911098977":{"tint2":44,"tint0":44,"color":0,"palette":1090645383,"tint1":44,"index":4}},"Boots":{"947334631":{"tint2":255,"tint0":21,"color":6,"palette":1090645383,"tint1":21,"index":14}},"Pant":{"1291746587":{"tint2":20,"tint0":21,"color":0,"palette":1090645383,"tint1":21,"index":25}},"Glove":{"808704546":{"tint2":5,"tint0":1,"color":2,"palette":-783849117,"tint1":5,"index":24}}}', 0, '{"z":51.3194580078125,"y":-1317.177978515625,"x":-970.4703369140625,"heading":11.33858203887939}', '{}', 0, '{"Crafting":{"Exp":0,"Label":"Beginner","Level":1,"MaxLevel":5,"NextLevel":100},"Fishing":{"Exp":0,"Label":"Beginner","Level":1,"MaxLevel":5,"NextLevel":100},"Hunting":{"Exp":0,"Label":"Beginner","Level":1,"MaxLevel":5,"NextLevel":100},"Mining":{"Exp":0,"Label":"Beginner","Level":1,"MaxLevel":5,"NextLevel":100}}', 'noanim', 0.00, '{"AMMO_ARROW_SMALL_GAME":18}', '790342436932812830', '[]', '{}', '0', '{}', '{}'),
 	('steam:11000015fc8fc4a', 'gandiasmancer', 1, 'admin', 999494519.99, 999999999.99, 0.00, 0, 500, 100, 500, 100, 0, '2025-08-09', '{}', 60.0, 'Desempregado', 'forasteiros', '{}', 'Hobbit', 'Bildo', 'senhor da neve', 'Male', 18, 'Hobbit', '{"ULiphD":0.0,"paintedmasks_opacity":0,"disc_tx_id":0,"LLiphD":0.0,"blush_tx_id":0,"EyeBrowD":0.0,"LegsS":0.0,"HeadType":3877164819,"disc_opacity":0,"ChinH":0.0,"ShouldersM":0.0,"EyeBrowH":0.0,"beardstabble_opacity":0,"EarsW":0.0,"EyeH":0.0,"foundation_palette_id":0,"paintedmasks_visibility":0,"LegsType":1207869376,"paintedmasks_tx_id":0,"HeadSize":0.0,"ageing_opacity":0,"FaceD":0.0,"NoseW":0.0,"MouthCLW":0.0,"shadows_visibility":0,"EyeBrowW":0.0,"MouthCLLD":0.0,"grime_opacity":0,"Waist":-2045421226,"FaceW":0.0,"EyeDis":0.0,"Scale":0,"foundation_palette_color_secondary":0,"CheekBonesW":0.0,"foundation_visibility":0,"MouthCLD":0.0,"JawH":0.0,"eyebrows_opacity":1.0,"complex_opacity":0,"MouthCRW":0.0,"ageing_visibility":0,"shadows_palette_color_primary":0,"EyeLidH":0.0,"freckles_tx_id":0,"MouthX":0.0,"paintedmasks_palette_id":0,"shadows_palette_color_tertiary":0,"spots_visibility":0,"WaistW":0.0,"hair_opacity":0,"EyeAng":0.0,"MouthCLH":0.0,"eyeliner_tx_id":0,"eyebrows_tx_id":1,"eyeliner_opacity":0,"spots_opacity":0,"eyeliner_palette_id":0,"shadows_tx_id":0,"CalvesS":0.0,"eyeliner_color_primary":0,"Eyes":612262189,"scars_visibility":0,"blush_visibility":0,"JawW":0.0,"ArmsS":0.0,"complex_tx_id":0,"eyeliner_visibility":0,"freckles_visibility":0,"ShouldersS":0.0,"CheekBonesH":0.0,"LLiphH":0.0,"lipsticks_palette_color_primary":0,"MouthW":0.0,"NoseS":0.0,"NeckD":0.0,"lipsticks_palette_color_tertiary":0,"ULiphH":0.0,"Torso":2362013313,"moles_opacity":0,"acne_opacity":0,"blush_palette_id":0,"blush_palette_color_primary":0,"MouthD":0.0,"EarsD":0.0,"MouthCRD":0.0,"NoseC":0.0,"beardstabble_tx_id":0,"paintedmasks_palette_color_primary":0,"shadows_palette_color_secondary":0,"shadows_palette_id":0,"paintedmasks_palette_color_tertiary":0,"FaceS":0.0,"BodyType":2362013313,"paintedmasks_palette_color_secondary":0,"sex":"mp_male","foundation_opacity":0,"foundation_palette_color_tertiary":0,"EyeLidW":0.0,"grime_tx_id":0,"foundation_palette_color_primary":0,"NoseAng":0.0,"foundation_tx_id":0,"EarsA":0.0,"HipsS":0.0,"complex_visibility":0,"ChinD":0.0,"scars_tx_id":0,"NoseDis":0.0,"hair_tx_id":0,"MouthCRH":0.0,"blush_opacity":0,"shadows_opacity":0,"EyeLidR":0.0,"beardstabble_color_primary":0,"MouthCRLD":0.0,"lipsticks_opacity":0,"lipsticks_palette_color_secondary":0,"Hair":2028868669,"lipsticks_palette_id":0,"eyebrows_color":2342619254,"acne_tx_id":0,"lipsticks_visibility":0,"grime_visibility":0,"LLiphW":0.0,"Beard":175443526,"hair_color_primary":0,"moles_visibility":0,"freckles_opacity":0,"ULiphW":0.0,"ageing_tx_id":0,"lipsticks_tx_id":0,"MouthY":0.0,"acne_visibility":0,"Body":32611963,"ShouldersT":0.0,"spots_tx_id":0,"scars_opacity":0,"hair_visibility":0,"eyebrows_visibility":1,"NeckW":0.0,"disc_visibility":0,"ChinW":0.0,"CheekBonesD":0.0,"EyeLidL":0.0,"ChestS":0.0,"JawD":0.0,"albedo":1590586643,"EyeD":0.0,"moles_tx_id":0,"EarsH":0.0,"NoseH":0.0,"beardstabble_visibility":1}', '{"NeckWear":-1,"Mask":-1,"GunbeltAccs":-1,"Bracelet":-1,"Badge":-1,"Cloak":-1,"EyeWear":633673784,"CoatClosed":-1,"bow":-1,"Buckle":-1,"Spurs":-1,"Suspender":-1,"Chap":-1,"Accessories":-1,"Shirt":-1981006748,"Poncho":-1,"Coat":-1,"Spats":-1,"NeckTies":-1,"Boots":-12176540,"Loadouts":-1,"RingLh":-1234071259,"Vest":343329028,"Gunbelt":-1383241023,"Gauntlets":732440698,"Glove":-1,"Armor":-1,"Belt":-1,"Teeth":712446626,"RingRh":1033591528,"Holster":-521480347,"Satchels":-1,"Pant":-349018533,"Dress":-1,"Skirt":-1,"Hat":-742072151}', '{"Gauntlets":{"732440698":{"tint0":253,"tint2":17,"tint1":76,"palette":-113397560,"index":5,"color":6}},"Boots":{"-12176540":{"tint0":58,"tint2":16,"tint1":33,"palette":-783849117,"index":39,"color":3}},"RingLh":{"-1234071259":{"tint0":16,"tint2":16,"tint1":16,"palette":1090645383,"index":2,"color":2}},"Holster":{"-521480347":{"tint0":138,"tint2":22,"tint1":128,"palette":-541985204,"index":14,"color":6}},"Belt":[],"Hat":{"-742072151":{"tint0":110,"tint2":89,"tint1":45,"palette":-1952348042,"index":70,"color":2}},"RingRh":{"1033591528":{"tint0":15,"tint2":21,"tint1":25,"palette":1090645383,"index":1,"color":2}},"Accessories":[],"Shirt":{"-1981006748":{"tint0":16,"tint2":16,"tint1":16,"palette":1090645383,"index":29,"color":6}},"Gunbelt":{"-1383241023":{"tint0":138,"tint2":22,"tint1":128,"palette":-541985204,"index":16,"color":6}},"Pant":{"-349018533":{"tint0":16,"tint2":16,"tint1":16,"palette":1090645383,"index":39,"color":6}},"Vest":{"343329028":{"tint0":101,"tint2":21,"tint1":187,"palette":-1543234321,"color":0,"index":23}},"EyeWear":{"633673784":{"tint0":0,"palette":0,"tint2":0,"tint1":0}}}', 0, '{"z":46.3150634765625,"y":-1467.9560546875,"x":2511.7451171875,"heading":286.2991943359375}', '{}', 0, '{"Mining":{"Exp":0,"Label":"Beginner","Level":1,"MaxLevel":5,"NextLevel":100},"Fishing":{"Exp":0,"Label":"Beginner","Level":1,"MaxLevel":5,"NextLevel":100},"Crafting":{"Exp":0,"Label":"Beginner","Level":1,"MaxLevel":5,"NextLevel":100},"Hunting":{"Exp":0,"Label":"Beginner","Level":1,"MaxLevel":5,"NextLevel":100}}', 'noanim', 0.00, '{"AMMO_RIFLE_EXPRESS":100,"AMMO_SHOTGUN_BUCKSHOT_INCENDIARY":14,"AMMO_PISTOL_EXPRESS_EXPLOSIVE":5,"AMMO_SHOTGUN_EXPRESS_EXPLOSIVE":10,"AMMO_TOMAHAWK":3,"AMMO_SHOTGUN_SLUG":22,"AMMO_PISTOL_EXPRESS":100,"AMMO_RIFLE_EXPRESS_EXPLOSIVE":2}', '1121581713336836208', '[]', '{}', '0', '{}', '{}');
 
--- Copiando estrutura para tabela modelo_m2.character_inventories
+-- Dumping structure for table modelo_m2.character_inventories
 CREATE TABLE IF NOT EXISTS `character_inventories` (
   `character_id` int(11) DEFAULT NULL,
   `inventory_type` varchar(100) NOT NULL DEFAULT 'default',
@@ -112,8 +166,8 @@ CREATE TABLE IF NOT EXISTS `character_inventories` (
   KEY `character_inventory_idx` (`character_id`,`inventory_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela modelo_m2.character_inventories: ~30 rows (aproximadamente)
-INSERT IGNORE INTO `character_inventories` (`character_id`, `inventory_type`, `item_crafted_id`, `item_name`, `amount`, `created_at`, `degradation`, `percentage`) VALUES
+-- Dumping data for table modelo_m2.character_inventories: ~34 rows (approximately)
+INSERT INTO `character_inventories` (`character_id`, `inventory_type`, `item_crafted_id`, `item_name`, `amount`, `created_at`, `degradation`, `percentage`) VALUES
 	(1, 'default', 3, 'consumable_coffee', 2, '2025-08-09 19:47:10', NULL, NULL),
 	(1, 'default', 4, 'consumable_chickenpie', 4, '2025-08-09 19:47:10', NULL, NULL),
 	(1, 'default', 5, 'ammopistolexpress', 5, '2025-08-09 20:03:43', NULL, NULL),
@@ -143,9 +197,13 @@ INSERT IGNORE INTO `character_inventories` (`character_id`, `inventory_type`, `i
 	(2, 'default', 36, 'backpack_700', 2, '2025-08-09 22:58:58', NULL, NULL),
 	(2, 'default', 37, 'goat_meat', 1, '2025-08-09 23:09:26', NULL, NULL),
 	(2, 'default', 39, 'resource_skin_goat', 1, '2025-08-09 23:09:26', NULL, NULL),
-	(2, 'default', 38, 'resource_head_goat', 1, '2025-08-09 23:09:26', NULL, NULL);
+	(2, 'default', 38, 'resource_head_goat', 1, '2025-08-09 23:09:26', NULL, NULL),
+	(3, 'default', 40, 'consumable_coffee', 2, '2026-01-20 00:56:21', NULL, NULL),
+	(3, 'default', 42, 'consumable_chickenpie', 2, '2026-01-20 00:56:21', NULL, NULL),
+	(3, 'default', 41, 'consumable_asian_soda_lime', 2, '2026-01-20 00:56:21', NULL, NULL),
+	(3, 'default', 43, 'consumable_steakpie', 2, '2026-01-20 00:56:21', NULL, NULL);
 
--- Copiando estrutura para tabela modelo_m2.clothes_bought
+-- Dumping structure for table modelo_m2.clothes_bought
 CREATE TABLE IF NOT EXISTS `clothes_bought` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(100) NOT NULL,
@@ -163,9 +221,20 @@ CREATE TABLE IF NOT EXISTS `clothes_bought` (
   KEY `identifier` (`identifier`,`charid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela modelo_m2.clothes_bought: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.clothes_bought: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.farming
+-- Dumping structure for table modelo_m2.communityservice
+CREATE TABLE IF NOT EXISTS `communityservice` (
+  `identifier` varchar(100) NOT NULL DEFAULT '0',
+  `name` varchar(100) NOT NULL DEFAULT '0',
+  `characterid` varchar(5) NOT NULL DEFAULT '0',
+  `communityservice` varchar(100) NOT NULL DEFAULT '0',
+  `servicecount` varchar(100) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table modelo_m2.communityservice: ~0 rows (approximately)
+
+-- Dumping structure for table modelo_m2.farming
 CREATE TABLE IF NOT EXISTS `farming` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `steam` varchar(500) NOT NULL,
@@ -176,9 +245,9 @@ CREATE TABLE IF NOT EXISTS `farming` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela modelo_m2.farming: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.farming: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.herbalists
+-- Dumping structure for table modelo_m2.herbalists
 CREATE TABLE IF NOT EXISTS `herbalists` (
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `charidentifier` int(11) NOT NULL,
@@ -187,9 +256,9 @@ CREATE TABLE IF NOT EXISTS `herbalists` (
   UNIQUE KEY `identifier_charidentifier` (`identifier`,`charidentifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela modelo_m2.herbalists: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.herbalists: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.horse_complements
+-- Dumping structure for table modelo_m2.horse_complements
 CREATE TABLE IF NOT EXISTS `horse_complements` (
   `identifier` varchar(50) DEFAULT NULL,
   `charidentifier` int(11) NOT NULL,
@@ -197,9 +266,9 @@ CREATE TABLE IF NOT EXISTS `horse_complements` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela modelo_m2.horse_complements: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.horse_complements: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.housing
+-- Dumping structure for table modelo_m2.housing
 CREATE TABLE IF NOT EXISTS `housing` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
@@ -209,9 +278,9 @@ CREATE TABLE IF NOT EXISTS `housing` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela modelo_m2.housing: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.housing: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.items
+-- Dumping structure for table modelo_m2.items
 CREATE TABLE IF NOT EXISTS `items` (
   `item` varchar(50) NOT NULL,
   `label` varchar(50) NOT NULL,
@@ -229,10 +298,10 @@ CREATE TABLE IF NOT EXISTS `items` (
   KEY `FK_items_item_group` (`groupId`) USING BTREE,
   CONSTRAINT `FK_items_item_group` FOREIGN KEY (`groupId`) REFERENCES `item_group` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `metadata` CHECK (json_valid(`metadata`))
-) ENGINE=InnoDB AUTO_INCREMENT=216645 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=216653 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela modelo_m2.items: ~2.082 rows (aproximadamente)
-INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `id`, `groupId`, `metadata`, `desc`, `weight`) VALUES
+-- Dumping data for table modelo_m2.items: ~2,090 rows (approximately)
+INSERT INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usable`, `id`, `groupId`, `metadata`, `desc`, `weight`) VALUES
 	('absinthe', 'Absinto', 100, 1, 'item_standard', 1, 1600, 1, '{}', '', 0.25),
 	('accessories', 'Accessories', 20, 1, 'item_standard', 1, 17605, 1, '{}', 'nice item', 0.25),
 	('acid', 'Ácido', 100, 1, 'item_standard', 1, 1, 1, '{}', '', 0.25),
@@ -314,6 +383,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('aoemagic', 'Poção quebra ossos 2', 100, 1, 'item_standard', 1, 1202, 1, '{}', 'nice item', 0.25),
 	('apiary_bee_gk', 'abelhas', 10, 1, 'item_standard', 1, 17039, 1, '{}', '', 0.25),
 	('apiary_honeycomb_gk', 'Favo de mel', 100, 1, 'item_standard', 1, 17040, 1, '{}', '', 0.25),
+	('apito', 'apito', 100, 1, 'item_standard', 1, 216645, 1, '{}', 'nice item', 0.25),
 	('apple', 'Maçã', 30, 1, 'item_standard', 1, 54, 1, '{}', '', 0.25),
 	('Apple Tree', 'arvore de maça', 100, 1, 'item_standard', 1, 16882, 1, '{}', '', 0.25),
 	('applebarrel', 'barril de maçã', 100, 1, 'item_standard', 1, 762, 1, '{}', '', 0.25),
@@ -1039,6 +1109,13 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('folha_cocain', 'folha de cocaina', 100, 1, 'item_standard', 1, 16922, 1, '{}', '', 0.25),
 	('foodbarrel', 'barril de comida', 100, 1, 'item_standard', 1, 764, 1, '{}', '', 0.25),
 	('food_barrel', 'barril de comida', 100, 1, 'item_standard', 1, 636, 1, '{}', '', 0.25),
+	('formula_adolescente', 'Formula De Adolescente', 100, 1, 'item_standard', 1, 216648, 1, '{}', 'nice item', 0.50),
+	('formula_anao', 'Formula de Anão', 100, 1, 'item_standard', 1, 216647, 1, '{}', 'nice item', 0.50),
+	('formula_formiga', 'Formula de Formiga', 100, 1, 'item_standard', 1, 216646, 1, '{}', 'nice item', 0.50),
+	('formula_gigante', 'Formula de Gigante', 100, 1, 'item_standard', 1, 216651, 1, '{}', 'nice item', 0.50),
+	('formula_grande', 'Formula Grande', 100, 1, 'item_standard', 1, 216650, 1, '{}', 'nice item', 0.50),
+	('formula_normal', 'Formula Tamanho Normal', 100, 1, 'item_standard', 1, 216649, 1, '{}', 'nice item', 0.50),
+	('formula_titan', 'Formula de Titan', 100, 1, 'item_standard', 1, 216652, 1, '{}', 'nice item', 0.50),
 	('fosforo', 'fosforos', 100, 1, 'item_standard', 1, 215643, 1, '{}', 'nice item', 0.25),
 	('foxskin', 'pele de raposa', 100, 1, 'item_standard', 1, 512, 1, '{}', '', 0.25),
 	('foxt', 'dente de raposa', 100, 1, 'item_standard', 1, 513, 1, '{}', '', 0.25),
@@ -2316,7 +2393,7 @@ INSERT IGNORE INTO `items` (`item`, `label`, `limit`, `can_remove`, `type`, `usa
 	('Yarrow_Seed', 'semente de milefólio', 100, 1, 'item_standard', 1, 337, 1, '{}', 'Seeds to grow Yarrow plants.', 0.25),
 	('yuccaleaf', 'Yucca Leaf', 50, 1, 'item_standard', 1, 17689, 1, '{}', 'an item', 0.25);
 
--- Copiando estrutura para tabela modelo_m2.items_crafted
+-- Dumping structure for table modelo_m2.items_crafted
 CREATE TABLE IF NOT EXISTS `items_crafted` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `character_id` int(11) NOT NULL,
@@ -2327,10 +2404,10 @@ CREATE TABLE IF NOT EXISTS `items_crafted` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `ID` (`id`),
   KEY `crafted_item_idx` (`character_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela modelo_m2.items_crafted: ~30 rows (aproximadamente)
-INSERT IGNORE INTO `items_crafted` (`id`, `character_id`, `item_id`, `item_name`, `updated_at`, `metadata`) VALUES
+-- Dumping data for table modelo_m2.items_crafted: ~34 rows (approximately)
+INSERT INTO `items_crafted` (`id`, `character_id`, `item_id`, `item_name`, `updated_at`, `metadata`) VALUES
 	(3, 1, 118, 'consumable_coffee', '2025-08-09 19:47:10', '[]'),
 	(4, 1, 1632, 'consumable_chickenpie', '2025-08-09 19:47:10', '[]'),
 	(5, 1, 24, 'ammopistolexpress', '2025-08-09 20:03:43', '[]'),
@@ -2360,17 +2437,21 @@ INSERT IGNORE INTO `items_crafted` (`id`, `character_id`, `item_id`, `item_name`
 	(36, 2, 216567, 'backpack_700', '2025-08-09 22:58:57', '[]'),
 	(37, 2, 215934, 'goat_meat', '2025-08-09 23:09:26', '[]'),
 	(38, 2, 215936, 'resource_head_goat', '2025-08-09 23:09:26', '[]'),
-	(39, 2, 215935, 'resource_skin_goat', '2025-08-09 23:09:26', '[]');
+	(39, 2, 215935, 'resource_skin_goat', '2025-08-09 23:09:26', '[]'),
+	(40, 3, 118, 'consumable_coffee', '2026-01-20 00:56:21', '[]'),
+	(41, 3, 216044, 'consumable_asian_soda_lime', '2026-01-20 00:56:21', '[]'),
+	(42, 3, 1632, 'consumable_chickenpie', '2026-01-20 00:56:21', '[]'),
+	(43, 3, 1650, 'consumable_steakpie', '2026-01-20 00:56:21', '[]');
 
--- Copiando estrutura para tabela modelo_m2.item_group
+-- Dumping structure for table modelo_m2.item_group
 CREATE TABLE IF NOT EXISTS `item_group` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL COMMENT 'Description of Item Group',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela modelo_m2.item_group: ~11 rows (aproximadamente)
-INSERT IGNORE INTO `item_group` (`id`, `description`) VALUES
+-- Dumping data for table modelo_m2.item_group: ~11 rows (approximately)
+INSERT INTO `item_group` (`id`, `description`) VALUES
 	(1, 'default'),
 	(2, 'medical'),
 	(3, 'foods'),
@@ -2383,7 +2464,19 @@ INSERT IGNORE INTO `item_group` (`id`, `description`) VALUES
 	(10, 'horse'),
 	(11, 'herbs');
 
--- Copiando estrutura para tabela modelo_m2.loadout
+-- Dumping structure for table modelo_m2.jail
+CREATE TABLE IF NOT EXISTS `jail` (
+  `identifier` varchar(100) NOT NULL DEFAULT '0',
+  `name` varchar(100) NOT NULL DEFAULT '0',
+  `characterid` varchar(5) NOT NULL DEFAULT '0',
+  `time` varchar(100) NOT NULL DEFAULT '0',
+  `time_s` varchar(100) NOT NULL DEFAULT '0',
+  `jaillocation` varchar(100) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table modelo_m2.jail: ~0 rows (approximately)
+
+-- Dumping structure for table modelo_m2.loadout
 CREATE TABLE IF NOT EXISTS `loadout` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
@@ -2406,10 +2499,10 @@ CREATE TABLE IF NOT EXISTS `loadout` (
   `custom_desc` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela modelo_m2.loadout: ~13 rows (aproximadamente)
-INSERT IGNORE INTO `loadout` (`id`, `identifier`, `charidentifier`, `name`, `ammo`, `components`, `dirtlevel`, `mudlevel`, `conditionlevel`, `rustlevel`, `used`, `used2`, `dropped`, `comps`, `label`, `curr_inv`, `serial_number`, `custom_label`, `custom_desc`) VALUES
+-- Dumping data for table modelo_m2.loadout: ~14 rows (approximately)
+INSERT INTO `loadout` (`id`, `identifier`, `charidentifier`, `name`, `ammo`, `components`, `dirtlevel`, `mudlevel`, `conditionlevel`, `rustlevel`, `used`, `used2`, `dropped`, `comps`, `label`, `curr_inv`, `serial_number`, `custom_label`, `custom_desc`) VALUES
 	(1, 'steam:11000015fc8fc4a', 1, 'WEAPON_MELEE_KNIFE', '[]', '[]', 0, 0, 0, 0, 0, 0, 0, '{"GRIP":"COMPONENT_MELEE_KNIFE02_GRIP","MELEE_BLADE_MATERIAL":"COMPONENT_MELEE_BLADE_MATERIAL_3","GRIP_TINT":"COMPONENT_MELEE_GRIP_TINT_GRAY_BIRCH","MELEE_BLADE_ENGRAVING":"COMPONENT_MELEE_BLADE_ENGRAVING_2","MELEE_BLADE_ENGRAVING_MATERIAL":"COMPONENT_MELEE_BLADE_ENGRAVING_MATERIAL_3"}', 'Knife', 'default', '', 'Knife', NULL),
 	(2, 'steam:11000014b7dfbde', 2, 'WEAPON_MELEE_KNIFE', '[]', '[]', 0, 0, 0, 0, 1, 0, 0, '[]', 'Knife', 'default', '', 'Knife', NULL),
 	(3, '', 1, 'WEAPON_SNIPERRIFLE_CARCANO', '{"nothing":0}', '["nothing"]', 0, 0, 0, 0, 0, 0, 0, '{"GRIPSTOCK_TINT":"COMPONENT_LONGARM_GRIPSTOCK_TINT_GUTTAPERCHA","SIGHT_MATERIAL":"COMPONENT_LONGARM_SIGHT_MATERIAL_9","SIGHT":"COMPONENT_RIFLE_CARCANO_SIGHT_NARROW","FRAME_MATERIAL":"COMPONENT_LONGARM_FRAME_MATERIAL_9","HAMMER_MATERIAL":"COMPONENT_LONGARM_HAMMER_MATERIAL_5","CYLINDER_MATERIAL":"COMPONENT_LONGARM_CYLINDER_MATERIAL_9","GRIP":"COMPONENT_RIFLE_CARCANO_GRIP_ENGRAVED","FRAME_ENGRAVING":"COMPONENT_LONGARM_FRAME_ENGRAVING_2","TRIGGER_MATERIAL":"COMPONENT_LONGARM_TRIGGER_MATERIAL_9","FRAME_ENGRAVING_MATERIAL":"COMPONENT_LONGARM_FRAME_ENGRAVING_MATERIAL_3","GRIPSTOCK_ENGRAVING":"COMPONENT_LONGARM_FRAME_ENGRAVING_MATERIAL_4","BARREL_ENGRAVING":"COMPONENT_LONGARM_BARREL_ENGRAVING_2","BARREL_MATERIAL":"COMPONENT_LONGARM_BARREL_MATERIAL_9"}', 'Carcano Rifle', 'wagonID_1', '1754775030-2235', 'Carcano Rifle', NULL),
@@ -2422,9 +2515,19 @@ INSERT IGNORE INTO `loadout` (`id`, `identifier`, `charidentifier`, `name`, `amm
 	(10, 'steam:11000014b7dfbde', 2, 'WEAPON_FISHINGROD', '{"nothing":0}', '["nothing"]', 0, 0, 0, 0, 0, 0, 0, '[]', 'Fishing Rod', 'default', '', 'Fishing Rod', NULL),
 	(11, 'steam:11000015fc8fc4a', 1, 'WEAPON_SNIPERRIFLE_CARCANO', '{"nothing":0}', '["nothing"]', 0, 0, 0, 0, 1, 0, 0, '{"SIGHT":"COMPONENT_RIFLE_CARCANO_SIGHT_NARROW","CYLINDER_MATERIAL":"COMPONENT_LONGARM_CYLINDER_MATERIAL_9","BARREL_MATERIAL":"COMPONENT_LONGARM_BARREL_MATERIAL_9","BARREL_RIFLING":"COMPONENT_LONGARM_BARREL_RIFLING_1","GRIPSTOCK_TINT":"COMPONENT_LONGARM_GRIPSTOCK_TINT_PEARL","FRAME_MATERIAL":"COMPONENT_LONGARM_FRAME_MATERIAL_9","SIGHT_MATERIAL":"COMPONENT_LONGARM_SIGHT_MATERIAL_9","HAMMER_MATERIAL":"COMPONENT_LONGARM_HAMMER_MATERIAL_9","TRIGGER_MATERIAL":"COMPONENT_LONGARM_TRIGGER_MATERIAL_9"}', 'Carcano Rifle', 'default', '1754777274-1439', 'Carcano Rifle', NULL),
 	(12, 'steam:11000014b7dfbde', 2, 'WEAPON_BOW', '{"nothing":0}', '["nothing"]', 0, 0, 0, 0, 1, 0, 0, '[]', 'Bow', 'default', '', 'Bow', NULL),
-	(13, 'steam:11000014b7dfbde', 2, 'WEAPON_LASSO', '{"nothing":0}', '["nothing"]', 0, 0, 0, 0, 1, 0, 0, '[]', 'Lasso', 'default', '', 'Lasso', NULL);
+	(13, 'steam:11000014b7dfbde', 2, 'WEAPON_LASSO', '{"nothing":0}', '["nothing"]', 0, 0, 0, 0, 1, 0, 0, '[]', 'Lasso', 'default', '', 'Lasso', NULL),
+	(14, 'steam:1100001002d7683', 3, 'WEAPON_MELEE_KNIFE', '[]', '[]', 0, 0, 0, 0, 0, 0, 0, '[]', 'Knife', 'default', '', 'Knife', NULL);
 
--- Copiando estrutura para tabela modelo_m2.mailbox_mails
+-- Dumping structure for table modelo_m2.mail
+CREATE TABLE IF NOT EXISTS `mail` (
+  `address` int(11) NOT NULL AUTO_INCREMENT,
+  `charidentifier` int(11) DEFAULT NULL,
+  PRIMARY KEY (`address`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Dumping data for table modelo_m2.mail: ~0 rows (approximately)
+
+-- Dumping structure for table modelo_m2.mailbox_mails
 CREATE TABLE IF NOT EXISTS `mailbox_mails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sender_id` varchar(50) DEFAULT NULL,
@@ -2439,9 +2542,55 @@ CREATE TABLE IF NOT EXISTS `mailbox_mails` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela modelo_m2.mailbox_mails: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.mailbox_mails: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.mdg_clothes_state
+-- Dumping structure for table modelo_m2.mails
+CREATE TABLE IF NOT EXISTS `mails` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `anon` tinyint(1) DEFAULT NULL,
+  `read` tinyint(1) DEFAULT NULL,
+  `from` longtext DEFAULT NULL,
+  `to` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `subject` longtext DEFAULT NULL,
+  `body` longtext DEFAULT NULL,
+  `folder` longtext DEFAULT NULL,
+  `fromName` longtext DEFAULT NULL,
+  `toNames` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `date` longtext DEFAULT NULL,
+  `hidesent` tinyint(4) DEFAULT 0,
+  `copyTo` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Dumping data for table modelo_m2.mails: ~0 rows (approximately)
+
+-- Dumping structure for table modelo_m2.mail_addressbook
+CREATE TABLE IF NOT EXISTS `mail_addressbook` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `address` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `poBox` varchar(255) DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `address` (`address`),
+  CONSTRAINT `mail_addressbook_ibfk_1` FOREIGN KEY (`address`) REFERENCES `mail` (`address`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Dumping data for table modelo_m2.mail_addressbook: ~0 rows (approximately)
+
+-- Dumping structure for table modelo_m2.mail_editablefolders
+CREATE TABLE IF NOT EXISTS `mail_editablefolders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `address` int(11) DEFAULT NULL,
+  `folderName` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `address` (`address`),
+  CONSTRAINT `mail_editablefolders_ibfk_1` FOREIGN KEY (`address`) REFERENCES `mail` (`address`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Dumping data for table modelo_m2.mail_editablefolders: ~0 rows (approximately)
+
+-- Dumping structure for table modelo_m2.mdg_clothes_state
 CREATE TABLE IF NOT EXISTS `mdg_clothes_state` (
   `identifier` varchar(50) NOT NULL,
   `charid` int(11) NOT NULL,
@@ -2450,9 +2599,9 @@ CREATE TABLE IF NOT EXISTS `mdg_clothes_state` (
   PRIMARY KEY (`identifier`,`charid`,`category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela modelo_m2.mdg_clothes_state: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.mdg_clothes_state: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.mdg_horses
+-- Dumping structure for table modelo_m2.mdg_horses
 CREATE TABLE IF NOT EXISTS `mdg_horses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2472,14 +2621,14 @@ CREATE TABLE IF NOT EXISTS `mdg_horses` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela modelo_m2.mdg_horses: ~4 rows (aproximadamente)
-INSERT IGNORE INTO `mdg_horses` (`id`, `identifier`, `charid`, `stable`, `model`, `isFemale`, `name`, `birth`, `deathAge`, `speed`, `acceleration`, `handling`, `favourite`, `isDead`, `isOut`) VALUES
+-- Dumping data for table modelo_m2.mdg_horses: ~4 rows (approximately)
+INSERT INTO `mdg_horses` (`id`, `identifier`, `charid`, `stable`, `model`, `isFemale`, `name`, `birth`, `deathAge`, `speed`, `acceleration`, `handling`, `favourite`, `isDead`, `isOut`) VALUES
 	(1, 'steam:11000015fc8fc4a', 1, 'blackwater', 'a_c_horse_gang_micah', 0, 'carapalida', '2025-08-06 20:40:00', 27, 10, 10, 3, 1, 0, 1),
 	(2, 'steam:11000014b7dfbde', 2, 'blackwater', 'a_c_horse_gang_charles', 0, 'PE DE PANO', '2025-08-06 22:48:02', 28, 10, 10, 3, 0, 0, 0),
 	(3, 'steam:11000014b7dfbde', 2, 'blackwater', 'a_c_horse_gang_john', 1, 'PE DE MERDA', '2025-08-06 22:49:05', 30, 10, 10, 3, 1, 0, 1),
 	(4, 'steam:11000014b7dfbde', 2, 'valentine', 'A_C_Horse_Breton_GrulloDun', 1, 'micca', '2025-08-06 23:12:12', 28, 8, 7, 3, 0, 0, 0);
 
--- Copiando estrutura para tabela modelo_m2.mdg_horses_stats
+-- Dumping structure for table modelo_m2.mdg_horses_stats
 CREATE TABLE IF NOT EXISTS `mdg_horses_stats` (
   `horseid` int(11) NOT NULL,
   `distance` int(11) NOT NULL DEFAULT 0,
@@ -2493,14 +2642,14 @@ CREATE TABLE IF NOT EXISTS `mdg_horses_stats` (
   PRIMARY KEY (`horseid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela modelo_m2.mdg_horses_stats: ~4 rows (aproximadamente)
-INSERT IGNORE INTO `mdg_horses_stats` (`horseid`, `distance`, `lastNewShoes`, `bonding`, `speedTraining`, `accelerationTraining`, `handlingTraining`, `stamina`, `health`) VALUES
+-- Dumping data for table modelo_m2.mdg_horses_stats: ~4 rows (approximately)
+INSERT INTO `mdg_horses_stats` (`horseid`, `distance`, `lastNewShoes`, `bonding`, `speedTraining`, `accelerationTraining`, `handlingTraining`, `stamina`, `health`) VALUES
 	(1, 453, 0, 0, 0, 0, 0, 0, 0),
 	(2, 0, 0, 0, 0, 0, 0, 0, 0),
 	(3, 3385, 0, 15, 0, 0, 0, 15, 15),
 	(4, 0, 0, 0, 0, 0, 0, 0, 0);
 
--- Copiando estrutura para tabela modelo_m2.mdg_matabolism_v2
+-- Dumping structure for table modelo_m2.mdg_matabolism_v2
 CREATE TABLE IF NOT EXISTS `mdg_matabolism_v2` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `personaId` int(11) DEFAULT NULL,
@@ -2513,14 +2662,15 @@ CREATE TABLE IF NOT EXISTS `mdg_matabolism_v2` (
   `statStress` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `personaId` (`personaId`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela modelo_m2.mdg_matabolism_v2: ~2 rows (aproximadamente)
-INSERT IGNORE INTO `mdg_matabolism_v2` (`id`, `personaId`, `statHunger`, `statThirst`, `statHealth`, `statHealthCore`, `statStamina`, `statStaminaCore`, `statStress`) VALUES
+-- Dumping data for table modelo_m2.mdg_matabolism_v2: ~3 rows (approximately)
+INSERT INTO `mdg_matabolism_v2` (`id`, `personaId`, `statHunger`, `statThirst`, `statHealth`, `statHealthCore`, `statStamina`, `statStaminaCore`, `statStress`) VALUES
 	(3, 2, 78, 83, 500, 100, 1, 0, 10),
-	(4, 1, 54, 43, 500, 100, 1, 100, 6);
+	(4, 1, 54, 43, 500, 100, 1, 100, 6),
+	(5, 3, 9, 10, 500, 100, 1, 100, 0);
 
--- Copiando estrutura para tabela modelo_m2.mdg_outfits
+-- Dumping structure for table modelo_m2.mdg_outfits
 CREATE TABLE IF NOT EXISTS `mdg_outfits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(100) NOT NULL,
@@ -2531,11 +2681,11 @@ CREATE TABLE IF NOT EXISTS `mdg_outfits` (
   KEY `identifier` (`identifier`,`charid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela modelo_m2.mdg_outfits: ~1 rows (aproximadamente)
-INSERT IGNORE INTO `mdg_outfits` (`id`, `identifier`, `charid`, `name`, `outfit`) VALUES
+-- Dumping data for table modelo_m2.mdg_outfits: ~1 rows (approximately)
+INSERT INTO `mdg_outfits` (`id`, `identifier`, `charid`, `name`, `outfit`) VALUES
 	(1, 'steam:11000014b7dfbde', 2, 'dia a dia', '{"jewelry_rings_right":0,"neckties":0,"coats_closed":{"tint0":1,"color":0,"hash":1292860071,"index":25,"tint2":90,"palette":-183908539,"tint1":10},"masks":0,"suspenders":0,"skirts":0,"coats":0,"gauntlets":0,"neckwear":0,"loadouts":0,"belt_buckles":{"tint0":44,"color":0,"hash":-911098977,"index":4,"tint2":44,"palette":1090645383,"tint1":44},"vests":0,"ponchos":0,"armor":0,"gunbelt_accs":0,"chaps":0,"pants":{"tint0":21,"color":0,"hash":1291746587,"index":25,"tint2":20,"palette":1090645383,"tint1":21},"boots":{"tint0":21,"color":6,"hash":947334631,"index":14,"tint2":255,"palette":1090645383,"tint1":21},"badges":0,"holsters_left":{"tint0":1,"color":1,"hash":-724967739,"index":12,"tint2":1,"palette":-783849117,"tint1":1},"boot_accessories":{"tint0":14,"color":0,"hash":-202541861,"index":2,"tint2":88,"palette":-783849117,"tint1":26},"hats":{"tint0":20,"color":0,"hash":-511398545,"index":38,"tint2":20,"palette":-1436165981,"tint1":20},"eyewear":{"tint0":45,"color":0,"hash":442424923,"index":8,"tint2":14,"palette":1090645383,"tint1":20},"jewelry_rings_left":0,"satchels":0,"dresses":0,"masks_large":0,"jewelry_bracelets":0,"spats":0,"accessories":0,"cloaks":0,"shirts_full":{"tint0":78,"color":4,"hash":-1995147187,"index":30,"tint2":78,"palette":896697531,"tint1":15},"gloves":{"tint0":1,"color":2,"hash":808704546,"index":24,"tint2":5,"palette":-783849117,"tint1":5},"gunbelts":{"tint0":15,"color":0,"hash":1644960709,"index":15,"tint2":58,"palette":-783849117,"tint1":15},"hair_accessories":0,"belts":0,"aprons":0}');
 
--- Copiando estrutura para tabela modelo_m2.mdg_stable_bought
+-- Dumping structure for table modelo_m2.mdg_stable_bought
 CREATE TABLE IF NOT EXISTS `mdg_stable_bought` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2547,8 +2697,8 @@ CREATE TABLE IF NOT EXISTS `mdg_stable_bought` (
   KEY `identifier` (`identifier`,`charid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela modelo_m2.mdg_stable_bought: ~27 rows (aproximadamente)
-INSERT IGNORE INTO `mdg_stable_bought` (`id`, `identifier`, `charid`, `category`, `hash`, `equiped_on`) VALUES
+-- Dumping data for table modelo_m2.mdg_stable_bought: ~27 rows (approximately)
+INSERT INTO `mdg_stable_bought` (`id`, `identifier`, `charid`, `category`, `hash`, `equiped_on`) VALUES
 	(1, 'steam:11000015fc8fc4a', 1, 'horse_manes', 319697946, 0),
 	(2, 'steam:11000015fc8fc4a', 1, 'horse_tails', -838912614, 0),
 	(3, 'steam:11000014b7dfbde', 2, 'horse_tails', -838912614, 2),
@@ -2577,7 +2727,7 @@ INSERT IGNORE INTO `mdg_stable_bought` (`id`, `identifier`, `charid`, `category`
 	(26, 'steam:11000015fc8fc4a', 1, 'horse_saddlebags', -1152416040, 1),
 	(27, 'steam:11000015fc8fc4a', 1, 'horse_blankets', 1104489688, 1);
 
--- Copiando estrutura para tabela modelo_m2.mdg_stable_color
+-- Dumping structure for table modelo_m2.mdg_stable_color
 CREATE TABLE IF NOT EXISTS `mdg_stable_color` (
   `id` int(11) NOT NULL,
   `drawable` int(11) DEFAULT NULL,
@@ -2591,8 +2741,8 @@ CREATE TABLE IF NOT EXISTS `mdg_stable_color` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela modelo_m2.mdg_stable_color: ~6 rows (aproximadamente)
-INSERT IGNORE INTO `mdg_stable_color` (`id`, `drawable`, `albedo`, `normal`, `material`, `palette`, `tint1`, `tint2`, `tint3`) VALUES
+-- Dumping data for table modelo_m2.mdg_stable_color: ~6 rows (approximately)
+INSERT INTO `mdg_stable_color` (`id`, `drawable`, `albedo`, `normal`, `material`, `palette`, `tint1`, `tint2`, `tint3`) VALUES
 	(18, NULL, NULL, NULL, NULL, 'metaped_tint_makeup', 52, 52, 52),
 	(19, NULL, NULL, NULL, NULL, 'metaped_tint_makeup', 33, 33, 33),
 	(20, NULL, NULL, NULL, NULL, 'metaped_tint_makeup', 33, 33, 34),
@@ -2600,7 +2750,7 @@ INSERT IGNORE INTO `mdg_stable_color` (`id`, `drawable`, `albedo`, `normal`, `ma
 	(23, NULL, NULL, NULL, NULL, 'metaped_tint_leather', 0, 0, 0),
 	(26, NULL, NULL, NULL, NULL, 'metaped_tint_hair', 74, 0, 0);
 
--- Copiando estrutura para tabela modelo_m2.mdg_wagons
+-- Dumping structure for table modelo_m2.mdg_wagons
 CREATE TABLE IF NOT EXISTS `mdg_wagons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL,
@@ -2617,12 +2767,12 @@ CREATE TABLE IF NOT EXISTS `mdg_wagons` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela modelo_m2.mdg_wagons: ~2 rows (aproximadamente)
-INSERT IGNORE INTO `mdg_wagons` (`id`, `identifier`, `charid`, `stable`, `model`, `name`, `vehicle_tints`, `vehicle_propsets`, `vehicle_liveries`, `vehicle_lantern_propsets`, `vehicle_extras`, `isOut`) VALUES
+-- Dumping data for table modelo_m2.mdg_wagons: ~2 rows (approximately)
+INSERT INTO `mdg_wagons` (`id`, `identifier`, `charid`, `stable`, `model`, `name`, `vehicle_tints`, `vehicle_propsets`, `vehicle_liveries`, `vehicle_lantern_propsets`, `vehicle_extras`, `isOut`) VALUES
 	(1, 'steam:11000015fc8fc4a', 1, 'blackwater', 'stagecoach004x', 'Adega', 2, '-1', 0, '-1', -1, 0),
 	(2, 'steam:11000015fc8fc4a', 1, 'valentine', 'stagecoach004x', 'micca', 0, '-1', 0, '-1', -1, 0);
 
--- Copiando estrutura para tabela modelo_m2.outfits
+-- Dumping structure for table modelo_m2.outfits
 CREATE TABLE IF NOT EXISTS `outfits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(45) NOT NULL,
@@ -2633,9 +2783,9 @@ CREATE TABLE IF NOT EXISTS `outfits` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela modelo_m2.outfits: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.outfits: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.pets
+-- Dumping structure for table modelo_m2.pets
 CREATE TABLE IF NOT EXISTS `pets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(500) DEFAULT NULL,
@@ -2647,11 +2797,11 @@ CREATE TABLE IF NOT EXISTS `pets` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela modelo_m2.pets: ~1 rows (aproximadamente)
-INSERT IGNORE INTO `pets` (`id`, `identifier`, `charid`, `selected`, `pets_info`, `is_dead`, `favorite`) VALUES
+-- Dumping data for table modelo_m2.pets: ~1 rows (approximately)
+INSERT INTO `pets` (`id`, `identifier`, `charid`, `selected`, `pets_info`, `is_dead`, `favorite`) VALUES
 	(1, 'steam:11000014b7dfbde', 2, 1, '{"exp":0,"skill11":0,"skill12":0,"skill5":0,"skill8":0,"age":0.5,"model":"a_c_bear_01","thirst":100,"skill1":2,"skill10":0,"name":"ted","skill4":0,"health":100,"skill9":0,"styl":1,"skill2":2,"skill7":0,"skill6":0,"skill3":0,"mname":"Urso","hunger":100}', 0, '{}');
 
--- Copiando estrutura para tabela modelo_m2.playerhousing
+-- Dumping structure for table modelo_m2.playerhousing
 CREATE TABLE IF NOT EXISTS `playerhousing` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` int(11) NOT NULL DEFAULT 0,
@@ -2679,9 +2829,9 @@ CREATE TABLE IF NOT EXISTS `playerhousing` (
   KEY `primarydoor` (`primarydoor`(768))
 ) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela modelo_m2.playerhousing: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.playerhousing: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.playerhousing_sold_home_ledger
+-- Dumping structure for table modelo_m2.playerhousing_sold_home_ledger
 CREATE TABLE IF NOT EXISTS `playerhousing_sold_home_ledger` (
   `id` int(11) NOT NULL DEFAULT 0,
   `identifier` varchar(50) DEFAULT NULL,
@@ -2689,9 +2839,9 @@ CREATE TABLE IF NOT EXISTS `playerhousing_sold_home_ledger` (
   `amount` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela modelo_m2.playerhousing_sold_home_ledger: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.playerhousing_sold_home_ledger: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.playershops
+-- Dumping structure for table modelo_m2.playershops
 CREATE TABLE IF NOT EXISTS `playershops` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) NOT NULL DEFAULT '0',
@@ -2715,9 +2865,9 @@ CREATE TABLE IF NOT EXISTS `playershops` (
   KEY `weapons` (`weapons`(768))
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela modelo_m2.playershops: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.playershops: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.playershops2
+-- Dumping structure for table modelo_m2.playershops2
 CREATE TABLE IF NOT EXISTS `playershops2` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `society` varchar(50) NOT NULL DEFAULT '0',
@@ -2735,9 +2885,9 @@ CREATE TABLE IF NOT EXISTS `playershops2` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela modelo_m2.playershops2: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.playershops2: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.ranch
+-- Dumping structure for table modelo_m2.ranch
 CREATE TABLE IF NOT EXISTS `ranch` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `steam` varchar(100) DEFAULT NULL,
@@ -2759,27 +2909,27 @@ CREATE TABLE IF NOT EXISTS `ranch` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela modelo_m2.ranch: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.ranch: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.real_logic_pets
+-- Dumping structure for table modelo_m2.real_logic_pets
 CREATE TABLE IF NOT EXISTS `real_logic_pets` (
   `update_time` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela modelo_m2.real_logic_pets: ~1 rows (aproximadamente)
-INSERT IGNORE INTO `real_logic_pets` (`update_time`) VALUES
+-- Dumping data for table modelo_m2.real_logic_pets: ~1 rows (approximately)
+INSERT INTO `real_logic_pets` (`update_time`) VALUES
 	(3);
 
--- Copiando estrutura para tabela modelo_m2.real_logic_ranch
+-- Dumping structure for table modelo_m2.real_logic_ranch
 CREATE TABLE IF NOT EXISTS `real_logic_ranch` (
   `update_time` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Copiando dados para a tabela modelo_m2.real_logic_ranch: ~1 rows (aproximadamente)
-INSERT IGNORE INTO `real_logic_ranch` (`update_time`) VALUES
+-- Dumping data for table modelo_m2.real_logic_ranch: ~1 rows (approximately)
+INSERT INTO `real_logic_ranch` (`update_time`) VALUES
 	(0);
 
--- Copiando estrutura para tabela modelo_m2.rooms
+-- Dumping structure for table modelo_m2.rooms
 CREATE TABLE IF NOT EXISTS `rooms` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
@@ -2789,9 +2939,19 @@ CREATE TABLE IF NOT EXISTS `rooms` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela modelo_m2.rooms: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.rooms: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.stables
+-- Dumping structure for table modelo_m2.society_ledger
+CREATE TABLE IF NOT EXISTS `society_ledger` (
+  `job` longtext DEFAULT NULL,
+  `ledger` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Dumping data for table modelo_m2.society_ledger: ~1 rows (approximately)
+INSERT INTO `society_ledger` (`job`, `ledger`) VALUES
+	('police', 0);
+
+-- Dumping structure for table modelo_m2.stables
 CREATE TABLE IF NOT EXISTS `stables` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -2808,9 +2968,9 @@ CREATE TABLE IF NOT EXISTS `stables` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela modelo_m2.stables: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.stables: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.underground
+-- Dumping structure for table modelo_m2.underground
 CREATE TABLE IF NOT EXISTS `underground` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) DEFAULT NULL,
@@ -2839,9 +2999,9 @@ CREATE TABLE IF NOT EXISTS `underground` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela modelo_m2.underground: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.underground: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.users
+-- Dumping structure for table modelo_m2.users
 CREATE TABLE IF NOT EXISTS `users` (
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `group` varchar(50) DEFAULT 'user',
@@ -2854,12 +3014,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `identifier` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela modelo_m2.users: ~2 rows (aproximadamente)
-INSERT IGNORE INTO `users` (`identifier`, `group`, `warnings`, `banned`, `banneduntil`, `char`, `max_jobs`) VALUES
+-- Dumping data for table modelo_m2.users: ~3 rows (approximately)
+INSERT INTO `users` (`identifier`, `group`, `warnings`, `banned`, `banneduntil`, `char`, `max_jobs`) VALUES
+	('steam:1100001002d7683', 'user', 0, 0, 0, 1, 1),
 	('steam:11000014b7dfbde', 'admin', 0, 0, 0, 1, 3),
 	('steam:11000015fc8fc4a', 'admin', 0, 0, 0, 1, 3);
 
--- Copiando estrutura para tabela modelo_m2.wagons
+-- Dumping structure for table modelo_m2.wagons
 CREATE TABLE IF NOT EXISTS `wagons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(40) NOT NULL,
@@ -2873,9 +3034,9 @@ CREATE TABLE IF NOT EXISTS `wagons` (
   KEY `model` (`model`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela modelo_m2.wagons: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.wagons: ~0 rows (approximately)
 
--- Copiando estrutura para tabela modelo_m2.whitelist
+-- Dumping structure for table modelo_m2.whitelist
 CREATE TABLE IF NOT EXISTS `whitelist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
@@ -2886,30 +3047,30 @@ CREATE TABLE IF NOT EXISTS `whitelist` (
   UNIQUE KEY `identifier` (`identifier`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
--- Copiando dados para a tabela modelo_m2.whitelist: ~0 rows (aproximadamente)
+-- Dumping data for table modelo_m2.whitelist: ~0 rows (approximately)
 
--- Copiando estrutura para trigger modelo_m2.add_mdg_horses_stats
+-- Dumping structure for trigger modelo_m2.add_mdg_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `add_mdg_horses_stats` AFTER INSERT ON `mdg_horses` FOR EACH ROW INSERT INTO mdg_horses_stats (horseid) VALUES (NEW.id)//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Copiando estrutura para trigger modelo_m2.delete_mdg_horses_stats
+-- Dumping structure for trigger modelo_m2.delete_mdg_horses_stats
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_mdg_horses_stats` AFTER DELETE ON `mdg_horses` FOR EACH ROW DELETE FROM mdg_horses_stats WHERE horseid = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Copiando estrutura para trigger modelo_m2.delete_mdg_stable_color
+-- Dumping structure for trigger modelo_m2.delete_mdg_stable_color
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `delete_mdg_stable_color` AFTER DELETE ON `mdg_stable_bought` FOR EACH ROW DELETE FROM `mdg_stable_color` WHERE id = OLD.id//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Copiando estrutura para trigger modelo_m2.update_mdg_stable_equiped_component
+-- Dumping structure for trigger modelo_m2.update_mdg_stable_equiped_component
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='IGNORE_SPACE,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `update_mdg_stable_equiped_component` AFTER DELETE ON `mdg_horses` FOR EACH ROW UPDATE `mdg_stable_bought` SET equiped_on = 0 WHERE equiped_on = OLD.id//
