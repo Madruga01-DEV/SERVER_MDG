@@ -27,17 +27,13 @@ function CustomInventoryAPI:New(data)
     instance.useweight = data.useWeight or false
     instance.weight = data.weight or 0.0
     instance.webhook = data.webhook or false
+    instance.inUse = false
     return instance
 end
 
 ---@methods
 --- register inventor
 function CustomInventoryAPI:Register()
-    if not self.getWeight then
-        function self:getWeight()
-            return self.weight
-        end
-    end
     CustomInventoryInfos[self.id] = self
 
     UsersInventories[self.id] = {}
@@ -93,12 +89,8 @@ end
 ---@param charid number @charid
 ---@param state boolean | nil  remove add or update
 function CustomInventoryAPI:AddCharIdPermissionMoveTo(charid, state)
-    if self.CharIdPermissionMoveTo[charid] then
-        self.CharIdPermissionMoveTo[charid] = state
-    else
-        if state == nil then state = true end
-        self.CharIdPermissionMoveTo[charid] = state
-    end
+    state = state ~= nil and state or true
+    self.CharIdPermissionMoveTo[charid] = state
 end
 
 --- set custom item limit
@@ -129,6 +121,18 @@ end
 ---@return boolean
 function CustomInventoryAPI:isShared()
     return self.shared
+end
+
+--- each inventory can only be used by one user at the time
+---@return boolean
+function CustomInventoryAPI:isInUse()
+    return self.inUse
+end
+
+--- set inventory in use state
+---@param state boolean @state
+function CustomInventoryAPI:setInUse(state)
+    self.inUse = state
 end
 
 --- is permission enabled for this inventory
@@ -267,10 +271,16 @@ function CustomInventoryAPI:updateCustomInvData(data)
     self.whitelistItems = data.whitelistItems or self.whitelistItems
     self.PermissionTakeFrom = data.PermissionTakeFrom or self.PermissionTakeFrom
     self.PermissionMoveTo = data.PermissionMoveTo or self.PermissionMoveTo
+    self.CharIdPermissionTakeFrom = data.CharIdPermissionTakeFrom or self.CharIdPermissionTakeFrom
+    self.CharIdPermissionMoveTo = data.CharIdPermissionMoveTo or self.CharIdPermissionMoveTo
     self.UsePermissions = data.UsePermissions or self.UsePermissions
     self.UseBlackList = data.UseBlackList or self.UseBlackList
     self.BlackListItems = data.BlackListItems or self.BlackListItems
     self.whitelistWeapons = data.whitelistWeapons or self.whitelistWeapons
     self.limitedWeapons = data.limitedWeapons or self.limitedWeapons
     self.webhook = data.webhook or self.webhook
+end
+
+function CustomInventoryAPI:getCustomInvData()
+    return self
 end

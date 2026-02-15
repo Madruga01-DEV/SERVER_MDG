@@ -1,17 +1,18 @@
 function PostActionPostQty(eventName, itemData, id, propertyName, qty, info) {
-    if (!isValidating) {
-        processEventValidation();
-        $.post(
-            `https://${GetParentResourceName()}/${eventName}`,
-            JSON.stringify({
-                item: itemData,
-                type: itemData.type,
-                number: qty,
-                [propertyName]: id,
-                info: info
-            })
-        );
-    }
+    if (isValidating) return;
+
+    processEventValidation();
+
+    $.post(`https://${GetParentResourceName()}/${eventName}`,
+        JSON.stringify({
+            item: itemData,
+            type: itemData.type,
+            number: qty,
+            [propertyName]: id,
+            info: info
+        })
+    );
+
 }
 
 let isShiftActive = false
@@ -46,7 +47,11 @@ function PostAction(eventName, itemData, id, propertyName, info) {
             },
 
             validate: function (value, item, type) {
-                if (!value || value <= 0 || value > 200 || !isInt(value)) {
+                if (!value || value <= 0 || value > Config.MaxItemTransferAmount || !isInt(value)) {
+                    $.post(`https://${GetParentResourceName()}/TransferLimitExceeded`, JSON.stringify({
+                        max: Config.MaxItemTransferAmount
+                    }));
+                                    
                     dialog.close();
                 } else {
                     PostActionPostQty(eventName, itemData, id, propertyName, value, info);
@@ -86,14 +91,11 @@ const ActionMoveList = {
 
 function takeFromStoreWithPrice(itemData, qty) {
 
-    if (isValidating) {
-        return;
-    }
+    if (isValidating) return;
 
     processEventValidation();
 
-    $.post(
-        `https://${GetParentResourceName()}/TakeFromStore`,
+    $.post(`https://${GetParentResourceName()}/TakeFromStore`,
         JSON.stringify({
             item: itemData,
             type: itemData.type,
@@ -107,7 +109,7 @@ function takeFromStoreWithPrice(itemData, qty) {
 
 function initSecondaryInventoryHandlers() {
     $("#inventoryElement").droppable({
-        drop: function (event, ui) {
+        drop: function (_, ui) {
             itemData = ui.draggable.data("item");
             itemInventory = ui.draggable.data("inventory");
             var info = $("#secondInventoryElement").data("info");
@@ -138,7 +140,7 @@ function initSecondaryInventoryHandlers() {
                                 autofocus: "true",
                             },
 
-                            validate: function (value, item, type) {
+                            validate: function (value) {
                                 if (!value) {
                                     dialog.close();
                                     return;
@@ -163,14 +165,11 @@ function initSecondaryInventoryHandlers() {
 
     function moveToStore(itemData, qty) {
 
-        if (isValidating) {
-            return;
-        }
+        if (isValidating) return;
 
         processEventValidation();
 
-        $.post(
-            `https://${GetParentResourceName()}/MoveToStore`,
+        $.post(`https://${GetParentResourceName()}/MoveToStore`,
             JSON.stringify({
                 item: itemData,
                 type: itemData.type,
@@ -183,14 +182,11 @@ function initSecondaryInventoryHandlers() {
 
     function moveToStoreWithPrice(itemData, qty, price) {
 
-        if (isValidating) {
-            return;
-        }
+        if (isValidating) return;
 
         processEventValidation();
 
-        $.post(
-            `https://${GetParentResourceName()}/MoveToStore`,
+        $.post(`https://${GetParentResourceName()}/MoveToStore`,
             JSON.stringify({
                 item: itemData,
                 type: itemData.type,
@@ -204,9 +200,7 @@ function initSecondaryInventoryHandlers() {
 
     function moveToStorePriceDialog(itemData, qty) {
 
-        if (isValidating) {
-            return;
-        }
+        if (isValidating) return;
 
         processEventValidation();
 
@@ -232,7 +226,7 @@ function initSecondaryInventoryHandlers() {
     }
 
     $("#secondInventoryElement").droppable({
-        drop: function (event, ui) {
+        drop: function (_, ui) {
             itemData = ui.draggable.data("item");
             itemInventory = ui.draggable.data("inventory");
             var info = $(this).data("info");
@@ -299,79 +293,87 @@ function initSecondaryInventoryHandlers() {
     });
 }
 
+/**
+ *  set up mouse events for the item
+ * @param {object} item 
+ * @param {number} index 
+ */
+function addDataToCustomInv(item, index) {
+    $("#item-" + index).data("item", item);
+    $("#item-" + index).data("inventory", "second");
+
+    const itemElement = document.getElementById(`item-${index}`);
+
+    itemElement.addEventListener('mouseenter', () => {
+        const { label, description } = getItemMetadataInfo(item);
+        OverSetTitleSecond(label);
+        OverSetDescSecond(description);
+    });
+
+    itemElement.addEventListener('mouseleave', () => {
+        OverSetTitleSecond(" ");
+        OverSetDescSecond(" ");
+    });
+
+}
+
+/**
+ * Get the degradation percentage 
+ * @param {Object} item - The item object
+ * @returns {string}
+ */
+function getDegradationCustom(item) {
+
+    if (item.type === "item_weapon" || item.maxDegradation === 0 || item.degradation === undefined || item.degradation === null || item.percentage === undefined || item.percentage === null) return "";
+    const degradationPercentage = item.percentage
+    const color = getColorForDegradation(degradationPercentage);
+    return `<br>${LANGUAGE.labels.decay}<span style="color: ${color}">${degradationPercentage.toFixed(0)}%</span>`;
+}
+
+
+function loadCustomInventoryItems(item, index, group, count, limit) {
+    if (item.type === "item_weapon") return;
+
+    const { tooltipData, degradation, image, label, weight } = getItemMetadataInfo(item, true);
+    const itemWeight = getItemWeight(weight, 1);
+    const groupKey = getGroupKey(group);
+    const { tooltipContent, url } = getItemTooltipContent(image, groupKey, group, limit, itemWeight, degradation, tooltipData);
+
+    $("#secondInventoryElement").append(`<div data-label='${label}' data-group ='${group}' style='background-image: ${url} background-size: 4.5vw 7.7vh; background-repeat: no-repeat; background-position: center;' id="item-${index}"  class='item' class='item' data-tooltip='${tooltipContent}'> ${count > 0 ? `<div class='count'>${count}</div>` : ``} </div>`);
+
+}
+
+function loadCustomInventoryItemsWeapons(item, index, group) {
+    if (item.type != "item_weapon") return;
+
+    const info = item.serial_number ? "<br>" + LANGUAGE.labels.ammo + item.count + "<br>" + LANGUAGE.labels.serial + item.serial_number : "";
+    const weight = getItemWeight(item.weight, item.count);
+    const url = imageCache[item.name]
+
+    $("#secondInventoryElement").append(`<div data-label='${item.label}' data-group ='${group}'
+    style='background-image: ${url} background-size: 4.5vw 7.7vh; background-repeat: no-repeat; background-position: center;' id='item-${index}' class='item' data-tooltip="${weight + info}"></div>`);
+
+}
+
 function secondInventorySetup(items, info) {
     $("#inventoryElement").html("");
     $("#secondInventoryElement").html("").data("info", info);
-
     var divCount = 0;
-    $.each(items, function () {
-        divCount = divCount + 1;
-    });
 
-    $.each(items, function (index, item) {
-        count = item.count;
-        var desc = !!item.metadata && !!item.metadata.description ? item.metadata.description : !!item.desc ? item.desc : "";
-        desc = desc.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
-        var label = item.label ? item.label : "ITEM LABEL NOT FOUND";
-        label = label.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+    if (items.length > 0) {
+        $.each(items, function () {
+            divCount = divCount + 1;
+        });
 
-        const lastInfo = `<br>Label: ${label} <br>${desc}<br>`;
-        const group = item.type != "item_weapon" ? !item.group ? 1 : item.group : 5;
-        if (item.type !== "item_weapon") {
-
-            const custom = item.metadata?.tooltip ? "<br>" + item.metadata.tooltip : "";
-            const degradation = item.degradation ? "<br>" + LANGUAGE.labels.decay + item.degradation + "%" : "";
-            const weight = item.weight ? LANGUAGE.labels.weight + (item.weight * item.count).toFixed(2) + " " + Config.WeightMeasure : LANGUAGE.labels.weight + (item.count / 4).toFixed(2) + " " + Config.WeightMeasure;
-            const groupKey = getGroupKey(group)
-            const groupImg = groupKey ? window.Actions[groupKey].img : 'satchel_nav_all.png';
-            // const tooltipContent = group > 1 ? `<img src="img/itemtypes/${groupImg}"> ${weight + degradation + custom}` : `${weight + degradation + custom}`;
-            const tooltipContent = group > 1 ? `<img src="img/itemtypes/${groupImg}"> ${lastInfo} ${weight + degradation + custom}` : `${lastInfo}  ${weight + degradation + custom}`;
-
-            const image = item.metadata?.image ? item.metadata.image : item.name ? item.name : "default";
-            const url = `url("img/items/${image}.png");`;
-
-            $("#secondInventoryElement").append(`
-            <div data-label='${item.label}' data-group='${group}' id='item-${index}' class='item' data-tooltip='${tooltipContent}'>
-                <img src='img/items/${item.name}.png' style='width: 4.5vw; height: 7.7vh; object-fit: contain; display: block; margin: auto;' />
-                ${count > 0 ? `<div class='count'>${count}</div>` : ``}
-                <div class='text'></div>
-            </div>`);
-
-        } else {
-            const info = item.serial_number ? "<br>" + LANGUAGE.labels.ammo + item.count + "<br>" + LANGUAGE.labels.serial + item.serial_number : "";
-            const weight = item.weight ? LANGUAGE.labels.weight + (item.weight * item.count).toFixed(2) + " " + Config.WeightMeasure : LANGUAGE.labels.weight + (item.count / 4).toFixed(2) + " " + Config.WeightMeasure;
-            $("#secondInventoryElement").append(`
-            <div data-label='${item.label}' data-group ='${group}' id='item-${index}' class='item' data-tooltip="${lastInfo + weight + info}">
-                <img src="img/items/${item.name}.png" style="width: 4.5vw; height: 7.7vh; object-fit: contain; display: block; margin: auto;" />
-            </div>`);
-        
-        }
-
-        $("#item-" + index).data("item", item);
-        $("#item-" + index).data("inventory", "second");
-
-        $("#item-" + index).hover(
-            function () {
-                OverSetTitleSecond(item.label);
-            },
-            function () {
-                OverSetTitleSecond(" ");
-            }
-        );
-
-        $("#item-" + index).hover(
-            function () {
-                if (!!item.metadata && !!item.metadata.description) {
-                    OverSetDescSecond(item.metadata.description);
-                } else {
-                    OverSetDescSecond(!!item.desc ? item.desc : "");
-                }
-            },
-            function () {
-                OverSetDescSecond(" ");
-            }
-        );
-    });
+        for (const [index, item] of items.entries()) {
+            count = item.count;
+            const group = item.type != "item_weapon" ? !item.group ? 1 : item.group : 5;
+            const limit = item.limit;
+            loadCustomInventoryItems(item, index, group, count, limit);
+            loadCustomInventoryItemsWeapons(item, index, group);
+            addDataToCustomInv(item, index);
+        };
+    }
 
     /* in here we ensure that at least all divs are filled */
     if (divCount < 14) {

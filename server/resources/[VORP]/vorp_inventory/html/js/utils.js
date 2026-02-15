@@ -6,44 +6,6 @@ function processEventValidation(ms = 1000) {
     }, ms);
 }
 
-function setProgress(value){
-    $(".progress-value").css({
-        'width': '0'
-    })
-    var curValue = 0;
-    setInterval(function () {
-      if (curValue == value) {
-        return
-      }
-      curValue++;
-      if (curValue > 75) {
-
-        $(".progress-value").css({
-          'background': `linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 46%, rgba(82,255,250,1) 84%, rgba(82,255,250,1) 100%)`
-        })
-      } else if (curValue > 50) {
-
-        $(".progress-value").css({
-          'background': `linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 46%, rgba(82,255,250,1) 84%, rgba(82,255,250,1) 100%)`
-        })
-      } else if (curValue > 25) {
-
-        $(".progress-value").css({
-          'background': `white`
-        })
-      } else {
-
-        $(".progress-value").css({
-          'background': `white`
-        })
-      }
-      $(".progress-value").css({
-        'width': `${curValue}%`
-      })
-    }, 30);
-
-}
-
 function isInt(n) {
     return n != "" && !isNaN(n) && Math.round(n) == n;
 }
@@ -80,16 +42,108 @@ function secondarySetCapacity(cap, weight) {
     document.getElementById("capacity-value").innerHTML = weight ? weight + " " + Config.WeightMeasure : cap;
 }
 
+/**
+ * get th item group
+ * @param {number} group
+ * @returns {string}
+ */
 function getGroupKey(group) {
     let groupKey;
     if (window.Actions && Object.keys(window.Actions).length > 0) {
         groupKey = Object.keys(window.Actions).find(key =>
             key !== "all" && window.Actions[key].types.includes(group)
         );
-    } else {
-        console.log("Actions were not loaded!!");
     }
     return groupKey;
+}
+/**
+ * Get the color for the degradation
+ * @param {number} degradation
+ * @returns {string}
+ */
+function getColorForDegradation(degradation) {
+    if (degradation < 15) {
+        return "red";
+    } else if (degradation < 40) {
+        return "orange";
+    } else if (degradation < 70) {
+        return "gold";
+    } else {
+        return "green";
+    }
+}
+
+function cacheImage(item) {
+    if (item.type === "item_weapon") return;
+
+    const image = item.metadata?.image;
+    if (image && !(image in imageCache)) {
+        preloadImages([image]);
+    }
+}
+
+
+/**
+ * replaces default data with custom data
+ * 
+ * reserved key words for metdata: weight, label, image, tooltip, degradation ,description
+ * @param {object} item
+ * @returns {{ tooltipData: string, degradation: string, image: string, label: string, weight: number, description: string}}
+ */
+function getItemMetadataInfo(item, isCustom) {
+
+    cacheImage(item);
+
+    const tooltipData = item.metadata?.tooltip ? "<br>" + item.metadata.tooltip : "";
+
+    const degradation = isCustom ? getDegradationCustom(item) : getDegradationMain(item);
+
+    const image = item.type !== "item_weapon"
+        ? item.metadata?.image ? item.metadata.image : item.name ? item.name : "default" // items
+        : item.name ? item.name : "default"; // weapons
+
+    const weight = item.metadata?.weight ?
+        item.metadata.weight : item.weight ? item.weight : 0;
+
+    const label = item.type !== "item_weapon"
+        ? item.metadata?.label ? item.metadata.label : item.label // items
+        : item?.custom_label ? item.custom_label : item.label; // weapons
+
+    const description = item.type !== "item_weapon"
+        ? item.metadata?.description ? item.metadata.description : item.desc // items
+        : item?.custom_desc ? item.custom_desc : item.desc; // weapons
+
+    return { tooltipData, degradation, image, label, weight, description };
+}
+
+/**
+ * get the weight of the item
+ * @param {object} item 
+ * @param {number} count
+ * @returns {string}
+ * 
+ */
+function getItemWeight(weight, count) {
+    return weight != null ? `<br>${LANGUAGE.labels?.weight} ${(weight * count).toFixed(2)} ${Config.WeightMeasure}` : `<br>${LANGUAGE.labels?.weight} ${(count / 4).toFixed(2)} ${Config.WeightMeasure}`;
+}
+
+/**
+ * get tool tip data
+ * @param {string} image
+ * @param {string} groupKey
+ * @param {number} group
+ * @param {number} limit
+ * @param {string} weight
+ * @param {string} degradation
+ * @param {string} tooltipData
+ * @returns {{tooltipContent: string, url: string}}
+ */
+function getItemTooltipContent(image, groupKey, group, limit, weight, degradation, tooltipData) {
+    const groupImg = groupKey ? window.Actions[groupKey].img : 'satchel_nav_all.png';
+    const limitLabel = limit ? (LANGUAGE.labels?.limit || "Kg") + limit : "";
+    const tooltipContent = group > 1 ? `<img src="img/itemtypes/${groupImg}"> ${limitLabel + weight + degradation + tooltipData}` : `${limitLabel}${weight}${degradation}${tooltipData}`;
+    const url = imageCache[image]
+    return { tooltipContent, url };
 }
 
 
@@ -180,14 +234,15 @@ function disableInventory(ms) {
 
 function validatePlayerSelection(player) {
     const data = objToGive;
+
     secureCallbackToNui("vorp_inventory", "GiveItem", {
         player: player,
         data: data,
     });
-    $.post(
-        `https://${GetParentResourceName()}/closeGiveMenu`,JSON.stringify({})
-    );
-    $(".players").html("");
+
+    $("#disabler").hide();
+    $("#character-selection").hide();
+
     // reset obj to give, for security
     objToGive = {};
 }
@@ -196,22 +251,23 @@ function validatePlayerSelection(player) {
  * @param {object} data
  }**/
 function selectPlayerToGive(data) {
-    // $("#disabler").show();
+    $("#disabler").show();
+    objToGive = {};
     objToGive = data; // save obj to give during process
-    // const characters = data.players;
+    const characters = data.players;
 
-    // $("#character-select-title").html(LANGUAGE.toplayerpromptitle);
-    // characters.sort((a, b) =>
-    //     a.label.toString().localeCompare(b.label.toString())
-    // );
+    $("#character-select-title").html(LANGUAGE.toplayerpromptitle);
+    characters.sort((a, b) =>
+        a.label.toString().localeCompare(b.label.toString())
+    );
 
-    // $("#character-list").html("");
-    // characters.forEach((character) => {
-    //     $("#character-list").append(
-    //         `<li class="list-item" id="character-${character.player}" data-player="${character.player}" onclick="validatePlayerSelection(${character.player})">${character.label}</li>`
-    //     );
-    // });
-    // $("#character-selection").show();
+    $("#character-list").html("");
+    characters.forEach((character) => {
+        $("#character-list").append(
+            `<li class="list-item" id="character-${character.player}" data-player="${character.player}" onclick="validatePlayerSelection(${character.player})">${character.label}</li>`
+        );
+    });
+    $("#character-selection").show();
 }
 
 function closeCharacterSelection() {
@@ -221,7 +277,7 @@ function closeCharacterSelection() {
     $("#character-selection").hide();
 }
 
-function dropGetHowMany(item, type, hash, id, metadata, count) {
+function dropGetHowMany(item, type, hash, id, metadata, count, degradation) {
     if (type != "item_weapon") {
         if (count && count === 1) {
             secureCallbackToNui("vorp_inventory", "DropItem", {
@@ -230,6 +286,7 @@ function dropGetHowMany(item, type, hash, id, metadata, count) {
                 type: type,
                 number: 1,
                 metadata: metadata,
+                degradation: degradation,
             });
         } else {
             dialog.prompt({
@@ -260,6 +317,7 @@ function dropGetHowMany(item, type, hash, id, metadata, count) {
                         type: type,
                         number: value,
                         metadata: metadata,
+                        degradation: degradation,
                     });
 
                     return true;
@@ -276,44 +334,60 @@ function dropGetHowMany(item, type, hash, id, metadata, count) {
     }
 }
 
-function giveGetHowMany(item, type, hash, id, metadata) {
+function giveGetHowMany(item, type, hash, id, metadata, count) {
     if (type != "item_weapon") {
-        dialog.prompt({
-            title: LANGUAGE.prompttitle,
-            button: LANGUAGE.promptaccept,
-            required: false,
-            item: item,
-            type: type,
-            input: {
-                type: "number",
-                autofocus: "true",
-            },
-            validate: function (value, item, type) {
-                if (!value || value <= 0) {
-                    dialog.close();
-                    return;
-                }
-                if (!isInt(value)) {
-                    dialog.close();
-                    return;
-                }
-                $.post(
-                    `https://${GetParentResourceName()}/GetNearPlayers2`,
-                    JSON.stringify({
+
+        if (count > 1) {
+            dialog.prompt({
+                title: LANGUAGE.prompttitle,
+                button: LANGUAGE.promptaccept,
+                required: false,
+                item: item,
+                type: type,
+                input: {
+                    type: "number",
+                    autofocus: "true",
+                },
+                validate: function (value, item, type) {
+                    if (!value || value <= 0) {
+                        dialog.close();
+                        return;
+                    }
+
+                    if (!isInt(value)) {
+                        dialog.close();
+                        return;
+                    }
+
+                    $.post(`https://${GetParentResourceName()}/GetNearPlayers`, JSON.stringify({
                         type: type,
                         what: "give",
                         item: item,
                         id: id,
                         count: value,
                         metadata: metadata,
-                    })
-                );
-                return true;
-            },
-        });
+                    }));
+                    return true;
+                },
+            });
+        } else {
+
+            if (!count || count <= 0) return;
+
+            if (!isInt(count)) return;
+
+            $.post(`https://${GetParentResourceName()}/GetNearPlayers`, JSON.stringify({
+                type: type,
+                what: "give",
+                item: item,
+                id: id,
+                count: count,
+                metadata: metadata,
+            }));
+        }
     } else {
         $.post(
-            `https://${GetParentResourceName()}/GetNearPlayers2`,
+            `https://${GetParentResourceName()}/GetNearPlayers`,
             JSON.stringify({
                 type: type,
                 what: "give",
@@ -342,7 +416,7 @@ function giveGetHowManyMoney() {
                 return;
             }
             $.post(
-                `https://${GetParentResourceName()}/GetNearPlayers2`,
+                `https://${GetParentResourceName()}/GetNearPlayers`,
                 JSON.stringify({
                     type: type,
                     what: "give",
@@ -375,7 +449,7 @@ function giveammotoplayer(ammotype) {
                 return;
             }
             $.post(
-                `https://${GetParentResourceName()}/GetNearPlayers2`,
+                `https://${GetParentResourceName()}/GetNearPlayers`,
                 JSON.stringify({
                     type: type,
                     what: "give",
@@ -405,7 +479,7 @@ function giveGetHowManyGold() {
                 return;
             }
             $.post(
-                `https://${GetParentResourceName()}/GetNearPlayers2`,
+                `https://${GetParentResourceName()}/GetNearPlayers`,
                 JSON.stringify({
                     type: type,
                     what: "give",
@@ -421,6 +495,5 @@ function giveGetHowManyGold() {
 function closeInventory() {
     $('.tooltip').remove();
     $.post(`https://${GetParentResourceName()}/NUIFocusOff`, JSON.stringify({}));
-    $.post(`https://${GetParentResourceName()}/closeGiveMenu`, JSON.stringify({}));
     isOpen = false;
 }

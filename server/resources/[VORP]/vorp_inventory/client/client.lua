@@ -1,29 +1,21 @@
--- if Config.DevMode then
+if Config.DevMode then
     AddEventHandler('onClientResourceStart', function(resourceName)
         if (GetCurrentResourceName() ~= resourceName) then
             return
         end
-        if Config.DevMode then
-            print('loading resource ^1DEV MODE IS ENABLED')
-        end
-        SetNuiFocus(false, false)
+
         SendNUIMessage({ action = "hide" })
         TriggerServerEvent("DEV:loadweapons")
-        if Config.DevMode then
-            print("Loading Inventory")
-        end
         TriggerServerEvent("vorpinventory:getItemsTable")
         Wait(1000)
         TriggerServerEvent("vorpinventory:getInventory")
         Wait(1000)
         TriggerServerEvent("vorpCore:LoadAllAmmo")
-        if Config.DevMode then
-            print("inventory loaded")
-        end
         Wait(100)
         TriggerEvent("vorpinventory:loaded")
+        print("^1WARNING: Dev mode is enabled^7 do not use this in production live servers")
     end)
--- end
+end
 
 
 CreateThread(function()
@@ -33,77 +25,49 @@ CreateThread(function()
 
     repeat Wait(2000) until LocalPlayer.state.IsInSession
 
-    local function checkLanterns(hash)
-        local lanterns <const> = { "WEAPON_MELEE_LANTERN", "WEAPON_MELEE_LANTERN_HALLOWEEN", "WEAPON_MELEE_DAVY_LANTERN", "WEAPON_MELEE_LANTERN_ELECTRIC" }
-        for i = 1, #lanterns do
-            if hash == joaat(lanterns[i]) then
-                return true
-            end
-        end
-        return false
-    end
     local lastLantern = 0
     while true do
-        local weaponHeld = GetPedCurrentHeldWeapon(PlayerPedId())
-        local isLantern = IsWeaponLantern(weaponHeld) == 1 or IsWeaponLantern(weaponHeld) == true
+        local pedid = PlayerPedId()
+        local weaponHeld <const> = GetPedCurrentHeldWeapon(pedid)
+        local isLantern <const> = IsWeaponLantern(weaponHeld) == 1 -- assuming it will return all lanterns to true
         if isLantern then
             lastLantern = weaponHeld
         end
 
-        if lastLantern ~= 0 and not checkLanterns(weaponHeld) then
-            SetCurrentPedWeapon(PlayerPedId(), lastLantern, true, 12, false, false)
+        if lastLantern ~= 0 and not isLantern then
+            SetCurrentPedWeapon(pedid, lastLantern, true, 12, false, false)
             lastLantern = 0
         end
-        Wait(1000)
+        Wait(500)
     end
 end)
-RegisterNUICallback('closeGiveMenu',function()
-    onGiveMenu = false
-    SendNUIMessage({action='closeGiveMenu'})
-end)
-RegisterNUICallback('GetNearPlayers2', function(obj)
-    onGiveMenu = true
-    local nuiReturn = {}
-	local itemId = obj.id or 0
-	local itemCount = obj.count or 1
-	local itemHash = obj.hash or 1
 
 
-	nuiReturn.action = "nearPlayers"
-	nuiReturn.item = nuiReturn.item or obj.item
-	nuiReturn.hash = itemHash
-	nuiReturn.count = itemCount
-	nuiReturn.id = itemId
-	nuiReturn.type = obj.type
-	nuiReturn.what = nuiReturn.what or obj.what
+-- ENABLE PUSH TO TALK
+CreateThread(function()
+    repeat Wait(5000) until LocalPlayer.state.IsInSession
+    if not Config.EnablePushToTalk then
+        return
+    end
+    local isNuiFocused = false
 
-	SendNUIMessage(nuiReturn)
-    Citizen.CreateThread(function()
-        while onGiveMenu do
-            local players = GetActivePlayers()
-            local array = {}
-            for k,v in pairs(players) do
-                local plyCoords = GetEntityCoords(GetPlayerPed(v))
-                local dist = #(plyCoords - GetEntityCoords(PlayerPedId()))
-                if dist < 10 and GetPlayerServerId(v) ~= GetPlayerServerId(PlayerId()) then
-                    local onScreen, screenX, screenY = GetScreenCoordFromWorldCoord(plyCoords.x, plyCoords.y, plyCoords.z)
-                    if onScreen then
-                        array[#array+1] = {x = screenX,y = screenY,playerid=GetPlayerServerId(v)}
-                    end
-                end
+    while true do
+        local sleep = 0
+        if InInventory then
+            if not isNuiFocused then
+                SetNuiFocusKeepInput(true)
+                isNuiFocused = true
             end
-            SendNUIMessage({
-                action = "setPlayerIDS",
-                array = array,
-            })
-            Wait(1000)
-        end
-    end)
-    Wait(10000)
-    onGiveMenu = false
-    SendNUIMessage({action='closeGiveMenu'})
-end)
 
-RegisterNUICallback('sendTrade',function()
-    TriggerEvent('fx-trade:client:playerSeleciton')
+            DisableAllControlActions(0)
+            EnableControlAction(0, `INPUT_PUSH_TO_TALK`, true)
+        else
+            sleep = 1000
+            if isNuiFocused then
+                SetNuiFocusKeepInput(false)
+                isNuiFocused = false
+            end
+        end
+        Wait(sleep)
+    end
 end)

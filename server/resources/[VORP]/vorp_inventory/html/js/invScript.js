@@ -1,3 +1,23 @@
+let imageCache = {};
+
+/**
+ * Preload images
+ * @param {Array} images - The array of images to preload so we can choose to display placeholder or not
+ */
+function preloadImages(images) {
+
+    $.each(images, function (_, image) {
+        const img = new Image();
+        img.onload = () => {
+            imageCache[image] = `url("img/items/${image}.png");`;
+        };
+        img.onerror = () => {
+            imageCache[image] = `url("img/items/placeholder.png");`;
+        };
+        img.src = `img/items/${image}.png`;
+    });
+
+}
 
 /* DROP DOWN BUTTONS MAIN AND SECONDARY INVENTORY */
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,7 +55,6 @@ function bindSecondButtonEventListeners() {
 
 document.addEventListener('DOMContentLoaded', function () {
     bindButtonEventListeners();
-    // For the second inventory buttons
     bindSecondButtonEventListeners();
 
     document.querySelectorAll('.dropdownButton[data-type="clothing"]').forEach(button => {
@@ -194,8 +213,8 @@ function action(type, param, inv) {
 
 /* FILTER ITEMS BY TYPE */
 function showItemsByType(itemTypesToShow, inv) {
-    var itemDiv = 0;
-    var itemEmpty = 0;
+    let itemDiv = 0;
+    let itemEmpty = 0;
     $(`#${inv} .item`).each(function () {
         const group = $(this).data("group");
 
@@ -218,7 +237,7 @@ function showItemsByType(itemTypesToShow, inv) {
             }
         }
         /* if itemDiv is less than 12 then create the rest od the divs */
-        let emptySlots = 16 - itemDiv;
+        const emptySlots = 16 - itemDiv;
         for (let i = 0; i < emptySlots; i++) {
             $(`#${inv}`).append(`<div data-group="0" class="item"></div>`);
         }
@@ -232,16 +251,16 @@ $(document).ready(function () {
 
         if ($(this).data('tooltip') && !stopTooltip) {
 
-            var tooltipText = $(this).data('tooltip');
-            var $tooltip = $('<div></div>')
+            const tooltipText = $(this).data('tooltip');
+            const $tooltip = $('<div></div>')
                 .addClass('tooltip')
                 .css('pointer-events', 'none')
                 .html(tooltipText)
                 .appendTo('body');
 
-            var itemOffset = $(this).offset();
-            var tooltipTop = itemOffset.top + $(this).outerHeight() + 10;
-            var tooltipLeft = itemOffset.left;
+            const itemOffset = $(this).offset();
+            const tooltipTop = itemOffset.top + $(this).outerHeight() + 10;
+            const tooltipLeft = itemOffset.left;
 
             $tooltip.css({
                 'top': tooltipTop,
@@ -258,7 +277,7 @@ $(document).ready(function () {
 });
 
 function moveInventory(inv) {
-    var inventoryHud = document.getElementById('inventoryHud');
+    const inventoryHud = document.getElementById('inventoryHud');
     if (inv === 'main') {
         inventoryHud.style.left = '25%';
     } else if (inv === 'second') {
@@ -266,210 +285,285 @@ function moveInventory(inv) {
     }
 }
 
-function getColorForDegradation(degradation) {
-    if (degradation < 15) {
-        return "red";
-    } else if (degradation < 40) {
-        return "orange";
-    } else if (degradation < 70) {
-        return "gold";
+
+
+function addData(index, item) {
+
+    $("#item-" + index).data("item", item);
+    $("#item-" + index).data("inventory", "main");
+
+    const data = [];
+
+    if (Config.DoubleClickToUse) {
+
+        $("#item-" + index).dblclick(function () {
+
+            if (item.used || item.used2) {
+                $(this).find('.equipped-icon').hide();
+                $.post(`https://${GetParentResourceName()}/UnequipWeapon`, JSON.stringify({
+                    item: item.name,
+                    id: item.id,
+                }));
+
+            } else {
+
+                if (item.type == "item_weapon") {
+                    $(this).find('.equipped-icon').show();
+                }
+
+                $.post(`https://${GetParentResourceName()}/UseItem`, JSON.stringify({
+                    item: item.name,
+                    type: item.type,
+                    hash: item.hash,
+                    amount: item.count,
+                    id: item.id,
+                }));
+            }
+        });
+
     } else {
-        return "green";
-    }
-}
-
-function inventorySetup(items) {
-
-    $("#inventoryElement").html("");
-    var divAmount = 0;
-
-    $.each(items, function () {
-        divAmount = divAmount + 1;
-    });
-
-
-    $.each(items, function (index, item) {
-        var count = item.count;
-        var limit = item.limit;
-        const group = item.type != "item_weapon" ? !item.group ? 1 : item.group : 5;
-        var desc = !!item.metadata && !!item.metadata.description ? item.metadata.description : !!item.desc ? item.desc : "";
-        desc = desc.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
-
-        var label = item.label ? item.label : "ITEM LABEL NOT FOUND";
-        label = label.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
-
-        const lastInfo = `<br>Label: ${label} <br>${desc}<br>`;
-
-        if (item.type != "item_weapon") {
-            const custom = item.metadata?.tooltip ? "<br>" + item.metadata.tooltip : "";
-            const degradation = item.degradation ? `<br>${LANGUAGE.labels.decay}<span style="color: ${getColorForDegradation(item.degradation)}">${item.degradation}%</span>` : "";
-            const weight = item.weight ? "<br>" + LANGUAGE.labels.weight + (item.weight * count).toFixed(2) + " " + Config.WeightMeasure : "<br>" + LANGUAGE.labels.weight + (count / 4).toFixed(2) + " " + Config.WeightMeasure;
-            const groupKey = getGroupKey(group);
-            const groupImg = groupKey ? window.Actions[groupKey].img : 'satchel_nav_all.png';
-            const tooltipContent = group > 1 ? `<img src="img/itemtypes/${groupImg}"> ${lastInfo} ${LANGUAGE.labels.limit + limit + custom + weight + degradation}` : `${lastInfo} ${LANGUAGE.labels.limit} ${limit}${custom}${weight}${degradation}`;
-            const image = item.metadata?.image ? item.metadata.image : item.name ? item.name : "default";
-            const url = `url("img/items/${image}.png");`;
-
-            $("#inventoryElement").append(`
-                <div data-group='${group}' data-label='${item.label}' id='item-${index}' class='item' data-tooltip='${tooltipContent}'>
-                    <img src='img/items/${item.name}.png' style='width: 4.5vw; height: 7.7vh; object-fit: contain; display: block; margin: auto;' />
-                    <div class='count'>
-                        <span>${count}</span>
-                    </div>
-                    <div class='text'></div>
-                </div>
-            `);
-
-        } else {
-            const weight = item.weight ? LANGUAGE.labels.weight + item.weight.toFixed(2) + " " + Config.WeightMeasure : LANGUAGE.labels.weight + (count / 4).toFixed(2) + " " + Config.WeightMeasure;
-            const info = item.serial_number ? "<br>" + LANGUAGE.labels.ammo + item.count + "<br>" + LANGUAGE.labels.serial + item.serial_number : "";
-            $("#inventoryElement").append(`
-                <div data-label='${item.label}' data-group='${group}' id='item-${index}' class='item' data-tooltip="${lastInfo + weight + info}">
-                    <img src="img/items/${item.name}.png" style="width: 4.5vw; height: 7.7vh; object-fit: contain; display: block; margin: auto;" />
-                    <div class='equipped-icon' style='display: ${!item.used && !item.used2 ? "none" : "block"};'></div>
-                </div>
-            `);
-        }
-
-
-        $("#item-" + index).data("item", item);
-        $("#item-" + index).data("inventory", "main");
-
-        var data = [];
-
-        if (Config.DoubleClickToUse) {
-
-            $("#item-" + index).dblclick(function () {
-
-                if (item.used || item.used2) {
+        if (item.used || item.used2) {
+            data.push({
+                text: LANGUAGE.unequip,
+                action: function () {
                     $(this).find('.equipped-icon').hide();
-                    $.post(`https://${GetParentResourceName()}/UnequipWeapon`, JSON.stringify({
-                        item: item.name,
-                        id: item.id,
-                    }));
-
-                } else {
-
+                    $.post(`https://${GetParentResourceName()}/UnequipWeapon`,
+                        JSON.stringify({
+                            item: item.name,
+                            id: item.id,
+                        })
+                    );
+                },
+            });
+        } else {
+            if (item.type != "item_weapon") {
+                lang = LANGUAGE.use;
+            } else {
+                lang = LANGUAGE.equip;
+            }
+            data.push({
+                text: lang,
+                action: function () {
                     if (item.type == "item_weapon") {
                         $(this).find('.equipped-icon').show();
                     }
-                    $.post(`https://${GetParentResourceName()}/UseItem`, JSON.stringify({
-                        item: item.name,
-                        type: item.type,
-                        hash: item.hash,
-                        amount: item.count,
-                        id: item.id,
-                    }));
-                }
-            });
-
-        } else {
-            if (item.used || item.used2) {
-                data.push({
-                    text: LANGUAGE.unequip,
-                    action: function () {
-                        $(this).find('.equipped-icon').hide();
-                        $.post(
-                            `https://${GetParentResourceName()}/UnequipWeapon`,
-                            JSON.stringify({
-                                item: item.name,
-                                id: item.id,
-                            })
-                        );
-                    },
-                });
-            } else {
-                if (item.type != "item_weapon") {
-                    lang = LANGUAGE.use;
-                } else {
-                    lang = LANGUAGE.equip;
-                }
-                data.push({
-                    text: lang,
-                    action: function () {
-                        if (item.type == "item_weapon") {
-                            $(this).find('.equipped-icon').show();
-                        }
-                        $.post(
-                            `https://${GetParentResourceName()}/UseItem`,
-                            JSON.stringify({
-                                item: item.name,
-                                type: item.type,
-                                hash: item.hash,
-                                amount: item.count,
-                                id: item.id,
-                            })
-                        );
-                    },
-                });
-            }
-        }
-
-        if (item.canRemove) {
-            data.push({
-                text: LANGUAGE.give,
-                action: function () {
-                    giveGetHowMany(
-                        item.name,
-                        item.type,
-                        item.hash,
-                        item.id,
-                        item.metadata,
-                        item.count
-                    );
-                },
-            });
-
-            data.push({
-                text: LANGUAGE.drop,
-                action: function () {
-                    dropGetHowMany(
-                        item.name,
-                        item.type,
-                        item.hash,
-                        item.id,
-                        item.metadata,
-                        item.count
+                    $.post(`https://${GetParentResourceName()}/UseItem`,
+                        JSON.stringify({
+                            item: item.name,
+                            type: item.type,
+                            hash: item.hash,
+                            amount: item.count,
+                            id: item.id,
+                        })
                     );
                 },
             });
         }
-        if (data.length > 0) {
-            $("#item-" + index).contextMenu([data], {
-                offsetX: 1,
-                offsetY: 1,
+    }
+
+    if (item.canRemove) {
+        data.push({
+            text: LANGUAGE.give,
+            action: function () {
+                giveGetHowMany(item.name, item.type, item.hash, item.id, item.metadata, item.count);
+            },
+        });
+
+        data.push({
+            text: LANGUAGE.drop,
+            action: function () {
+                dropGetHowMany(
+                    item.name,
+                    item.type,
+                    item.hash,
+                    item.id,
+                    item.metadata,
+                    item.count,
+                    item.degradation,
+                    item.percentage
+                );
+            },
+        });
+        if (Config.EnableCopySerial && item.type == "item_weapon" && item.serial_number) {
+            data.push({
+                text: LANGUAGE.copyserial,
+                action: function () {
+                    const clipElem = document.createElement('textarea');
+                    clipElem.value = item.serial_number;
+                    document.body.appendChild(clipElem);
+                    clipElem.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(clipElem);
+                },
             });
         }
+    }
 
-        $("#item-" + index).hover(
-            function () {
-                OverSetTitle(item.label);
-            },
-            function () {
-                OverSetTitle(" ");
-            }
-        );
 
-        $("#item-" + index).hover(
-            function () {
-                if (!!item.metadata && !!item.metadata.description) {
-                    OverSetDesc(item.metadata.description);
-                } else {
-                    OverSetDesc(!!item.desc ? item.desc : "");
+    if (item.metadata?.context) {
+        item.metadata.context.forEach(option => {
+            data.push({
+                text: option.text,
+                action: function () {
+                    option.itemid = item.id;
+                    $.post(`https://${GetParentResourceName()}/ContextMenu`,
+                        JSON.stringify(option)
+                    );
                 }
-            },
-            function () {
-                OverSetDesc(" ");
-            }
-        );
+            });
+        });
+    }
+
+    if (data.length > 0) {
+        $("#item-" + index).contextMenu([data], {
+            offsetX: 1,
+            offsetY: 1,
+        });
+    }
+
+    const itemElement = document.getElementById(`item-${index}`);
+
+    itemElement.addEventListener('mouseenter', () => {
+        const { label, description } = getItemMetadataInfo(item);
+        OverSetTitle(label);
+        OverSetDesc(description);
 
     });
 
+    itemElement.addEventListener('mouseleave', () => {
+        OverSetTitle(" ");
+        OverSetDesc(" ");
+    });
 
-    var gunbelt_item = "gunbelt";
-    var gunbelt_label = LANGUAGE.gunbeltlabel;
-    var gunbelt_desc = LANGUAGE.gunbeltdescription;
+}
 
+function getItemDegradationPercentage(item) {
+    if (item.maxDegradation === 0) return 1;
+    const now = TIME_NOW
+    const maxDegradeSeconds = item.maxDegradation * 60;
+    const elapsedSeconds = now - item.degradation;
+    const degradationPercentage = Math.max(0, ((maxDegradeSeconds - elapsedSeconds) / maxDegradeSeconds) * 100);
+    return degradationPercentage;
+}
+
+/**
+ * Get the degradation percentage 
+ * @param {Object} item - The item object
+ * @returns {string}
+ */
+function getDegradationMain(item) {
+
+    if (item.type === "item_weapon" || item.maxDegradation === 0 || item.degradation === undefined || item.degradation === null || TIME_NOW === undefined) return "";
+    const degradationPercentage = getItemDegradationPercentage(item);
+    const color = getColorForDegradation(degradationPercentage);
+
+    return `<br>${LANGUAGE.labels.decay}<span style="color: ${color}">${degradationPercentage.toFixed(0)}%</span>`;
+
+}
+
+/**
+ * Load inventory items
+ * @param {Object} item - The item object
+ * @param {number} index - The index of the item
+ * @param {number} group - The group of the item
+ * @param {number} count - The count of the item
+ * @param {number} limit - The limit of the item
+ */
+function loadInventoryItems(item, index, group, count, limit) {
+
+    if (item.type === "item_weapon") return;
+
+    const { tooltipData, degradation, image, label, weight } = getItemMetadataInfo(item, false);
+    const itemWeight = getItemWeight(weight, count);
+    const groupKey = getGroupKey(group);
+    const { tooltipContent, url } = getItemTooltipContent(image, groupKey, group, limit, itemWeight, degradation, tooltipData);
+    const imageOpacity = getItemDegradationPercentage(item) === 0 ? 0.5 : 1;
+
+    $("#inventoryElement").append(`<div data-group='${group}' data-label='${label}' style='background-image: ${url} background-size: 4.5vw 7.7vh; background-repeat: no-repeat; background-position: center; opacity: ${imageOpacity};' id='item-${index}' class='item' data-tooltip='${tooltipContent}'> 
+        <div class='count'>
+            <span style='color:Black'>${count}</span>
+        </div>
+    </div>`);
+
+}
+
+/**
+ * Load inventory weapons
+ * @param {Object} item - The item object
+ * @param {number} index - The index of the item
+ * @param {number} group - The group of the item
+ * @param {number} count - The count of the item
+ */
+function loadInventoryWeapons(item, index, group) {
+    if (item.type != "item_weapon") return;
+
+    const weight = getItemWeight(item.weight, 1);
+    const info = item.serial_number ? "<br>" + (LANGUAGE.labels?.ammo ?? "Ammo") + item.count + "<br>" + (LANGUAGE.labels?.serial ?? "Serial") + item.serial_number : "";
+    const url = imageCache[item.name]
+    const label = item.custom_label ? item.custom_label : item.label;
+
+    $("#inventoryElement").append(`<div data-label='${label}' data-group='${group}' style='background-image: ${url} background-size: 4.5vw 7.7vh; background-repeat: no-repeat; background-position: center;' id='item-${index}' class='item' data-tooltip="${weight + info}">
+        <div class='equipped-icon' style='display: ${!item.used && !item.used2 ? "none" : "block"};'></div>
+    </div> `);
+}
+
+
+/**
+ * Load fixed items in the main inventory
+ * @param {string} label - The label of the item
+ * @param {string} description - The description of the item
+ * @param {string} item - The item name
+ * @param {Array} data - The data for the context menu
+ */
+function mainInventoryFixedItems(label, description, item, data) {
+    $("#inventoryElement").append(`<div data-label='${label}' data-group='1' style='background-image: url(\"img/items/${item}.png\"); background-size: 4.5vw 6.7vh; background-repeat: no-repeat; background-position: center;' id='item-${item}' class='item'></div>`);
+
+    $("#item-" + item).contextMenu([data], {
+        offsetX: 1,
+        offsetY: 1,
+    });
+
+    const itemElement = document.getElementById(`item-${item}`);
+    itemElement.addEventListener('mouseenter', () => {
+        OverSetTitle(label);
+        OverSetDesc(description);
+    });
+
+    itemElement.addEventListener('mouseleave', () => {
+        OverSetTitle(" ");
+        OverSetDesc(" ");
+    });
+}
+
+
+function inventorySetup(items) {
+
+
+    $("#inventoryElement").html("");
+    let divAmount = 0;
+
+    if (items.length > 0) {
+
+        $.each(items, function () {
+            divAmount = divAmount + 1;
+        });
+
+        for (const [index, item] of items.entries()) {
+            if (item) {
+                const count = item.count;
+                const limit = item.limit;
+                const group = item.type != "item_weapon" ? !item.group ? 1 : item.group : 5;
+
+                loadInventoryItems(item, index, group, count, limit);
+                loadInventoryWeapons(item, index, group);
+                addData(index, item);
+            }
+        };
+    }
+
+    const gunbelt_item = "gunbelt";
+    const gunbelt_label = LANGUAGE.gunbeltlabel;
+    const gunbelt_desc = LANGUAGE.gunbeltdescription;
     var data = [];
 
     let empty = true;
@@ -495,36 +589,7 @@ function inventorySetup(items) {
     }
 
     if (Config.AddAmmoItem) {
-        $("#inventoryElement").append(
-            "<div data-label='" + gunbelt_label + "' data-group='1' id='item-" + gunbelt_item + "' class='item'>" +
-                "<img src='img/items/" + gunbelt_item + ".png' style='width: 4.5vw; height: 6.7vh; object-fit: contain; display: block; margin: auto;' />" +
-                "<div class='text'></div>" +
-            "</div>"
-        );
-
-
-        $("#item-" + gunbelt_item).contextMenu([data], {
-            offsetX: 1,
-            offsetY: 1,
-        });
-
-        $("#item-" + gunbelt_item).hover(
-            function () {
-                OverSetTitle(gunbelt_label);
-            },
-            function () {
-                OverSetTitle(" ");
-            }
-        );
-
-        $("#item-" + gunbelt_item).hover(
-            function () {
-                OverSetDesc(gunbelt_desc);
-            },
-            function () {
-                OverSetDesc(" ");
-            }
-        );
+        mainInventoryFixedItems(gunbelt_label, gunbelt_desc, gunbelt_item, data);
         $("#item-" + gunbelt_item).data("item", gunbelt_item);
         $("#item-" + gunbelt_item).data("inventory", "none");
     } else {
@@ -548,9 +613,9 @@ function inventorySetup(items) {
     isOpen = true;
     initDivMouseOver();
     //AddMoney
-    var m_item = "money";
-    var m_label = LANGUAGE.inventorymoneylabel;
-    var m_desc = LANGUAGE.inventorymoneydescription;
+    const m_item = "money";
+    const m_label = LANGUAGE.inventorymoneylabel;
+    const m_desc = LANGUAGE.inventorymoneydescription;
 
     var data = [];
 
@@ -569,35 +634,8 @@ function inventorySetup(items) {
     });
 
     if (Config.AddDollarItem) {
-        $("#inventoryElement").append(
-            "<div data-label='" + m_label + "' data-group='1' id='item-" + m_item + "' class='item'>" +
-                "<img src='img/items/" + m_item + ".png' style='width: 4.5vw; height: 6.7vh; object-fit: contain; display: block; margin: auto;' />" +
-                "<div class='text'></div>" +
-            "</div>"
-        );
 
-        $("#item-" + m_item).contextMenu([data], {
-            offsetX: 1,
-            offsetY: 1,
-        });
-        $("#item-" + m_item).hover(
-            function () {
-                OverSetTitle(m_label);
-            },
-            function () {
-                OverSetTitle(" ");
-            }
-        );
-
-        $("#item-" + m_item).hover(
-            function () {
-                OverSetDesc(m_desc);
-            },
-            function () {
-                OverSetDesc(" ");
-            }
-        );
-
+        mainInventoryFixedItems(m_label, m_desc, m_item, data);
         $("#item-" + m_item).data("item", m_item);
         $("#item-" + m_item).data("inventory", "none");
     } else {
@@ -624,11 +662,11 @@ function inventorySetup(items) {
 
     if (Config.UseGoldItem) {
         //AddGold
-        var g_item = "gold";
-        var g_label = LANGUAGE.inventorygoldlabel;
-        var g_desc = LANGUAGE.inventorygolddescription;
+        const g_item = "gold";
+        const g_label = LANGUAGE.inventorygoldlabel;
+        const g_desc = LANGUAGE.inventorygolddescription;
 
-        var data = [];
+        let data = [];
 
         data.push({
             text: LANGUAGE.givegold,
@@ -645,36 +683,8 @@ function inventorySetup(items) {
         });
 
         if (Config.AddGoldItem) {
-            $("#inventoryElement").append(
-                "<div data-label='" + g_label + "' data-group='1' id='item-" + g_item + "' class='item'>" +
-                    "<img src='img/items/" + g_item + ".png' style='width: 4.5vw; height: 6.7vh; object-fit: contain; display: block; margin: auto;' />" +
-                    "<div class='text'></div>" +
-                "</div>"
-            );  
 
-            $("#item-" + g_item).contextMenu([data], {
-                offsetX: 1,
-                offsetY: 1,
-            });
-
-            $("#item-" + g_item).hover(
-                function () {
-                    OverSetTitle(g_label);
-                },
-                function () {
-                    OverSetTitle(" ");
-                }
-            );
-
-            $("#item-" + g_item).hover(
-                function () {
-                    OverSetDesc(g_desc);
-                },
-                function () {
-                    OverSetDesc(" ");
-                }
-            );
-
+            mainInventoryFixedItems(g_label, g_desc, g_item, data);
             $("#item-" + g_item).data("item", g_item);
             $("#item-" + g_item).data("inventory", "none");
         } else {
@@ -702,16 +712,14 @@ function inventorySetup(items) {
 
     /* in here we ensure that at least all divs are filled */
     if (divAmount < 12 && divAmount > 0) {
-        var emptySlots = 14 - divAmount;
-        for (var i = 0; i < emptySlots; i++) {
-            $("#inventoryElement").append(`
-          <div class='item' data-group='0'></div> `);
+        const emptySlots = 14 - divAmount;
+        for (let i = 0; i < emptySlots; i++) {
+            $("#inventoryElement").append(`<div class='item' data-group='0'></div>`);
         }
     } else if (divAmount == 0) {
-        var emptySlots = 14 - divAmount;
-        for (var i = 0; i < emptySlots; i++) {
-            $("#inventoryElement").append(`
-          <div class='item' data-group='0'></div> `);
+        const emptySlots = 14 - divAmount;
+        for (let i = 0; i < emptySlots; i++) {
+            $("#inventoryElement").append(`<div class='item' data-group='0'></div>`);
         }
 
     }

@@ -6,3 +6,5 @@ Config.AddDollarItem = false;
 Config.AddAmmoItem = false;
 Config.DoubleClickToUse = true;
 Config.WeightMeasure = "kg";
+Config.MaxItemTransferAmount = 200;
+Config.EnableCopySerial = true;

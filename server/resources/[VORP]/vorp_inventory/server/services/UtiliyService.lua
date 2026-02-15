@@ -3,7 +3,7 @@ local Core           = exports.vorp_core:GetCore()
 ---@class SvUtils @Server Utility Service
 ---@field FindAllWeaponsByName fun(invId: string, name: string): table<number, Weapon>
 ---@field FindAllItemsByName fun(invId: string, identifier: string, name: string): table<number, Item>
----@field FindItemByName fun(invId: string, identifier: string, name: string): Item
+---@field FindItemByName fun(invId: string, identifier: string, name: string): {} | nil
 ---@field FindItemByNameAndMetadata fun(invId: string, identifier: string, name: string, metadata: table): Item
 ---@field FindItemByNameAndContainingMetadata fun(invId: string, identifier: string, name: string, metadata: table): Item
 ---@field ProcessUser fun(id: number)
@@ -42,13 +42,8 @@ end
 ---@param name string
 ---@return table
 function SvUtils.FindAllItemsByName(invId, identifier, name)
-    local userInventory = nil
+    local userInventory = CustomInventoryInfos[invId].shared and UsersInventories[invId] or UsersInventories[invId][identifier]
     local items = {}
-    if CustomInventoryInfos[invId].shared then
-        userInventory = UsersInventories[invId]
-    else
-        userInventory = UsersInventories[invId][identifier]
-    end
 
     if userInventory == nil then
         return items
@@ -67,16 +62,10 @@ end
 ---@param invId string
 ---@param identifier string
 ---@param name string
----@return nil
+---@return {} | nil
 function SvUtils.FindItemByName(invId, identifier, name)
-    local userInventory = nil
-    if CustomInventoryInfos[invId].shared then
-        userInventory = UsersInventories[invId]
-    else
-        userInventory = UsersInventories[invId][identifier]
-    end
-
-    if userInventory == nil then
+    local userInventory = CustomInventoryInfos[invId].shared and UsersInventories[invId] or UsersInventories[invId][identifier]
+    if not userInventory then
         return nil
     end
 
@@ -94,17 +83,10 @@ end
 ---@param identifier string
 ---@param name string
 ---@param metadata table | nil
----@return nil
+---@return nil | table
 function SvUtils.FindItemByNameAndMetadata(invId, identifier, name, metadata)
-    local userInventory = nil
-
-    if CustomInventoryInfos[invId].shared then
-        userInventory = UsersInventories[invId]
-    else
-        userInventory = UsersInventories[invId][identifier]
-    end
-
-    if userInventory == nil then
+    local userInventory = CustomInventoryInfos[invId].shared and UsersInventories[invId] or UsersInventories[invId][identifier]
+    if not userInventory then
         return nil
     end
 
@@ -115,6 +97,7 @@ function SvUtils.FindItemByNameAndMetadata(invId, identifier, name, metadata)
             end
         end
     else
+        -- this returns the first item that matches the name, not carring for metadata
         for _, item in pairs(userInventory) do
             if name == item:getName() then
                 return item
@@ -125,6 +108,54 @@ function SvUtils.FindItemByNameAndMetadata(invId, identifier, name, metadata)
     return nil
 end
 
+-- this is used to get an item that does not contain metadata instead of using the above that just gets a random one if metadata is not passed
+---@param invId string
+---@param identifier string
+---@param name string
+---@return nil | table
+function SvUtils.GetItemNoMetadata(invId, identifier, name)
+    local userInventory = CustomInventoryInfos[invId].shared and UsersInventories[invId] or UsersInventories[invId][identifier]
+    for _, item in pairs(userInventory) do
+        if name == item:getName() and next(item:getMetadata()) == nil then
+            return item
+        end
+    end
+    return nil
+end
+
+function SvUtils.GetItemCount(invId, identifier, name, percentage)
+    local userInventory = CustomInventoryInfos[invId].shared and UsersInventories[invId] or UsersInventories[invId][identifier]
+
+    if not userInventory then return 0 end
+
+    --get item count  by percentage , this allows to control get expired items or at a desired percentage
+    local count = 0
+    for _, item in pairs(userInventory) do
+        if percentage then
+            local expiredPercentage = true
+            -- items with decay detection
+            if percentage == 0 then
+                expiredPercentage = item:getPercentage() == 0
+            else
+                expiredPercentage = item:getPercentage() >= percentage
+            end
+
+            if name == item:getName() and expiredPercentage then
+                count = count + item:getCount()
+            end
+        else
+            -- detect any items because if we change this it breaks other scripts that are using it wrong
+            if name == item:getName() then
+                -- by not allowing decay items in here we are getting the count of only normal items
+                -- in conjunction with subItem that will only delete items that dont have decay if decay detection is not passed this allows to function normal as before
+                count = count + item:getCount()
+            end
+        end
+    end
+
+    return count
+end
+
 --- returns a item that match the name and containing metadata
 ---@param invId string
 ---@param identifier string
@@ -132,15 +163,9 @@ end
 ---@param metadata table | nil
 ---@return nil
 function SvUtils.FindItemByNameAndContainingMetadata(invId, identifier, name, metadata)
-    local userInventory = nil
+    local userInventory = CustomInventoryInfos[invId].shared and UsersInventories[invId] or UsersInventories[invId][identifier]
 
-    if CustomInventoryInfos[invId].shared then
-        userInventory = UsersInventories[invId]
-    else
-        userInventory = UsersInventories[invId][identifier]
-    end
-
-    if userInventory == nil then
+    if not userInventory then
         return nil
     end
 
@@ -157,19 +182,14 @@ end
 ---@param id number user id
 function SvUtils.ProcessUser(id)
     TriggerClientEvent("vorp_inventory:transactionStarted", id)
-    table.insert(processingUser, id)
+    processingUser[id] = true
 end
 
 --- is user in processing transaction
 ---@param id number user id
 ---@return boolean
 function SvUtils.InProcessing(id)
-    for _, v in pairs(processingUser) do
-        if v == id then
-            return true
-        end
-    end
-    return false
+    return processingUser[id]
 end
 
 --- Transaction Ended
@@ -177,21 +197,19 @@ end
 ---@param keepInventoryOpen? boolean keep inventory open
 function SvUtils.Trem(id, keepInventoryOpen)
     keepInventoryOpen = keepInventoryOpen == nil and true or keepInventoryOpen
-    for k, v in pairs(processingUser) do
-        if v == id then
-            TriggerClientEvent("vorp_inventory:transactionCompleted", id, keepInventoryOpen)
-            table.remove(processingUser, k)
-        end
+    if processingUser[id] then
+        TriggerClientEvent("vorp_inventory:transactionCompleted", id, keepInventoryOpen)
+        processingUser[id] = nil
     end
 end
 
 --- does item exist in server items table meaning databse
 ---@param itemName string item name
 ---@param api string name
----@return boolean
+---@return boolean | table
 function SvUtils.DoesItemExist(itemName, api)
     if ServerItems[itemName] then
-        return true
+        return ServerItems[itemName]
     end
     print("[^2" .. api .. "7] Item [^3" .. tostring(itemName) .. "^7] does not exist in DB.")
     return false
@@ -201,24 +219,14 @@ end
 ---@param name string weapon name
 ---@return string
 function SvUtils.GenerateWeaponLabel(name)
-    for key, value in ipairs(SharedData.Weapons) do
-        if value.HashName == name then
-            return value.Name
-        end
-    end
-    return ""
+    return SharedData.Weapons[name] and SharedData.Weapons[name].Name or ""
 end
 
 --- filter weapons that should not have a serial number
 ---@param name string weapon name
 ---@return boolean
 function SvUtils.filterWeaponsSerialNumber(name)
-    for _, weapon in pairs(Config.noSerialNumber) do
-        if weapon == name then
-            return false
-        end
-    end
-    return true
+    return Config.noSerialNumber[name]
 end
 
 --- generate a unique random id
@@ -232,7 +240,7 @@ end
 --- generate a unique serial number
 ---@return string
 function SvUtils.GenerateSerialNumber(name)
-    if not SvUtils.filterWeaponsSerialNumber(name) then
+    if SvUtils.filterWeaponsSerialNumber(name) then
         return ""
     end
     local timeStamp = os.time()
@@ -246,15 +254,27 @@ function SvUtils.SendDiscordWebhook(data)
     Core.AddWebhook(data.title, data.webhook, data.description, data.color, data.name)
 end
 
+--- get weapon weight
+---@param name string | number weapon name
+---@return number
 function SvUtils.GetWeaponWeight(name)
-    for _, weapon in ipairs(SharedData.Weapons) do
-        if weapon.HashName == name:upper() then
-            return weapon.Weight
+    local weaponName = nil
+    if type(name) == "number" then
+        for _, value in pairs(SharedData.Weapons) do
+            if joaat(value.HashName) == name then
+                weaponName = value.HashName
+                break
+            end
         end
+    else
+        weaponName = name
     end
-    return 1
+    return SharedData.Weapons[weaponName] and SharedData.Weapons[weaponName].Weight or 1
 end
 
-exports("SvUtils",function()
-    return SvUtils
+AddEventHandler("playerDropped", function()
+    local _source = source
+    if processingUser[_source] then
+        processingUser[_source] = nil
+    end
 end)

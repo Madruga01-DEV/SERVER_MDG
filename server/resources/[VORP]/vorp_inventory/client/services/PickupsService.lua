@@ -1,193 +1,255 @@
-PickupsService                        = {}
-local promptGroup                     = GetRandomIntInRange(0, 0xffffff)
-local T                               = TranslationInv.Langs[Lang]
-local WorldPickups                    = {}
-local dropAll                         = false
-local lastCoords                      = {}
+local PickupsService = {}
+local T <const>      = TranslationInv.Langs[Lang]
+local WorldPickups   = {}
+local PickUpPrompt   = 0
+local group <const>  = GetRandomIntInRange(0, 0xffffff)
 
-PickupsService.CreateObject           = function(objectHash, position)
-	--TODO make it server side
-	if not HasModelLoaded(objectHash) then
-		RequestModel(objectHash, false)
-		repeat Wait(0) until HasModelLoaded(objectHash)
+function PickupsService.loadModel(model)
+	if not IsModelValid(model) then return print(model, "not a valid model") end
+
+	if not HasModelLoaded(model) then
+		RequestModel(model, false)
+		repeat Wait(0) until HasModelLoaded(model)
 	end
-
-	local entityHandle = CreateObject(joaat(objectHash), position.x, position.y, position.z, true, false, false, false)
-	repeat Wait(0) until DoesEntityExist(entityHandle)
-	PlaceObjectOnGroundProperly(entityHandle, false)
-	SetEntityAsMissionEntity(entityHandle, true, false)
-	FreezeEntityPosition(entityHandle, true)
-	SetPickupLight(entityHandle, true)
-	SetEntityCollision(entityHandle, false, true)
-	SetModelAsNoLongerNeeded(objectHash)
-	return entityHandle
 end
 
-PickupsService.createPickup           = function(name, amount, metadata, weaponId, id)
-	local playerPed   = PlayerPedId()
-	local coords      = GetEntityCoords(playerPed, true, true)
-	local forward     = GetEntityForwardVector(playerPed)
-	local position    = vector3(coords.x + forward.x * 1.6, coords.y + forward.y * 1.6, coords.z + forward.z * 1.6)
-	local pickupModel = "P_COTTONBOX01X"
-
-	if dropAll then
-		local randomOffsetX = math.random(-35, 35)
-		local randomOffsetY = math.random(-35, 35)
-		position = vector3(lastCoords.x + (randomOffsetX / 10.0), lastCoords.y + (randomOffsetY / 10.0), lastCoords.z)
+function PickupsService.getUniqueId()
+	local index = GetRandomIntInRange(0, 0xffffff)
+	while WorldPickups[index] do
+		index = GetRandomIntInRange(0, 0xffffff)
 	end
+	return index
+end
 
-	local entityHandle = PickupsService.CreateObject(pickupModel, position)
-	local data = { name = name, obj = entityHandle, amount = amount, metadata = metadata, weaponId = weaponId, position = position, id = id }
+local function createPrompt()
+	PickUpPrompt = UiPromptRegisterBegin()
+	UiPromptSetControlAction(PickUpPrompt, Config.PickupKey)
+	UiPromptSetText(PickUpPrompt, VarString(10, "LITERAL_STRING", T.TakeFromFloor))
+	UiPromptSetEnabled(PickUpPrompt, true)
+	UiPromptSetVisible(PickUpPrompt, true)
+	UiPromptSetHoldMode(PickUpPrompt, 1000)
+	UiPromptSetGroup(PickUpPrompt, group, 0)
+	UiPromptRegisterEnd(PickUpPrompt)
+end
 
+local function getRandomPositionAround(position, radius)
+	local angle <const> = math.random() * 2 * math.pi -- Random angle in radians
+	local dx = radius * math.cos(angle)
+	local dy = radius * math.sin(angle)
+
+	return vector3(position.x + dx, position.y + dy, position.z)
+end
+
+
+function PickupsService.CreateObject(objectHash, position, itemType)
+	if itemType == "item_standard" then
+		local model <const> = Config.spawnableProps[objectHash] or Config.spawnableProps.default_box
+		PickupsService.loadModel(model)
+		local entityHandle <const> = CreateObject(joaat(model), position.x, position.y, position.z - 1, false, false, false, false)
+		repeat Wait(0) until DoesEntityExist(entityHandle)
+
+		PlaceObjectOnGroundProperly(entityHandle, false)
+		FreezeEntityPosition(entityHandle, true)
+		SetPickupLight(entityHandle, true)
+		SetEntityCollision(entityHandle, false, true)
+		SetModelAsNoLongerNeeded(model)
+
+		return entityHandle
+	else
+		if not SharedData.Weapons[objectHash] then
+			return PickupsService.CreateObject("default_box", position, "item_standard")
+		end
+
+		if not Config.UseWeaponModels then
+			return PickupsService.CreateObject("default_box", position, "item_standard")
+		end
+
+		Citizen.InvokeNative(0x72D4CB5DB927009C, joaat(objectHash), 1, true) -- request weapon asset
+		repeat Wait(0) until Citizen.InvokeNative(0xFF07CF465F48B830, joaat(objectHash))
+		local object <const> = CreateWeaponObject(joaat(objectHash), 0, position.x, position.y, position.z, true, 1.0)
+		repeat Wait(0) until DoesEntityExist(object)
+		PlaceObjectOnGroundProperly(object, true)
+		SetPickupLight(object, true)
+		SetEntityVisible(object, true)
+		if Config.weaponAdjustments[objectHash] then
+			SetEntityRotation(object, Config.weaponAdjustments[objectHash], 0.0, 0.0, 0, true)
+		end
+
+		SetEntityCollision(object, false, false)
+		SetEntityInvincible(object, true)
+		SetEntityProofs(object, 1, true)
+		FreezeEntityPosition(object, true)
+
+		return object
+	end
+end
+
+function PickupsService.createPickup(name, amount, metadata, weaponId, id, degradation)
+	local playerPed <const> = PlayerPedId()
+	local coords <const>    = GetEntityCoords(playerPed, true, true)
+	local forward <const>   = GetEntityForwardVector(playerPed)
+	local position          = vector3(coords.x + forward.x * 1.6, coords.y + forward.y * 1.6, coords.z + forward.z * 1.6)
+	position                = getRandomPositionAround(position, 1)
+	local index <const>     = PickupsService.getUniqueId()
+	local data <const>      = { name = name, obj = index, amount = amount, metadata = metadata, weaponId = weaponId, position = position, id = id, degradation = degradation }
 	if weaponId == 1 then
 		TriggerServerEvent("vorpinventory:sharePickupServerItem", data)
 	else
 		TriggerServerEvent("vorpinventory:sharePickupServerWeapon", data)
 	end
-	PlaySoundFrontend("show_info", "Study_Sounds", true, 0)
+	Wait(1000)
+	if Config.SFX.ItemDrop then
+		PlaySoundFrontend("show_info", "Study_Sounds", true, 0)
+	end
 end
 
-PickupsService.createMoneyPickup      = function(amount)
-	local playerPed   = PlayerPedId()
-	local coords      = GetEntityCoords(playerPed, true, true)
-	local forward     = GetEntityForwardVector(playerPed)
-	local position    = vector3(coords.x + forward.x * 1.6, coords.y + forward.y * 1.6, coords.z + forward.z * 1.6)
-	local pickupModel = "p_moneybag02x"
+RegisterNetEvent("vorpInventory:createPickup", PickupsService.createPickup)
 
-	if dropAll then
-		local randomOffsetX = math.random(-35, 35)
-		local randomOffsetY = math.random(-35, 35)
-		position = vector3(lastCoords.x + (randomOffsetX / 10.0), lastCoords.y + (randomOffsetY / 10.0), lastCoords.z)
+function PickupsService.createMoneyPickup(amount)
+	local playerPed <const> = PlayerPedId()
+	local coords <const>    = GetEntityCoords(playerPed, true, true)
+	local forward <const>   = GetEntityForwardVector(playerPed)
+	local position          = vector3(coords.x + forward.x * 1.6, coords.y + forward.y * 1.6, coords.z + forward.z * 1.6)
+	position                = getRandomPositionAround(position, 1)
+	local handle <const>    = PickupsService.getUniqueId()
+	local data <const>      = { handle = handle, amount = amount, position = position }
+	TriggerServerEvent("vorpinventory:shareMoneyPickupServer", data)
+	Wait(1000)
+	if Config.SFX.MoneyDrop then
+		PlaySoundFrontend("show_info", "Study_Sounds", true, 0)
 	end
-
-	local entityHandle = PickupsService.CreateObject(pickupModel, position)
-
-	TriggerServerEvent("vorpinventory:shareMoneyPickupServer", entityHandle, amount, position)
-	PlaySoundFrontend("show_info", "Study_Sounds", true, 0)
 end
 
-PickupsService.createGoldPickup       = function(amount)
-	if not Config.UseGoldItem then
-		return
+RegisterNetEvent("vorpInventory:createMoneyPickup", PickupsService.createMoneyPickup)
+
+function PickupsService.createGoldPickup(amount)
+	if not Config.UseGoldItem then return end
+
+	local playerPed <const> = PlayerPedId()
+	local coords <const>    = GetEntityCoords(playerPed, true, true)
+	local forward <const>   = GetEntityForwardVector(playerPed)
+	local position          = vector3(coords.x + forward.x * 1.6, coords.y + forward.y * 1.6, coords.z + forward.z * 1.6)
+	position                = getRandomPositionAround(position, 1)
+	local handle <const>    = PickupsService.getUniqueId()
+	local data <const>      = { handle = handle, amount = amount, position = position }
+	TriggerServerEvent("vorpinventory:shareGoldPickupServer", data)
+	Wait(1000)
+	if Config.SFX.GoldDrop then
+		PlaySoundFrontend("show_info", "Study_Sounds", true, 0)
 	end
-
-	local playerPed   = PlayerPedId()
-	local coords      = GetEntityCoords(playerPed, true, true)
-	local forward     = GetEntityForwardVector(playerPed)
-	local position    = vector3(coords.x + forward.x * 1.6, coords.y + forward.y * 1.6, coords.z + forward.z * 1.6)
-	local pickupModel = "s_pickup_goldbar01x"
-
-	if dropAll then
-		local randomOffsetX = math.random(-35, 35)
-		local randomOffsetY = math.random(-35, 35)
-
-		position = vector3(lastCoords.x + (randomOffsetX / 10.0), lastCoords.y + (randomOffsetY / 10.0), lastCoords.z)
-	end
-
-	local entityHandle = PickupsService.CreateObject(pickupModel, position)
-
-	TriggerServerEvent("vorpinventory:shareGoldPickupServer", entityHandle, amount, position)
-	PlaySoundFrontend("show_info", "Study_Sounds", true, 0)
 end
 
-PickupsService.sharePickupClient      = function(data, value)
+RegisterNetEvent("vorpInventory:createGoldPickup", PickupsService.createGoldPickup)
+
+function PickupsService.sharePickupClient(data, value)
 	if value == 1 then
-		if WorldPickups[data.obj] == nil then
-			local label = Utils.GetLabel(data.name, data.weaponId)
+		if WorldPickups[data.obj] then return end
+		local id = 1
 
-			local pickup = Pickup:New({
-				name     = (data.amount > 1) and label .. " x " .. tostring(data.amount) or label,
-				entityId = data.obj,
-				amount   = data.amount,
-				metadata = data.metadata,
-				weaponId = data.weaponId,
-				coords   = data.position,
-				prompt   = Prompt:New(0xF84FA74F, T.TakeFromFloor, PromptType.StandardHold, promptGroup),
-				uid      = data.uid
-
-			})
-			pickup.prompt:SetVisible(false)
-			WorldPickups[data.obj] = pickup
-			if Config.Debug then
-				print('Item pickup added: ' .. tostring(pickup.name))
+		if data.type == "item_standard" then
+			local item <const> = UserInventory[data.id]
+			if item then
+				item:quitCount(data.amount)
+				if item:getCount() == 0 then
+					UserInventory[data.id] = nil
+				end
 			end
+			id = 2
 		end
+
+		local label <const> = Utils.GetLabel(data.name, id, data.metadata)
+		if not label then
+			print(("label not found for %s %s"):format(data.name, id))
+		end
+		local pickup <const> = {
+			label    = (label or data.name) .. " x " .. tostring(data.amount),
+			entityId = 0,
+			coords   = data.position,
+			uid      = data.uid,
+			type     = data.type,
+			name     = data.name,
+		}
+		WorldPickups[data.obj] = pickup
+
+		NUIService.LoadInv()
 	else
-		if WorldPickups[data.obj] ~= nil then
-			WorldPickups[data.obj].prompt:Delete()
-			Utils.TableRemoveByKey(WorldPickups, data.obj)
+		local pickup <const> = WorldPickups[data.obj]
+		if pickup then
+			if pickup.entityId and DoesEntityExist(pickup.entityId) then
+				DeleteEntity(pickup.entityId)
+			end
+			WorldPickups[data.obj] = nil
 		end
 	end
 end
 
-PickupsService.shareMoneyPickupClient = function(entityHandle, amount, position, value)
+RegisterNetEvent("vorpInventory:sharePickupClient", PickupsService.sharePickupClient)
+
+function PickupsService.shareMoneyPickupClient(handle, amount, position, uuid, value)
 	if value == 1 then
-		if WorldPickups[entityHandle] == nil then
-			local pickup = Pickup:New({
-				name = "Money ($" .. tostring(amount) .. ")",
-				entityId = entityHandle,
+		if WorldPickups[handle] == nil then
+			local pickup <const> = {
+				label = T.money .. tostring(amount) .. ")",
+				entityId = 0,
 				amount = amount,
 				isMoney = true,
 				isGold = false,
 				coords = position,
-				prompt = Prompt:New(0xF84FA74F, T.TakeFromFloor, PromptType.StandardHold, promptGroup)
-			})
-
-			pickup.prompt:SetVisible(false)
-			WorldPickups[entityHandle] = pickup
+				uuid = uuid,
+				type = "item_standard",
+				name = "money_bag"
+			}
+			WorldPickups[handle] = pickup
 		end
 	else
-		if WorldPickups[entityHandle] ~= nil then
-			WorldPickups[entityHandle].prompt:Delete()
-			Utils.TableRemoveByKey(WorldPickups, entityHandle)
+		local pickup <const> = WorldPickups[handle]
+		if pickup then
+			if pickup.entityId and DoesEntityExist(pickup.entityId) then
+				DeleteEntity(pickup.entityId)
+			end
+
+			WorldPickups[handle] = nil
 		end
 	end
 end
 
-PickupsService.shareGoldPickupClient  = function(entityHandle, amount, position, value)
+RegisterNetEvent("vorpInventory:shareMoneyPickupClient", PickupsService.shareMoneyPickupClient)
+
+function PickupsService.shareGoldPickupClient(handle, amount, position, uuid, value)
 	if value == 1 then
-		if WorldPickups[entityHandle] == nil then
-			local pickup = Pickup:New({
-				name = "Gold (" .. tostring(amount) .. ")",
-				entityId = entityHandle,
+		if not WorldPickups[handle] then
+			local pickup <const> = {
+				label = T.gold .. " (" .. tostring(amount) .. ")",
+				entityId = 0,
 				amount = amount,
 				isMoney = false,
 				isGold = true,
 				coords = position,
-				prompt = Prompt:New(0xF84FA74F, T.TakeFromFloor, PromptType.StandardHold, promptGroup)
-			})
+				uuid = uuid,
+				type = "item_standard",
+				name = "gold_bag"
+			}
 
-
-			pickup.prompt:SetVisible(false)
-			WorldPickups[entityHandle] = pickup
+			WorldPickups[handle] = pickup
 		end
 	else
-		if WorldPickups[entityHandle] ~= nil then
-			WorldPickups[entityHandle].prompt:Delete()
-			Utils.TableRemoveByKey(WorldPickups, entityHandle)
+		local pickup <const> = WorldPickups[handle]
+		if pickup then
+			if pickup.entityId and DoesEntityExist(pickup.entityId) then
+				DeleteEntity(pickup.entityId)
+			end
+
+			WorldPickups[handle] = nil
 		end
 	end
 end
 
-PickupsService.removePickupClient     = function(entityHandle)
-	SetEntityAsMissionEntity(entityHandle, false, true)
-	NetworkRequestControlOfEntity(entityHandle)
+RegisterNetEvent("vorpInventory:shareGoldPickupClient", PickupsService.shareGoldPickupClient)
 
-	local timeout = 0
-	while not NetworkHasControlOfEntity(entityHandle) and timeout < 5000 do
-		timeout = timeout + 100
-		if timeout >= 5000 then
-			print("Failed to get Control of the Entity" .. entityHandle)
-			break
-		end
-		Wait(100)
-	end
-	DeleteObject(entityHandle)
-end
 
-PickupsService.playerAnim             = function()
-	local playerPed = PlayerPedId()
-	local animDict  = "amb_work@world_human_box_pickup@1@male_a@stand_exit_withprop"
+function PickupsService.playerAnim()
+	local playerPed <const> = PlayerPedId()
+	local animDict <const> = "amb_work@world_human_box_pickup@1@male_a@stand_exit_withprop"
 	if not HasAnimDictLoaded(animDict) then
 		RequestAnimDict(animDict)
 		repeat Wait(0) until HasAnimDictLoaded(animDict)
@@ -195,78 +257,27 @@ PickupsService.playerAnim             = function()
 
 	TaskPlayAnim(playerPed, animDict, "exit_front", 1.0, 8.0, -1, 1, 0, false, false, false)
 	Wait(1200)
-	PlaySoundFrontend("CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET", true, 1)
+	if Config.SFX.PickUp then
+		PlaySoundFrontend("CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET", true, 1)
+	end
 	Wait(1000)
-	ClearPedTasks(playerPed)
+	ClearPedTasks(playerPed, true, true)
 end
 
-PickupsService.DeadActions            = function()
-	local playerPed = PlayerPedId()
-	lastCoords = GetEntityCoords(playerPed, true, true)
-	dropAll = true
-	PickupsService.dropAllPlease()
-end
+RegisterNetEvent("vorpInventory:playerAnim", PickupsService.playerAnim)
 
-PickupsService.dropAllPlease          = function()
-	if Config.UseClearAll then
-		return
-	end
-
-	if Config.DropOnRespawn.AllMoney then
-		TriggerServerEvent("vorpinventory:serverDropAllMoney")
-	end
-
-	if Config.DropOnRespawn.PartMoney then
-		TriggerServerEvent("vorpinventory:serverDropPartMoney")
-	end
-
-	if Config.UseGoldItem and Config.DropOnRespawn.Gold then
-		TriggerServerEvent("vorpinventory:serverDropAllGold")
-	end
-
-	if Config.DropOnRespawn.Items then
-		for _, item in pairs(UserInventory) do
-			local itemName = item:getName()
-			local itemCount = item:getCount()
-			local itemMetadata = item:getMetadata()
-
-			TriggerServerEvent("vorpinventory:serverDropItem", itemName, item.id, itemCount, itemMetadata)
-		end
-	end
-
-	if Config.DropOnRespawn.Weapons then
-		for index, weapon in pairs(UserWeapons) do
-			TriggerServerEvent("vorpinventory:serverDropWeapon", index)
-
-			if next(UserWeapons[index]) then
-				local currentWeapon = UserWeapons[index]
-
-				if currentWeapon:getUsed() then
-					currentWeapon:setUsed(false)
-					RemoveWeaponFromPed(PlayerPedId(), joaat(currentWeapon:getName()), true, 0)
-				end
-
-				UserWeapons[index] = nil
-			end
-		end
-	end
-
-	SetTimeout(500, function()
-		dropAll = false
-	end)
-end
 
 CreateThread(function()
 	local function isAnyPlayerNear()
-		local playerPed = PlayerPedId()
-		local playerCoords = GetEntityCoords(playerPed, true, true)
-		local players = GetActivePlayers()
-		local count = 0
+		local playerPed <const>    = PlayerPedId()
+		local playerCoords <const> = GetEntityCoords(playerPed, true, true)
+		local players <const>      = GetActivePlayers()
+		local count                = 0
 		for _, player in ipairs(players) do
 			local targetPed = GetPlayerPed(player)
 			if player ~= PlayerId() then
-				local targetCoords = GetEntityCoords(targetPed, true, true)
-				local distance = #(playerCoords - targetCoords)
+				local targetCoords <const> = GetEntityCoords(targetPed, true, true)
+				local distance <const> = #(playerCoords - targetCoords)
 				if distance < 2.0 then
 					count = count + 1
 				end
@@ -277,62 +288,77 @@ CreateThread(function()
 	end
 
 	repeat Wait(2000) until LocalPlayer.state.IsInSession
-
+	createPrompt()
 	local pressed = false
 	while true do
 		local sleep = 1000
-		if not InInventory then
-			if next(WorldPickups) then
-				local playerPed = PlayerPedId()
-				local pickupsInRange = {}
 
-				for key, value in pairs(WorldPickups) do
-					if value:IsInRange() then
-						table.insert(pickupsInRange, value)
-					end
+		local playerPed <const> = PlayerPedId()
+		local isDead <const> = IsEntityDead(playerPed)
+
+
+		for key, pickup in pairs(WorldPickups) do
+			local dist <const> = #(GetEntityCoords(playerPed) - pickup.coords)
+
+			if dist < 80.0 then
+				if pickup.entityId == 0 or not DoesEntityExist(pickup.entityId) then
+					pickup.entityId = PickupsService.CreateObject(pickup.name, pickup.coords, pickup.type)
 				end
+			else
+				if DoesEntityExist(pickup.entityId) then
+					DeleteEntity(pickup.entityId)
+					pickup.entityId = 0
+				end
+			end
 
-				table.sort(pickupsInRange, function(left, right)
-					return left:Distance() < right:Distance()
-				end)
+			UiPromptSetVisible(PickUpPrompt, not isDead)
 
-				for key, pickup in pairs(pickupsInRange) do
-					if pickup:Distance() <= 1.2 then
-						sleep = 0
+			if dist <= 1.0 and not InInventory then
+				sleep = 0
+				local label = VarString(10, "LITERAL_STRING", pickup.label)
+				UiPromptSetActiveGroupThisFrame(group, label, 0, 0, 0, 0)
 
-						TaskLookAtEntity(playerPed, pickup.entityId, 1500, 2048, 3, 0)
-						local isDead = IsEntityDead(playerPed)
-						pickup.prompt:SetVisible(not isDead)
+				if UiPromptHasHoldModeCompleted(PickUpPrompt) then
+					if pickup.entityId == WorldPickups[key].entityId then
+						if not pressed then
+							pressed = true
 
-						local promptSubLabel = CreateVarString(10, "LITERAL_STRING", pickup.name)
-						UiPromptSetActiveGroupThisFrame(promptGroup, promptSubLabel, 0, 0, 0, 0)
-
-						if pickup.prompt:HasHoldModeCompleted() then
 							if isAnyPlayerNear() == 0 then
-								if not pressed then
-									pressed = true
-									if pickup.isMoney then
-										TriggerServerEvent("vorpinventory:onPickupMoney", pickup.entityId)
-									elseif Config.UseGoldItem and pickup.isGold then
-										TriggerServerEvent("vorpinventory:onPickupGold", pickup.entityId)
-									else
-										local data = { data = pickupsInRange, key = key }
-										TriggerServerEvent("vorpinventory:onPickup", data)
-									end
+								print(Config.UseGoldItem, pickup.isGold)
+								if pickup.isMoney then
+									local data = { obj = key, uuid = pickup.uuid }
+									TriggerServerEvent("vorpinventory:onPickupMoney", data)
+								elseif Config.UseGoldItem and pickup.isGold then
+									local data = { obj = key, uuid = pickup.uuid }
+									TriggerServerEvent("vorpinventory:onPickupGold", data)
+								else
+									local data = { uid = pickup.uid, obj = key }
+									TriggerServerEvent("vorpinventory:onPickup", data)
 								end
+								TaskLookAtEntity(playerPed, pickup.entityId, 1000, 2048, 3, 0)
 							end
+
 							SetTimeout(4000, function()
 								pressed = false
 							end)
-						end
-					else
-						if pickup.prompt:GetEnabled() then
-							pickup.prompt:SetVisible(false)
 						end
 					end
 				end
 			end
 		end
 		Wait(sleep)
+	end
+end)
+
+
+-- for debug
+AddEventHandler("onResourceStop", function(resourceName)
+	if GetCurrentResourceName() ~= resourceName then return end
+	if not Config.DevMode then return end
+	--delete all entities
+	for key, value in pairs(WorldPickups) do
+		if DoesEntityExist(value.entityId) then
+			DeleteEntity(value.entityId)
+		end
 	end
 end)

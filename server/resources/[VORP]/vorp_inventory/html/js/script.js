@@ -24,12 +24,16 @@ $("document").ready(function () {
     initSecondaryInventoryHandlers();
 });
 
+
 window.onload = initDivMouseOver;
 
 let stopTooltip = false;
 
 window.addEventListener('message', function (event) {
 
+    if (event.data.action == "cacheImages") {
+        preloadImages(event.data.info);
+    }
 
     if (event.data.action == "initiate") {
         LANGUAGE = event.data.language
@@ -105,25 +109,6 @@ window.addEventListener('message', function (event) {
 
         $('#check').html('')
         $("#check").append(`<button id='check'>${checkxy}/${infoxy + " " + Config.WeightMeasure}</button>`);
-
-        let avg = Math.floor((checkxy / infoxy) * 100); 
-        setProgress(avg); 
-    }
-    if (event.data.action == "setPlayerIDS") {
-        $(".player-container").off("click"); // click dinleyicisini kaldır
-        $(".players").html("");
-        let array = event.data.array
-        let html = "";
-        for (let index = 0; index < array.length; index++) {
-            const element = array[index];
-            html = `${html}<div class="player-container" onclick="validatePlayerSelection(${element.playerid})" data-id="${element.playerid}" style="left:${element.x*100}%;top:${element.y*100}%">
-            <span class="player-idtext" >ID: ${element.playerid}</span>
-            <iconify-icon icon="mdi:account-cowboy-hat" id="cowboy-icon"></iconify-icon>
-            </div>`
-            
-        }
-        $(".players").html(html);
-   
     }
 
     //main inv
@@ -221,10 +206,6 @@ window.addEventListener('message', function (event) {
         $("#close").on('click', function (event) {
             closeInventory();
         });
-        $(".trade-btn").on('click', function (event) {
-            $.post(`https://${GetParentResourceName()}/sendTrade`, JSON.stringify({}));
-            closeInventory();
-        });
 
     } else if (event.data.action == "hide") {
         $('.tooltip').remove();
@@ -241,6 +222,8 @@ window.addEventListener('message', function (event) {
         dialog.close();
         stopTooltip = true;
     } else if (event.data.action == "setItems") {
+        TIME_NOW = event.data.timenow
+
         inventorySetup(event.data.itemList);
 
         if (type != "main") {
@@ -255,12 +238,6 @@ window.addEventListener('message', function (event) {
                     if (disabled) {
                         return false;
                     }
-                    var currentWidth = $(this).width();
-                    var currentHeight = $(this).height();
-                    var newWidth = currentWidth * 1.1;
-                    var newHeight = currentHeight * 1.1;
-                    ui.helper.width(newWidth);
-                    ui.helper.height(newHeight);
                     stopTooltip = true;
                     itemData = $(this).data("item");
                     itemInventory = $(this).data("inventory");
@@ -287,33 +264,24 @@ window.addEventListener('message', function (event) {
                 }
             });
         }
-
     } else if (event.data.action == "setSecondInventoryItems") {
+
         secondInventorySetup(event.data.itemList, event.data.info);
 
         let l = event.data.itemList.length
         let itemlist = event.data.itemList
         let total = 0
         let p = 0
-
-        if (event.data.useWeight) {
-            total = event.data.totalWeight
-        } else {
-            for (p; p < l; p++) {
-                total += Number(itemlist[p].count)
-            }
+        for (p; p < l; p++) {
+            total += Number(itemlist[p].count)
         }
-
         let weight = null
         //amount of items in Inventory
         secondarySetCurrentCapacity(total, weight)
-
     } else if (event.data.action == "nearPlayers") {
         if (event.data.what == "give") {
             selectPlayerToGive(event.data);
         }
-    } else if (event.data.action == "closeGiveMenu") {
-        $(".players").html("");
     }
 });
 
@@ -321,4 +289,4 @@ window.addEventListener("offline", function () {
     closeInventory()
 });
 
-//for gold cash and ID
+
