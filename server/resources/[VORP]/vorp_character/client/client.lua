@@ -174,7 +174,12 @@ local function ApplyAllComponents(category, value, ped, set)
 
 	local status = not set and "false" or GetResourceKvpString((tostring(value.comp)):format(CHARID or 0))
 	if status == "true" then
-		return RemoveTagFromMetaPed(Config.ComponentCategories[category])
+		local isDefault = (value.tint0 or 0) == 0 and (value.tint1 or 0) == 0 and (value.tint2 or 0) == 0 and (value.palette or 0) == 0
+		if isDefault then
+			SetResourceKvp((tostring(value.comp)):format(CHARID or 0), "false")
+		else
+			return RemoveTagFromMetaPed(Config.ComponentCategories[category])
+		end
 	end
 
 	ApplyShopItemToPed(value.comp, ped)
@@ -401,6 +406,7 @@ end
 
 local function finishSelection(boolean)
 	MenuData.CloseAll()
+	SendNUIMessage({ ak_menubase_action = 'closeAll' })
 	if boolean then
 		DoScreenFadeOut(2000)
 		repeat Wait(0) until IsScreenFadedOut()
@@ -566,6 +572,7 @@ end
 
 function OpenMenuSelect()
 	MenuData.CloseAll()
+	SendNUIMessage({ ak_menubase_action = 'closeAll' })
 	local elements = {}
 
 	for key, value in ipairs(myChars) do
