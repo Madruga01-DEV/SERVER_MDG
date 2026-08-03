@@ -685,7 +685,7 @@ Translation.Langs = {
             Age = "Idade: ",
             Money = "Dinheiro: ",
             Gold = "Ouro: ",
-            GenderChoice = " para escolher o gênero, pressione para aceitar ",
+            GenderChoice = " escolher o gênero",
             undress = { label = "Undress", desc = "Remove all clothes" },
             dress = { label = "Dress", desc = "Put on all clothes" },
             pocketmoney = "~q~ Bolso ~o~$",
@@ -737,7 +737,7 @@ Translation.Langs = {
                 nickname = "Apelido",
             },
             charname = "Nome do personagem",
-            none = "Vazio!",
+            none = "Nome Sobrenome",
             finish = "Preencha tudo primeiro!",
         },
         MenuClothes = {
@@ -879,7 +879,7 @@ Translation.Langs = {
 
         },
         MenuFacial = {
-            title = "Características da Cara",
+            title = "Rosto",
             subtitle = "Escolha as Características da sua Face",
             element = { label = "Cor dos Olhos", desc = "Ajuste a Cor dos Olhos" },
             element2 = { label = "Dentes", desc = "Ajuste o tipo de Dentes " },
@@ -897,7 +897,7 @@ Translation.Langs = {
             amount = "Amount"
         },
         MenuFaceModify = {
-            title = "Características da Cara",
+            title = "Rosto",
             subtitle = "Ajuste a sua Cara",
             element = { label = "", desc = "Selecionado: " },
         },
@@ -995,7 +995,7 @@ Translation.Langs = {
             Age = "Idade: ",
             Money = "Dinheiro: ",
             Gold = "Ouro: ",
-            GenderChoice = " para escolher o gênero, pressione para aceitar ",
+            GenderChoice = " escolher o gênero ",
             undress = { label = "Despir-se", desc = "Remover todas as roupas" },
             dress = { label = "Vestir-se", desc = "Colocar todas as roupas" },
             pocketmoney = "~q~ Dinheiro no Bolso ~o~$",
@@ -1004,7 +1004,7 @@ Translation.Langs = {
         },
         Secondchance = {
             title = "Segunda Chance",
-            DescAppearance = "Aparência facial, corpo, maquiagem, altura, cabelo",
+            DescAppearance = "Geral",
             DescClothing = "Botas, coletes, casacos, camisas, cintos, chapéus"
         },
         Placeholder = {
@@ -1021,7 +1021,7 @@ Translation.Langs = {
             title1 = "Seleção de Personagem",
             label = "Nome Escolhido",
             subtitle1 = "Menu do Personagem",
-            element = { label = "Aparência do Personagem", desc = "Escolha a aparência do seu personagem" },
+            element = { label = "Aparência", desc = "Escolha a aparência do seu personagem" },
             element2 = { label = "Menu de Roupas", desc = "Escolha as roupas do seu personagem" },
             element3 = { label = "Escolher um Nome", desc = "Escolha um nome para o seu personagem. Certifique-se de ler as regras para nomes de personagens. Se você não seguir as regras, este personagem será excluído sem aviso prévio." },
             element4 = { label = "Iniciar Jornada", desc = "Inicie sua jornada pressionando a tecla Enter" },
@@ -1108,7 +1108,7 @@ Translation.Langs = {
             element3 = { label = "Cabelo", desc = "Escolha o tipo de cabelo do seu personagem", desc2 = "opções de cabelo, barba e sobrancelhas" },
             element4 = { label = "Envelhecimento", desc = "Idade do personagem", desc2 = "rugas faciais e sinais de envelhecimento" },
             element5 = { label = "Altura", desc = "Escolha a estatura do seu personagem<br> Alto 3, médio 2, baixo 1" },
-            element6 = { label = "Características Corporais", desc = "Escolha entre modificações no corpo superior ou inferior, rosto, cabeça, lábios, olhos, etc", desc2 = "bochechas, orelhas, olhos, nariz" },
+            element6 = { label = "Corpo", desc = "Escolha entre modificações no corpo superior ou inferior, rosto, cabeça, lábios, olhos, etc", desc2 = "bochechas, orelhas, olhos, nariz" },
             element7 = { label = "Estilo de Vida", desc = "Escolha o estilo de vida do seu personagem", desc2 = "marcas de sol, manchas, sardas" },
             element8 = { label = "Maquiagem", desc = "Escolha a maquiagem", desc2 = "base, batom, blush, delineador" },
             short = "Baixo",

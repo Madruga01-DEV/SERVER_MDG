@@ -77,11 +77,40 @@ local function Setup()
 	SetCamParams(cam, vec3(-562.15, -3776.22, 239.11), vec3(-4.71, 0.0, -93.14), 45.0, 0, 1, 1, 2, 1, 1)
 
 	Wait(1000)
-	Core.NotifyObjective('~INPUT_CREATOR_MENU_TOGGLE~' .. T.Other.GenderChoice .. '~INPUT_CREATOR_ACCEPT~', -1)
 	SetCamFocusDistance(cam, 4.0)
+
+	-- Prompts nativos para seleção de gênero (substitui NotifyObjective que sumia)
+	local genderPromptGroup = GetRandomIntInRange(0, 0xffffff)
+
+	local togglePrompt = UiPromptRegisterBegin()
+	UiPromptSetControlAction(togglePrompt, `INPUT_CREATOR_MENU_TOGGLE`)
+	local toggleStr = VarString(10, 'LITERAL_STRING', T.Other.GenderChoice or "Trocar Gênero")
+	UiPromptSetText(togglePrompt, toggleStr)
+	UiPromptSetEnabled(togglePrompt, true)
+	UiPromptSetVisible(togglePrompt, true)
+	UiPromptSetStandardMode(togglePrompt, true)
+	UiPromptSetGroup(togglePrompt, genderPromptGroup, 0)
+	UiPromptRegisterEnd(togglePrompt)
+
+	local acceptPrompt = UiPromptRegisterBegin()
+	UiPromptSetControlAction(acceptPrompt, `INPUT_CREATOR_ACCEPT`)
+	local acceptStr = VarString(10, 'LITERAL_STRING', T.Other.GenderConfirm or "Confirmar")
+	UiPromptSetText(acceptPrompt, acceptStr)
+	UiPromptSetEnabled(acceptPrompt, true)
+	UiPromptSetVisible(acceptPrompt, true)
+	UiPromptSetStandardMode(acceptPrompt, true)
+	UiPromptSetGroup(acceptPrompt, genderPromptGroup, 0)
+	UiPromptRegisterEnd(acceptPrompt)
+
+	local groupLabel = VarString(10, 'LITERAL_STRING', T.Other.GenderGroupLabel or "Seleção de Personagem")
 
 	local char = 1
 	while true do
+		Wait(0)
+
+		-- ativa o grupo de prompts TODO FRAME (não pode ser limpo por nada)
+		UiPromptSetActiveGroupThisFrame(genderPromptGroup, groupLabel, 0, 0, 0, 0)
+
 		if IsControlJustPressed(0, `INPUT_CREATOR_MENU_TOGGLE`) then
 			char = (char + 1) % 2
 			local view = Config.Intro.views[char + 1]
@@ -95,6 +124,8 @@ local function Setup()
 				end)
 
 				while not transEnd do
+					-- mantém prompt ativo durante a transição também
+					UiPromptSetActiveGroupThisFrame(genderPromptGroup, groupLabel, 0, 0, 0, 0)
 					Wait(0)
 				end
 			end
@@ -107,9 +138,13 @@ local function Setup()
 			PlaySoundFrontend("SELECT", "RDRO_Character_Creator_Sounds", true, 0);
 			break
 		end
-
-		Wait(0)
 	end
+
+	-- limpa os prompts antes de seguir
+	UiPromptDelete(togglePrompt)
+	UiPromptDelete(acceptPrompt)
+	togglePrompt = nil
+	acceptPrompt = nil
 
 	UiFeedClearChannel(3, true, false)
 	local ped = peds[char + 1]

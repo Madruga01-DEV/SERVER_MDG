@@ -123,8 +123,10 @@ RegisterServerEvent("vorpcharacter:saveCharacter", function(data)
 	local _source = source
 	Core.getUser(_source).addCharacter(data)
 	Wait(600)
-	local iniPos, iniHead = iniSpawn()
-	TriggerClientEvent("vorp:initCharacter", _source, iniPos, iniHead, false)
+	if not Config.UseExternalSpawn then
+		local iniPos, iniHead = iniSpawn()
+		TriggerClientEvent("vorp:initCharacter", _source, iniPos, iniHead, false)
+	end
 	SetTimeout(3000, function()
 		TriggerEvent("vorp_NewCharacter", _source)
 	end)

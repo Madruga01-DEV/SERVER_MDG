@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@400;500;700;800;900&display=swap');
+
 @font-face {
 	font-family: crock;
 	src: url(../fonts/crock.ttf) format('truetype')
@@ -6,6 +8,11 @@
 @font-face {
 	font-family: HapnaSlabSerif-Medium;
 	src: url(../fonts/HapnaSlabSerif-Medium.ttf) format('truetype')
+}
+
+* {
+	user-select: none;
+	box-sizing: border-box;
 }
 
 .item-image {
@@ -21,25 +28,26 @@
 }
 
 .menu {
-	font-family: "crock", crock, serif;
-	min-width: 20vw;
+	font-family: "Alegreya SC", "crock", crock, serif;
+	width: 28vw;
+	min-width: 28vw;
+	max-width: 28vw;
+	min-height: 400px;
 	height: auto;
 	color: #fff;
 	position: absolute;
-	padding: 35px;
-	background-image: url(inkroller_1aOLD.png);
+	padding: 0 2rem 8rem 2rem;
+	background-image: url(bg.png);
 	background-repeat: no-repeat;
 	background-position: center;
-	margin-top: -10px;
 	background-size: 100% 100%;
+	box-sizing: border-box;
 }
 
 .topline {
-	position: relative;
 	width: 87%;
 	height: 4px;
-	left: 25px;
-	top: -3px;
+	margin: 0 auto;
 	background-image: url(divider_line.png);
 	background-repeat: no-repeat;
 	background-position: center;
@@ -49,7 +57,7 @@
 .scrollbottom {
 	width: 88%;
 	height: 59px;
-	margin-left: 25;
+	margin-left: auto;
 	margin-right: auto;
 	margin-top: -15px;
 	background-image: url(scroller_right_bottom.png);
@@ -59,7 +67,18 @@
 }
 
 #item-label {
-	margin-top: 4px;
+	display: block;
+	flex: 1;
+	text-align: center;
+	font-size: 18px;
+	line-height: 1.5;
+	padding-left: 25%;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	white-space: normal;
+	overflow: visible;
+	word-break: break-word;
+	overflow-wrap: break-word;
 }
 
 
@@ -75,27 +94,32 @@
 
 .menu .head {
 	text-align: center;
-	height: 100px;
+	height: 4rem;
+	width: 95%;
 	color: #fff;
-	font-weight: 300;
-	font-size: 35px;
-	background-image: url(menu_header_1a.png);
+	font-weight: 700;
+	font-size: 28px;
+	background-image: url(header.png);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 100% 100%;
-	margin-bottom: 10px;
-	margin-top: 20px;
+	margin: 0.5rem auto 0.5rem auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .menu .menu-items {
 	min-height: 5vh;
 	max-height: 70vh;
 	overflow-y: auto;
-	inline-size: 480px;
-	/* overflow-wrap: break-word; */
-	margin-left: 10px;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
+	padding: 0.2rem 0;
+	box-sizing: border-box;
 }
 
 .menu .menu-items::-webkit-scrollbar {
@@ -104,20 +128,23 @@
 
 
 .menu .menu-items .menu-item {
-	width: 87%;
-	height: 2vh;
-	display: block;
-	padding: 15px;
-	/* font-size: 20px; */
-	text-align: left;
-	margin-top: 6px;
-	margin-left: auto;
-	margin-right: auto;
-	background-image: url(selection_box_bg_1d.png);
+	width: 100%;
+	min-height: 36px;
+	height: auto !important;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	padding: 6px 10px 6px 0;
+	margin-top: 4px;
+	background-image: url(inputg.png);
 	background-repeat: no-repeat;
 	background-position: center;
-	background-size: 100% 110%;
-	font-family: "crock";
+	background-size: 100% 100%;
+	font-family: "Alegreya SC", "crock", serif;
+	font-size: 18px;
+	color: rgba(255,255,255,0.85);
+	box-sizing: border-box;
+	overflow: visible;
 }
 
 .menu .menu-items .menu-item.selected,
@@ -132,27 +159,29 @@
 }
 
 .menu .menu-items .menu-item.selected {
-	background-image: url(selsected.png), url(selection_box_bg_1d.png);
+	background-image: url(buttonh.png);
+	color: #fff;
+	font-weight: 700;
 }
 
 .grid-container .grid-item.selected {
-	background-image: url(selected-item-box.png), url(selection_box_bg_1d.png);
+	background-image: url(buttonh.png), url(inputg.png);
 }
 
 .grid-item:hover:not(.selected) {
-	background-image: url(selected-item-box.png), url(selection_box_bg_1d.png);
+	background-image: url(buttonh.png), url(inputg.png);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 100% 100%;
 }
 
 .menu .menu-items .menu-item.slider {
-	min-height: 2.5vh;
-	font-size: 20px;
+	height: 36px;
+	font-size: 18px;
 }
 
 .menu .menu-items .menu-item:hover:not(.selected) {
-	background-image: url(selsected.png), url(selection_box_bg_1d.png);
+	background-image: url(buttonh.png);
 }
 
 .grid-item {
@@ -161,24 +190,38 @@
 
 
 #slider-label {
-	width: 50%;
-	float: left;
+	width: 40%;
 	text-align: center;
+	font-size: 16px;
+	line-height: 1.4;
 }
 
 i {
-	float: left;
 	font-size: 18px;
-	margin-top: 3%;
+	line-height: 1.4;
 }
 
 .desciption {
+	display: block;
 	text-align: center;
-	font-size: 18px;
-	font-family: HapnaSlabSerif-Medium;
-	inline-size: 420px;
-	margin: auto;
+	font-size: 16px;
+	font-family: "Alegreya SC", HapnaSlabSerif-Medium, serif;
+	width: 88%;
+	margin: 1.2rem auto 0.5rem auto;
 	overflow-wrap: break-word;
+	color: rgba(255,255,255,0.75);
+	line-height: 1.6;
+	min-height: 2rem;
+}
+
+.menu-items .desciption,
+.menu-items .desciptions {
+	display: none;
+}
+
+.menu-item .desciption,
+.menu-item .desciptions {
+	display: none;
 }
 
 .desciptions {
@@ -188,11 +231,13 @@ i {
 }
 
 .options-amount {
-	float: right;
+	display: block;
+	text-align: right;
 	opacity: 0.8;
 	font-size: 19px;
-	margin-top: -5%;
-	margin-right: 7%;
+	padding-right: 7%;
+	margin-top: 0.5rem;
+	margin-bottom: 0.2rem;
 }
 
 
@@ -205,9 +250,11 @@ i {
 
 
 .arrows {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
 	width: 25%;
-	margin-left: 14.4vw;
-	margin-top: -23px;
+	flex-shrink: 0;
 }
 
 
@@ -271,52 +318,52 @@ textarea.input-field {
 }
 
 .menu.align-left {
-	left: 40;
+	left: 0.6rem;
 	top: 50%;
 	transform: translate(0, -50%);
 }
 
 .menu.align-top-left {
-	left: 3vw;
-	top: 7vh;
+	left: 0.6rem;
+	top: 8vh;
 }
 
 .menu.align-top {
 	left: 50%;
-	top: 40;
+	top: 8vh;
 	transform: translate(-50%, 0);
 }
 
 .menu.align-top-right {
-	right: 10;
-	top: 40;
+	right: 0.6rem;
+	top: 8vh;
 }
 
 .menu.align-right {
-	right: 40;
+	right: 0.6rem;
 	top: 50%;
 	transform: translate(0, -50%);
 }
 
 .menu.align-bottom-right {
-	right: 40;
-	bottom: 40;
+	right: 0.6rem;
+	bottom: 2vh;
 }
 
 .menu.align-bottom {
 	left: 50%;
-	bottom: 40;
+	bottom: 2vh;
 	transform: translate(-50%, 0);
 }
 
 .menu.align-bottom-left {
-	left: 40;
-	bottom: 40;
+	left: 0.6rem;
+	bottom: 2vh;
 }
 
 .menu.align-center {
 	left: 50%;
-	top: 40;
+	top: 50%;
 	transform: translate(-50%, -50%);
 }
 
@@ -445,7 +492,7 @@ textarea.input-field {
 	padding: 0;
 	width: 30vw;
 	height: 40vh;
-	background-image: url(hud_menu.png);
+	background-image: url(bg.png);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 100% 80%;
@@ -471,7 +518,7 @@ textarea.input-field {
 	text-align: center;
 	margin-bottom: 10px;
 	color: #fff;
-	font-family: "crock";
+	font-family: "Alegreya SC", "crock", serif;
 	width: 21vw;
 	margin-left: 4.5vw;
 }
@@ -481,11 +528,11 @@ textarea.input-field {
 	text-align: center;
 	margin-bottom: 15px;
 	color: #fff;
-	background-image: url(selection_box.png);
+	background-image: url(inputg.png);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 70% 100%;
-	font-family: HapnaSlabSerif-Medium;
+	font-family: "Alegreya SC", HapnaSlabSerif-Medium, serif;
 	line-height: 1.4;
 	padding: 20px;
 }
@@ -494,12 +541,12 @@ textarea.input-field {
 	font-size: 16px;
 	border: none;
 	background: transparent;
-	background-image: url(selection_box.png);
+	background-image: url(inputg.png);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 100% 100%;
 	color: #fff;
-	font-family: "crock";
+	font-family: "Alegreya SC", "crock", serif;
 	margin-bottom: 15px;
 	padding: 20px;
 	width: 20vw;
@@ -551,12 +598,12 @@ textarea.input-field {
 	font-size: 16px;
 	border: none;
 	background: transparent;
-	background-image: url(selection_box.png);
+	background-image: url(buttong.png);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 100% 100%;
-	font-family: "crock";
-	color: white;
+	font-family: "Alegreya SC", "crock", serif;
+	color: rgba(255,255,255,0.75);
 	z-index: 10;
 	position: relative;
 	margin-top: -2vh;
@@ -564,12 +611,8 @@ textarea.input-field {
 
 .menu-confirm-btn:hover,
 .menu-cancel-btn:hover {
-	transform: scale(0.95);
-}
-
-.menu-confirm-btn:active,
-.menu-cancel-btn:active {
-	transform: scale(0.9);
+	background-image: url(buttonh.png);
+	color: #fff;
 }
 
 .label-slider-container {
@@ -777,19 +820,20 @@ textarea.input-field {
 	border: none;
 	background: none;
 	opacity: 1;
-	background-image: url(grid.png);
+	background-image: url(buttong.png);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 100% 100%;
-	font-family: "crock";
+	font-family: "Alegreya SC", "crock", serif;
 	transition: all 0.2s ease;
-	color: white;
+	color: rgba(255,255,255,0.75);
 	z-index: 20 !important;
 }
 
 .input-submit:hover,
 .input-cancel:hover {
-	transform: scale(0.95)
+	background-image: url(buttonh.png);
+	color: #fff;
 }
 
 

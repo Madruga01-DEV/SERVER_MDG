@@ -13,7 +13,7 @@ Config.MinAge = 18 -- minimum age required to create a character
 Config.BannedNames = { "Arthur", "Marshton", "Shit", "Dick" } --* you can add more words
 
 -- allow player to delete character
-Config.AllowPlayerDeleteCharacter = true
+Config.AllowPlayerDeleteCharacter = false
 
 -- command to reload character
 Config.ReloadCharCommand = "rc"
@@ -27,28 +27,15 @@ Config.ShowGold = false
 -- set false to not show character description on selction menu
 Config.showchardesc = true
 
+-- Se true, desativa o spawn interno ao criar personagem 
+Config.UseExternalSpawn = true
+
 
 -- after creating character player will spawn here
 Config.SpawnCoords = {
-    { -- BLW
-        position = vector3(-687.3, -1242.249, 43.1),
-        heading = 90.58
-    },
-    { -- RHO
-        position = vector3(1227.77, -1304.7, 76.95),
-        heading = 140.49
-    },
-    { -- Emerald
-        position = vector3(1526.07, 444.58, 90.73),
-        heading = 265.95
-    },
     { -- VAL
         position = vector3(-174.3, 621.18, 114.08),
         heading = 240.38
-    },
-    { -- Flatneck
-        position = vector3(-330.5, -350.76, 88.09),
-        heading = 20.96
     },
 }
 

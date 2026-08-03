@@ -229,29 +229,29 @@ Config = {
     --===========================================
     appid                   = 1067728635643052092,                        -- Discord Application ID. Replace this with your own application's ID.
 
-    biglogo                 = "principal",                 -- Name of the image asset to use for the large icon in the rich presence.
+    biglogo                 = "logo",                 -- Name of the image asset to use for the large icon in the rich presence.
 
     biglogodesc             = " Madruga Dev: ",   -- Description displayed when hovering over the large icon.
 
-    smalllogo               = "logo",            -- Name of the image asset for the small icon in the rich presence. This is optional.
+    smalllogo               = "principal",            -- Name of the image asset for the small icon in the rich presence. This is optional.
 
-    smalllogodesc           = "Programador", -- Description displayed when hovering over the small icon.
+    smalllogodesc           = "Developer RedM", -- Description displayed when hovering over the small icon.
 
     richpresencebutton      = "Entre No Discord",             -- Text displayed on the rich presence button.
 
-    shownameandid           = true,                       -- Whether to display the player's Steam name and ID.
+    shownameandid           = true,                        -- Whether to display the player's Steam name and ID.
 
     Buttons                 = {                           -- Configuration for buttons shown in the Discord rich presence.
         {
-            text = 'Madruga Store',                       -- Text displayed on the first button.
+            text = 'Discord',                       -- Text displayed on the first button.
             -- URL the first button directs to. Replace with your Discord invite link.
-            url = 'https://discord.gg/ueDwVpvnyv'
+            url = 'https://discord.gg/nudFMgXSAq'
 
         },
         {
-            text = 'Madruga Store', -- Text displayed on the second button.
+            text = 'Loja', -- Text displayed on the second button.
             -- URL the second button directs to. Fill in with your website URL.
-            url = 'https://www.madrugastore.com.br'          -- Example for Rich Presence Button
+            url = 'https://madrugadeveloper.com.br/loja'          -- Example for Rich Presence Button
         }
     },
     --=============================================

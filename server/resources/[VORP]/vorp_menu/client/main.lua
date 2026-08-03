@@ -34,7 +34,7 @@ function MenuData.Open(menuType, namespace, name, data, submit, cancel, change, 
     menu.submit        = submit
     menu.cancel        = cancel
     menu.change        = change
-    menu.data.selected = MenuData.LastSelectedIndex[menu.type .. "_" .. menu.namespace .. "_" .. menu.name] or 0
+    menu.data.selected = 0
 
     menu.close         = function(showRadar, closeSound, trigeerCloseEvent)
         MenuData.RegisteredTypes[menuType].close(namespace, name)
@@ -280,6 +280,8 @@ function MenuData.CloseAll(showRadar, closeSound, trigeerCloseEvent)
             MenuData.Opened[i] = nil
         end
     end
+    -- limpa estado completo no JS
+    SendNUIMessage({ ak_menubase_action = 'closeAll' })
 end
 
 function MenuData.GetOpened(type, namespace, name)
@@ -387,12 +389,8 @@ RegisterNUICallback('menu_change', function(data)
     end
 end)
 
-RegisterNUICallback('update_last_selected', function(data)
-    local menu = MenuData.GetOpened(MenuType, data._namespace, data._name)
-    local menuKey = menu.type .. "_" .. menu.namespace .. "_" .. menu.name
-    if data.selected ~= nil then
-        MenuData.LastSelectedIndex[menuKey] = data.selected
-    end
+RegisterNUICallback('update_last_selected', function(data, cb)
+    if cb then cb('ok') end
 end)
 
 RegisterNUICallback('closeui', function()

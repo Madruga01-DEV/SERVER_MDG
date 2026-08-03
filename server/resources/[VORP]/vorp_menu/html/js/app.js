@@ -25,10 +25,10 @@
                 {{^isGrid}}
                     {{#elements}}
                         {{#isNotSelectable}}
-                            <div class="menu-item {{#isSlider}}slider{{/isSlider}} {{#isDisabled}}disabled{{/isDisabled}}" {{#itemHeight}} style="height:{{{itemHeight}}}!important"{{/itemHeight}}>
+                            <div class="menu-item {{#isSlider}}slider{{/isSlider}} {{#isDisabled}}disabled{{/isDisabled}}" {{#itemHeight}} style="min-height:{{{itemHeight}}};height:auto!important"{{/itemHeight}}>
                         {{/isNotSelectable}}
                         {{^isNotSelectable}}
-                            <div class="menu-item {{#selected}}selected{{/selected}} {{#isSlider}}slider{{/isSlider}} {{#isLabelSlider}}label-slider{{/isLabelSlider}} {{#isDisabled}}disabled{{/isDisabled}}" {{#itemHeight}} style="height:{{{itemHeight}}}!important"{{/itemHeight}}>
+                            <div class="menu-item {{#selected}}selected{{/selected}} {{#isSlider}}slider{{/isSlider}} {{#isLabelSlider}}label-slider{{/isLabelSlider}} {{#isDisabled}}disabled{{/isDisabled}}" {{#itemHeight}} style="min-height:{{{itemHeight}}};height:auto!important"{{/itemHeight}}>
                         {{/isNotSelectable}}
                             {{#image}}
                                 <img class="item-image" src="nui://vorp_inventory/html/img/items/{{{image}}}.png"></img>
@@ -265,7 +265,6 @@
     MenuData.opened = {};
     MenuData.focus = [];
     MenuData.pos = {};
-    let lastmenu;
     let SavedScrollTop = 0;
 
     function scrollToElement(element) {
@@ -978,7 +977,6 @@
 
 
     MenuData.open = function (namespace, name, data) {
-        lastmenu = data.lastmenu;
         if (typeof MenuData.opened[namespace] == "undefined") {
             MenuData.opened[namespace] = {};
         }
@@ -1435,7 +1433,7 @@
                     _namespace: namespace,
                     _name: name,
                     current: data,
-                    trigger: lastmenu,
+                    trigger: MenuData.opened[namespace] && MenuData.opened[namespace][name] ? (MenuData.opened[namespace][name].lastmenu || "") : "",
                     elements: MenuData.opened[namespace][name].elements,
                 })
             );
@@ -1736,10 +1734,11 @@
 
                     case "BACKSPACE": {
                         const focused = MenuData.getFocused();
-                        if (lastmenu == null)
-                            lastmenu = "";
+                        const currentLastmenu = (focused && MenuData.opened[focused.namespace] && MenuData.opened[focused.namespace][focused.name])
+                            ? (MenuData.opened[focused.namespace][focused.name].lastmenu || "")
+                            : "";
 
-                        if (lastmenu != "undefined" && lastmenu != "") {
+                        if (currentLastmenu != "undefined" && currentLastmenu != "") {
                             MenuData.submit(focused.namespace, focused.name, "backup");
                         } else if (typeof focused != "undefined") {
                             MenuData.cancel(focused.namespace, focused.name);
@@ -2467,5 +2466,3 @@
         });
     });
 })();
-
-

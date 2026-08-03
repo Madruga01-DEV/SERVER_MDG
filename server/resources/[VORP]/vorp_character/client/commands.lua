@@ -242,6 +242,7 @@ function ApplyRolledClothingStatus()
 	local value = GetResourceKvpString(("sleeves_%s"):format(CHARID or 0))
 	local value2 = GetResourceKvpString(("collar_%s"):format(CHARID or 0))
 	local value3 = GetResourceKvpString(("tuck_%s"):format(CHARID or 0))
+
 	if value == "true" then
 		sleeves = false
 		ExecuteCommand("sleeves")
@@ -258,12 +259,15 @@ function ApplyRolledClothingStatus()
 		ExecuteCommand("sleeves2")
 	end
 
-	if value3 == "true" then
-		tuck = false
-		ExecuteCommand("tuck")
-	else
-		tuck = true
-		ExecuteCommand("tuck")
+	-- FIX: só executa tuck se tiver valor salvo, senão deixa como está
+	if value3 ~= nil then
+		if value3 == "true" then
+			tuck = false
+			ExecuteCommand("tuck")
+		else
+			tuck = true
+			ExecuteCommand("tuck")
+		end
 	end
 end
 

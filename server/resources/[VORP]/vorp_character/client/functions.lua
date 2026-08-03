@@ -28,8 +28,10 @@ end
 function LoadPlayer(sex)
     if not HasModelLoaded(sex) then
         RequestModel(sex, false)
-        repeat Wait(0) until HasModelLoaded(sex)
+        local start = GetGameTimer()
+        repeat Wait(0) until HasModelLoaded(sex) or GetGameTimer() - start > 10000
     end
+    return HasModelLoaded(sex)
 end
 
 function DeleteNpc(pedHandler)

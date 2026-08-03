@@ -272,11 +272,29 @@ end
 
 function OpenCharCreationMenu(clothingtable, value)
     Title = IsInClothingStore and "Clothing Store" or T.MenuCreation.title
-    local SubTitle = "<span style='font-size:25px;'>" .. T.MenuCreation.subtitle .. "</span><br><br>"
-    if width <= 1920 then
-        SubTitle = T.MenuCreation.subtitle
+
+    local function BuildSubTitle()
+        local parts = {}
+        if PLAYER_DATA.firstname then
+            parts[#parts + 1] = PLAYER_DATA.firstname .. " " .. (PLAYER_DATA.lastname or "")
+        end
+        if PLAYER_DATA.age then
+            parts[#parts + 1] = tostring(PLAYER_DATA.age) .. " anos"
+        end
+        if #parts > 0 then
+            local text = table.concat(parts, "  |  ")
+            if width <= 1920 then
+                return text
+            end
+            return "<span style='font-size:25px;'>" .. text .. "</span><br><br>"
+        end
+        if width <= 1920 then
+            return T.MenuCreation.subtitle
+        end
+        return "<span style='font-size:25px;'>" .. T.MenuCreation.subtitle .. "</span><br><br>"
     end
-    MenuData.CloseAll()
+
+    local SubTitle = BuildSubTitle()
 
     local elements = {}
     local buttons = {
@@ -288,12 +306,6 @@ function OpenCharCreationMenu(clothingtable, value)
             label = T.MenuCreation.element.label .. opacity:format(T.Secondchance.DescAppearance),
             value = "appearance",
             desc = imgPath:format("character_creator_head") .. "<br>" .. T.MenuCreation.element.desc
-        }
-
-        elements[#elements + 1] = {
-            label = T.MenuCreation.element2.label .. opacity:format(T.Secondchance.DescClothing),
-            value = "clothing",
-            desc = imgPath:format("clothing_generic_outfit") .. "<br> " .. T.MenuCreation.element2.desc
         }
 
         -- confirm pay
@@ -317,7 +329,7 @@ function OpenCharCreationMenu(clothingtable, value)
 
     if IsInCharCreation then
         elements[#elements + 1] = {
-            label = "Whistle" .. opacity:format("adjust whistle"),
+            label = "Assobiar" .. opacity:format("Ajustar"),
             value = "whistle",
             desc = imgPath:format("emote_greet_hey_you") .. "<br> " .. T.MenuCreation.element5.desc
         }
@@ -326,16 +338,6 @@ function OpenCharCreationMenu(clothingtable, value)
             value = "age",
             desc = imgPath:format("emote_greet_hey_you") .. "<br> " .. T.MenuCreation.element5.desc
 
-        }
-        elements[#elements + 1] = {
-            label = CHARACTER_DETAILS.desc or T.MenuCreation.element6.label .. opacity:format(T.MenuCreation.none),
-            value = "desc",
-            desc = imgPath:format("emote_greet_hey_you") .. "<br>" .. T.MenuCreation.element6.desc
-        }
-        elements[#elements + 1] = {
-            label = CHARACTER_DETAILS.nickname or T.MenuCreation.element7.label .. opacity:format(T.MenuCreation.none),
-            value = "nickname",
-            desc = imgPath:format("emote_greet_hey_you") .. "<br> " .. T.MenuCreation.element7.desc .. "<br>" .. T.MenuCreation.element7.desc2
         }
         elements[#elements + 1] = {
             label = CHARACTER_DETAILS.charname or T.MenuCreation.element3.label .. opacity:format(T.MenuCreation.none),
@@ -378,50 +380,12 @@ function OpenCharCreationMenu(clothingtable, value)
                 return BackFromMenu(value)
             end
 
-            if (data.current.value == "clothing") then
-                return OpenClothingMenu(clothingtable, value)
-            end
-
             if (data.current.value == "appearance") then
                 return OpenAppearanceMenu(clothingtable, value)
             end
 
             if (data.current.value == "whistle") then
                 return OpenWhistleMenu(clothingtable, value)
-            end
-
-            if (data.current.value == "desc") then
-                local prompt = buildInputPrompt(data.current.value)
-
-                handleInputPrompt(prompt, function(result)
-                    local Result = tostring(result)
-                    if Result ~= nil and Result ~= "" then
-                        CHARACTER_DETAILS.desc = T.MenuCreation.element6.label .. opacity:format(T.MenuCreation.element6.desc2) .. imgPath1:format("menu_icon_tick")
-                        PLAYER_DATA.desc = Result
-
-                        updateMenu(menu, {
-                            { index = data.current.index, key = "desc",  value = imgPath:format("emote_greet_hey_you") .. "<br><br>" .. Result },
-                            { index = data.current.index, key = "label", value = CHARACTER_DETAILS.desc }
-                        })
-                    end
-                end)
-            end
-
-            -- nick name
-            if (data.current.value == "nickname") then
-                local prompt = buildInputPrompt(data.current.value)
-
-                handleInputPrompt(prompt, function(result)
-                    local Result = tostring(result)
-                    if Result ~= nil and Result ~= "" then
-                        CHARACTER_DETAILS.nickname = T.MenuCreation.element7.nickname .. "<br> <span style='opacity:0.6;'>" .. Result .. "</span>" .. imgPath1:format("menu_icon_tick")
-                        PLAYER_DATA.nickname = Result
-
-                        updateMenu(menu, {
-                            { index = data.current.index, key = "label", value = CHARACTER_DETAILS.nickname }
-                        })
-                    end
-                end)
             end
 
             if (data.current.value == "age") then
@@ -440,6 +404,8 @@ function OpenCharCreationMenu(clothingtable, value)
                     updateMenu(menu, {
                         { index = data.current.index, key = "label", value = label }
                     })
+                    menu.setSubtext(BuildSubTitle())
+                    menu.refresh()
                 end)
             end
 
@@ -474,13 +440,14 @@ function OpenCharCreationMenu(clothingtable, value)
                             value = CHARACTER_DETAILS.value,
                             desc = imgPath:format("generic_walk_style") .. "<br> " .. T.MenuCreation.element4.desc,
                         })
+                        menu.setSubtext(BuildSubTitle())
                         menu.refresh()
                     end
                 end)
             end
 
             if (data.current.value == "save") then
-                menu.close(true, true, true)
+                MenuData.CloseAll()
                 local NewTable = GetNewCompOldStructure(PlayerClothing)
                 PLAYER_DATA.skin = json.encode(PlayerSkin)
                 PLAYER_DATA.comps = json.encode(NewTable)
@@ -556,7 +523,7 @@ function OpenWhistleMenu(Table, value)
     local elements <const> = {}
     --shape
     elements[#elements + 1] = {
-        label = "Style " .. opacity:format("adjust whistle style"),
+        label = "Estilo " .. opacity:format("adjust whistle style"),
         value = WHISTLE.style,
         type = "slider",
         min = 0.0,
@@ -568,7 +535,7 @@ function OpenWhistleMenu(Table, value)
     }
 
     elements[#elements + 1] = {
-        label = "Pitch " .. opacity:format("adjust pitch of whistle"),
+        label = "Tom " .. opacity:format("adjust pitch of whistle"),
         value = WHISTLE.pitch,
         type = "slider",
         min = 0.0,
@@ -580,7 +547,7 @@ function OpenWhistleMenu(Table, value)
     }
 
     elements[#elements + 1] = {
-        label = "Clarity " .. opacity:format("adjust clarity of whistle"),
+        label = "Clareza " .. opacity:format("adjust clarity of whistle"),
         value = WHISTLE.clarity,
         type = "slider",
         min = 0.0,
@@ -594,7 +561,7 @@ function OpenWhistleMenu(Table, value)
     MenuData.Open('default', GetCurrentResourceName(), 'OpenWhistleMenu',
         {
             title = Title,
-            subtext = "Adjust whistle",
+            subtext = "Ajustar",
             align = Config.Align,
             elements = elements,
             itemHeight = "4vh",
@@ -1188,7 +1155,7 @@ function OpenAppearanceMenu(clothingtable, value)
     MenuData.CloseAll()
     local elements = {
         {
-            label = T.MenuAppearance.element.label .. "<br><span style='opacity:0.6;'>body types </span>",
+            label = T.MenuAppearance.element.label .. "<br><span style='opacity:0.6;'>tipos de corpo </span>",
             value = "body",
             desc = imgPath:format("character_creator_build") .. "<br>" .. T.MenuAppearance.element.desc
         },
@@ -2239,7 +2206,7 @@ function OpenFaceMenu(table, value)
             img = "character_creator_eyebrows"
         },
         {
-            label = "Upper Body" .. "<br><span style='opacity:0.6;'> " .. T.MenuFacial.element11.desc2 .. "</span>",
+            label = "Parte superior" .. "<br><span style='opacity:0.6;'> " .. T.MenuFacial.element11.desc2 .. "</span>",
             value = "life",
             tag = "upperbody",
             desc = imgPath:format("character_creator_eyebrows") .. "<br>" .. T.MenuFacial.element11.desc,
@@ -2247,7 +2214,7 @@ function OpenFaceMenu(table, value)
             img = "character_creator_eyebrows"
         },
         {
-            label = "Lower body" .. "<br><span style='opacity:0.6;'> " .. T.MenuFacial.element12.desc2 .. "</span>",
+            label = "Parte inferior" .. "<br><span style='opacity:0.6;'> " .. T.MenuFacial.element12.desc2 .. "</span>",
             value = "life",
             tag = "lowerbody",
             desc = imgPath:format("character_creator_eyebrows") .. "<br>" .. T.MenuFacial.element12.desc,

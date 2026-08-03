@@ -2168,7 +2168,6 @@ RequestImap(458453080)
 -- RequestImap(-1288790000)
 -- RequestImap(758066107)
 -- RequestImap(-1995054197)
--- RequestImap(-1623126047)
 -- RequestImap(1943484686)
 -- RequestImap(2056603274)
 -- RequestImap(898257133)
@@ -3150,7 +3149,6 @@ RequestImap(728046625) --knast fenster
 -- RequestImap(967935536)
 -- RequestImap(-773956478)
 -- RequestImap(-1615749463)
--- RequestImap(-361709910)
 -- RequestImap(-1323334072)
 -- RequestImap(-1521897637)
 -- RequestImap(-716370751)
@@ -3215,3 +3213,11 @@ RequestImap(1886602884)
 RequestImap(1513363974)
 RequestImap(1854980771)
 RequestImap(-2127665186)
+
+-- cabana lenhador 
+RequestImap(-1623126047)
+RequestImap(-774610462)
+
+-- Acampamentos Ilegal 
+RequestImap(-361709910) -- armadillo
+RequestImap(1405502979) -- mencer
