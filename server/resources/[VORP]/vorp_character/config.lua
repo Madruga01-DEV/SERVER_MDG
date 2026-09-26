@@ -28,7 +28,7 @@ Config.ShowGold = false
 Config.showchardesc = true
 
 -- Se true, desativa o spawn interno ao criar personagem 
-Config.UseExternalSpawn = true
+Config.UseExternalSpawn = false
 
 
 -- after creating character player will spawn here

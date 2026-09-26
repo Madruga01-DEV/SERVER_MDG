@@ -26,9 +26,9 @@ Config = {
 	-- GOLD ITEM LIKE DOLLARS
 	UseRolItem                     = false, -- To show rol in inventory
 
-	UseGoldItem                    = false,
+	UseGoldItem                    = true,
 
-	AddGoldItem                    = false,   -- Should there be an item in inventory to represent gold
+	AddGoldItem                    = true,   -- Should there be an item in inventory to represent gold
 
 	AddDollarItem                  = true,    -- Should there be an item in inventory to represent dollars
 
@@ -79,9 +79,23 @@ Config = {
 		PickUp = true,              -- The sound effect when pick up the item
 	},
 
+	-- ==================== ANIMATION CONFIGURATION ==================== --
+	-- Animation configuration for different actions
+	-- NOTE: Before adding animation test for female ped
+	Animation = {
+		Drop = {
+			Item = {Enable = true, AnimDict = "amb_player@world_player_chore@bucket_put_down@male_a@base", AnimName = "base", Speed = 1.0, SpeedMultiplier = 8.0, Duration = -1, Flag = 1, ClearTaskTime = 1000},
+			Weapon = {Enable = true, AnimDict = "amb_player@world_player_chore@box_put_down@male_a@base", AnimName = "base", Speed = 1.0, SpeedMultiplier = 8.0, Duration = -1, Flag = 1, ClearTaskTime = 1200},
+			Money = {Enable = true, AnimDict = "mech_pickup@money@coins@table", AnimName = "2h_long_enter", Speed = 1.0, SpeedMultiplier = 8.0, Duration = -1, Flag = 1, ClearTaskTime = 500},
+			Gold = {Enable = true, AnimDict = "mech_pickup@plant@gold_currant", AnimName = "enter_rf", Speed = 1.0, SpeedMultiplier = 8.0, Duration = -1, Flag = 1, ClearTaskTime = 1000},
+		},
+		PickUp = {Enable = true, AnimDict = "amb_work@world_human_box_pickup@1@male_a@stand_exit_withprop", AnimName = "exit_front", Speed = 1.0, SpeedMultiplier = 8.0, Duration = -1, Flag = 1, ClearTaskTime = 1200},
+		-- TODO: Give/Take Item/Weapon(both user and target)
+	},
+
 	-- =================== CLEAR ITEMS WEAPONS MONEY GOLD ===================== --
 
-	UseClearAll                    = false, -- If you want to use the clear item function
+	UseClearAll                    = true, -- If you want to use the clear item function
 
 	OnPlayerRespawn                = {
 		Money = {
@@ -122,8 +136,8 @@ Config = {
 
 	-- FIRST JOIN
 	startItems                     = {
-		suco_laranja = 5, -- ITEMS SAME NAME AS IN DATABASE
-		torta_frango = 5   -- AMMO SAME NAME AS IN THE DATABASE
+		consumable_raspberrywater = 2, -- ITEMS SAME NAME AS IN DATABASE
+		ammorevolvernormal = 1   -- AMMO SAME NAME AS IN THE DATABASE
 	},
 
 	startWeapons                   = {
